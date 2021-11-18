@@ -1,32 +1,32 @@
-Step: Create IAM service account
+Step: Create IAM service account \
 gcloud iam service-accounts create my-sa-123 --display-name "my service account"
 
 
-Step: Bind Cloud Storage admin to service account
+Step: Bind Cloud Storage admin to service account \
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
     --member serviceAccount:my-sa-123@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com --role roles/storage.admin
 
 
-Step: Bind Big Query admin to service account
+Step: Bind Big Query admin to service account \
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID  \     
     --member serviceAccount:my-sa-123@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com --role roles/bigquery.admin
 
 
-Step: Create Google Credentials key (Json file) for IAM service account
+Step: Create Google Credentials key (Json file) for IAM service account \
 gcloud iam service-accounts keys create key.json --iam-account=my-sa-123@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com
 
 
-Step: Set Json key file as environmental variable in Cloud Shell Terminal
+Step: Set Json key file as environmental variable in Cloud Shell Terminal \
 export GOOGLE_APPLICATION_CREDENTIALS=key.json
 
 
-Step: Copy analyze-images.py file from Google Cloud Storage into Cloud Shell Terminal. 
-FYI: cp means copy, gs refers to Google Cloud Storage
+Step: Copy analyze-images.py file from Google Cloud Storage into Cloud Shell Terminal. \
+FYI: cp means copy, gs refers to Google Cloud Storage \
 gsutil cp gs://$DEVSHELL_PROJECT_ID/analyze-images.py
 
 
-Step: Run the analyze-images.py script.
-You need to upload the script into the Cloud Shell. Click on the 3-dots button for drop-down menu at the top right of Cloud Shell. Upload file option is there.
+Step: Run the analyze-images.py script. \
+You need to upload the script into the Cloud Shell. Click on the 3-dots button for drop-down menu at the top right of Cloud Shell. Upload file option is there. \
 python3 analyze-images.py $DEVSHELL_PROJECT_ID $DEVSHELL_PROJECT_ID
 
 ======================================================================
