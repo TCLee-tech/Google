@@ -9,3 +9,11 @@ https://cryptography.io/en/latest/
 https://www.crypto101.io/
 <p>Crypto challenges
 https://cryptopals.com/
+
+<hr>  
+<p>DevOps
+https://cloud.google.com/devops
+<p>Jenkins on Kubernetes
+https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
+<p>Continuous Deployment to GKE with Jenkins
+https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-engine
