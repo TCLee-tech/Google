@@ -82,17 +82,12 @@ https://github.com/GoogleCloudPlatform/terraform-google-examples
 
 Automating Infrastructure on Google Cloud with Terraform: Challenge Lab
 Topics tested:
-Import existing infrastructure into your Terraform configuration.
-
-Build and reference your own Terraform modules.
-
-Add a remote backend to your configuration.
-
-Use and implement a module from the Terraform Registry.
-
-Re-provision, destroy, and update infrastructure.
-
-Test connectivity between the resources you've created.
+- Import existing infrastructure into your Terraform configuration.
+- Build and reference your own Terraform modules.
+- Add a remote backend to your configuration.
+- Use and implement a module from the Terraform Registry.
+- Re-provision, destroy, and update infrastructure.
+- Test connectivity between the resources you've created.
 
 Notes for the challenge lab.
 terraform import command: terraform import [options] ADDRESS ID
