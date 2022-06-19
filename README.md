@@ -17,3 +17,7 @@ https://cloud.google.com/devops
 https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
 <p>Continuous Deployment to GKE with Jenkins
 https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-engine
+
+<hr>
+<p>Multi-cloud Terraform configuration
+<p> See folder for automating deployments
