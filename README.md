@@ -19,5 +19,7 @@ https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
 https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-engine
 
 <hr>
-<p>Multi-cloud Terraform configuration
-<p> See folder for automating deployments
+Terraform<br>
+Automating Infrastructure on Google Cloud.<br>
+Hasicorp Configuration Language. Cloud agnostic.<br>
+Refer to notes in folder<br>
