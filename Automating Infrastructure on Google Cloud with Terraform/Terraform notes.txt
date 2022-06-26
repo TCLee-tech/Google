@@ -111,3 +111,33 @@ re-running already initialized backend will update working directory to use new 
 Use -migrate-state. This option will copy existing state to the new backend.
 For configuration with module blocks, re-running init will not change already installed modules. Will only install sources for any new modules added since last init.
 Use -upgrade option to update all modules.
+
+Modules are reusable configuration files inside a folder. They reduce the amount of code needed for multiple infrastructure components of the same type. Can use input variables in modules.
+- top level "provider.tf" is an encapsulated binary file for a single infrastructure or service provider.
+- Then, a sub-folder (module) for a component type, e.g. vm instance.
+	--  main.tf is configuration file in that module.
+	-- example of input variable use in main.tf:
+	
+variable "instance_name" {} // compulsory to define in top level provider.tf
+variable "instance_zone" {}
+variable "instance_type" { // has default, so optional to define in top level provider.tf
+  default = "n1-standard-1"
+  }
+variable "instance_network" {}
+
+resource "google_compute_instance" "vm_instance" {
+  name         = "${var.instance_name}"
+  zone         = "${var.instance_zone}"
+  machine_type = "${var.instance_type}"
+
+	-- in top level "provider.tf", provide the values for the input variables:
+	
+# Create the vm instance 
+module "mynet-us-vm" {
+  source           = "./instance" //name of module folder. Use ./ for sub-folder within main folder.
+  instance_name    = "mynet-us-vm"
+  instance_zone    = "us-central1-a"
+  instance_network = google_compute_network.mynetwork.self_link
+}
+
+Ref: https://learn.hashicorp.com/tutorials/terraform/aws-variables
