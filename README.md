@@ -1,7 +1,8 @@
 # Google
-
+* notes in folder
 <hr>
-### Cryptography (python)<br>
+
+### Cryptography (python) <br>
 https://cryptography.io/en/latest/
 <p>Crypto101s
 https://www.crypto101.io/
@@ -9,6 +10,7 @@ https://www.crypto101.io/
 https://cryptopals.com/
 
 <hr>  
+
 ### DevOps<br>
 https://cloud.google.com/devops
 <p>Jenkins on Kubernetes
@@ -17,15 +19,20 @@ https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
 https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-engine
 
 <hr>
+
 ### Terraform<br>
 Hasicorp Configuration Language. Cloud agnostic.<br>
 Refer to notes in folder<br>
 Solution for Challenge Lab: Automating Infrastructure on Google Cloud.<br>
 
 <hr>
+
 ### Data analysis<br>
 Solution for Challenge Lab: Insights to Data with Big Query<br>
 
 <hr>
+
 ### Machine Learning<br>
 Solution for Challenge Lab: Insights to Machine Learning<br>
+
+
