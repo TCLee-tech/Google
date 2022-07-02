@@ -21,3 +21,11 @@ Terraform<br>
 Hasicorp Configuration Language. Cloud agnostic.<br>
 Refer to notes in folder<br>
 Solution for Challenge Lab: Automating Infrastructure on Google Cloud.<br>
+
+<hr>
+Data analysis<br>
+Solution for Challenge Lab: Insights to Data with Big Query<br>
+
+<hr>
+Machine Learning<br>
+Solution for Challenge Lab: Insights to Machine Learning<br>
