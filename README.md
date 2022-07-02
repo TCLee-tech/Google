@@ -26,7 +26,7 @@ Solution for Challenge Lab: Automating Infrastructure on Google Cloud.<br>
 
 <hr>
 
-### Data analysis<br>
+### Data Science<br>
 Solution for Challenge Lab: Insights from Data with Big Query<br>
 
 <hr>
