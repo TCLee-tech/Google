@@ -1,9 +1,7 @@
 # Google
-Google Cloud Skills Boost Challenge Labs
 
 <hr>
-<p>References
-<p>Cryptography (python)
+Cryptography (python)<br>
 https://cryptography.io/en/latest/
 <p>Crypto101s
 https://www.crypto101.io/
@@ -11,7 +9,7 @@ https://www.crypto101.io/
 https://cryptopals.com/
 
 <hr>  
-<p>DevOps
+DevOps<br>
 https://cloud.google.com/devops
 <p>Jenkins on Kubernetes
 https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
@@ -20,6 +18,6 @@ https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-eng
 
 <hr>
 Terraform<br>
-Automating Infrastructure on Google Cloud.<br>
 Hasicorp Configuration Language. Cloud agnostic.<br>
 Refer to notes in folder<br>
+Solution for Challenge Lab: Automating Infrastructure on Google Cloud.<br>
