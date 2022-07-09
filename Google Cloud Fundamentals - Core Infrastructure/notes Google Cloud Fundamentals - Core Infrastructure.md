@@ -159,8 +159,9 @@ Connections to other Google Cloud services and 3rd party clients
 
 ---
 ## Comparing Storage options
-BigQuery is for database storage and database analysis; half half
-See table for rest of storage options
+BigQuery is for database storage and database analysis; "half half .."<br>
+See table for main of storage options
+![Google Storage Classes](https://github.com/TCLee-tech/Google/blob/e8ce3e2764900ca24a4241196bfbc822d8466041/Google%20Cloud%20Fundamentals%20-%20Core%20Infrastructure/Storage%20comparison.jpg)
 
 ---
 ## Intro to Containers
