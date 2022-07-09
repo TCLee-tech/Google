@@ -554,6 +554,7 @@ Monitoring is the foundation of product reliability
  - shows trends in application usage patterns
  - helps capacity planning
  - helps improve application experience
+
 In Google Site Reliability Engineering book
  - landing.google.com/sre/books
  - monitoring is about collecting, processing, aggregating, displaying real-time quantitative data on a system
@@ -580,10 +581,10 @@ Pyramid of monitoring
 ---
 ## Measuring performance and reliability
 4 golden signals
-	- latency
-	- traffic
-	- saturation
-	- errors
+- latency
+- traffic
+- saturation
+- errors
 
 Latency
  - measure of how fast to return result
@@ -608,16 +609,16 @@ Traffic
 	- historical trends are used for capacity planning
 	- core measure when calculating infrastructure spend
  - measures
-	- # HTTP requests per second
-	- # requests for static vs dynamic content
+	- \# HTTP requests per second
+	- \# requests for static vs dynamic content
 	- network I/O
-	- # concurrent sessions
-	- # transactions per second
-	- # of retrievals per second
-	- # of active requests
-	- # of read operations
-	- # of write operations
-	- # of active connections
+	- \# concurrent sessions
+	- \# transactions per second
+	- \# of retrievals per second
+	- \# of active requests
+	- \# of read operations
+	- \# of write operations
+	- \# of active connections
 
 Saturation
  - how close to capacity a system is
