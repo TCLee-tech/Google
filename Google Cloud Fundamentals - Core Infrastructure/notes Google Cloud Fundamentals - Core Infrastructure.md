@@ -1,10 +1,10 @@
 # Google Cloud Fundamentals: Core Infrastructure
 
 ## Storage
-Types of data: Structured, Unstructured, transactional, relational
+Types of data: Structured, Unstructured, transactional, relational<br>
 Cloud Storage, Cloud SQL, Cloud Spanner, Firestore, Cloud Bigtable.
 
-Cloud Storage:
+#### Cloud Storage:
 - Object storage, aka Binary Large-Object (BLOB) Storage.
 - Not file storage, or block storage (chunks on disk).
 - Object storage format consists of (1) binary form of the actual data, (2) relevant associated meta-data, (3) globally unique identifier (in the form of URLs).
@@ -14,9 +14,9 @@ Cloud Storage:
 - Objects stored are immutable. Means original object not edited. New version created with each change. 
 	- New version can replace/overwrite original; or not (versioning control).
 	- With versioning, will have archive, history trail, can restore.
-- Objects may contain personal identifiable info. Control access with Identity Access Management(IAM) or Access Control List(ACL). 
+- Objects may contain personal identifiable info. Control access with Identity Access Management (IAM) or Access Control List (ACL). 
     - Users only given permissions to do their job.
-	- IAM inherited from project -> bucket -> project.
+	- IAM inherited from project -> bucket -> object.
 	- ACL for finer control. 
 		- ACL consists of scope and permission.
 		- scope is the who that can access and perform permission.
@@ -43,7 +43,7 @@ Cloud Storage:
 Characteristics
  - unlimited storage (no minimum object size)
  - worldwide access & location
- - low latency and durability
+ - low latency and high durability
  - geo-redundancy if store in multi regions. Load balancing.
  - consistent experience (security, tools, APIs)
  - pay only for what you use
@@ -144,7 +144,7 @@ Charges
 
 Choose Bigtable if:
 - NoSQL data
-- >1TB of semi-structured or structured data
+- \> 1TB of semi-structured or structured data
 - big data: asynchronous batch, or synchronous real time processing
 - high throughput, or rapidly changing data
 - time series data, or with natural semantic ordering
