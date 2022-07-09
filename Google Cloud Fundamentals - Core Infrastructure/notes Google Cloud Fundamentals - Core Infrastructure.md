@@ -588,7 +588,7 @@ Pyramid of monitoring
 - saturation
 - errors
 
-Latency
+#### Latency
  - measure of how fast to return result
  - directly affects user experience
  - change in latency could indicate emerging issues
@@ -604,7 +604,7 @@ How to measure latency
  - time to first response
  - time to complete data return	
 
-Traffic
+#### Traffic
  - measures how many signals reaching system
  - important because
 	- indicator of current system demand
@@ -622,7 +622,7 @@ Traffic
 	- \# of write operations
 	- \# of active connections
 
-Saturation
+#### Saturation
  - how close to capacity a system is
  - important because saturation:
 	- is an indicator of how full the system is
@@ -639,7 +639,7 @@ Saturation
 	- \# of available connections
 	- \# users on the system
 
-Errors
+#### Errors
  - events that measure system failures or other issues
  - fault causing incorrect/unexpected results or behave in unintended ways
  - important because may indicate
