@@ -231,14 +231,14 @@ Pod
 	- e.g. 2 groups of pods - "frontend" and "backend" service. A pod in "backend" service can be destroyed and replaced. To frontend, backend service is unchanged with same IP.
 
 command: "kubectl scale"
-	- autoscaling of deployment
-	- can be configured with parameters, e.g. to scale up when CPU utilization > 80%
+- autoscaling of deployment
+- can be configured with parameters, e.g. to scale up when CPU utilization > 80%
 
 kubernetes' biggest advantage is that it can be declarative 
-	- describe desired state	
-	- using deployment config file
-	- run "kubectl get pods" to get file
-	- unlike imperative commands, e.g. "kubectl run" and "kubectl scale". These are ok for testing.  
+- describe desired state	
+- using deployment config file
+- run "kubectl get pods" to get file
+- unlike imperative commands, e.g. "kubectl run" and "kubectl scale". These are ok for testing.  
 
 To check if number of replicas deployed correctly, use "kubectl get deployments" or "kubectl describe deployments". <br>
 
@@ -253,27 +253,27 @@ To roll out new version of app, <br>
  - kubernetes wait for new pods to roll-out before destroying old ones. => less risky if app in production use. 
 
 ---
-Google Kubernetes Engine (GKE)
+## Google Kubernetes Engine (GKE)
 
 Kubernetes with some extra Google features
-	- load balancing for Compute Engine instances
-	- node pools to designate subset of nodes within a cluster for flexibility
-	- automatic scaling of node instance count
-	- auto upgrade for software running on nodes
-	- auto-repair to maintain node health and availability
-	- logging and monitoring with Cloud's operations suite for visibility on cluster
+- load balancing for Compute Engine instances
+- node pools to designate subset of nodes within a cluster for flexibility
+- automatic scaling of node instance count
+- auto upgrade for software running on nodes
+- auto-repair to maintain node health and availability
+- logging and monitoring with Cloud's operations suite for visibility on cluster
 
 manage via console or gcloud command (SDK)
-	- deploy and manage applications
-	- perform administration tasks
-	- set policies
-	- monitor workload health
+- deploy and manage applications
+- perform administration tasks
+- set policies
+- monitor workload health
 customise 
-	- machine type
-	- number of nodes
-	- machine setting
+- machine type
+- number of nodes
+- machine setting
 
-node - a Compute Engine instance 
+node - a Compute Engine instance <br>
 
 command to startup GKE "gcloud container clusters create k1".
 
@@ -281,23 +281,23 @@ command to startup GKE "gcloud container clusters create k1".
 ## Hybrid and multi-cloud architecture
 
 On-prem 
-	- scale by spreading computing workload over 2 or more networked servers. 
-	- expand server hardware, network. many steps.
-	- takes time. months to years.
-	- expensive. useful life of hardware 3-5 years.
+- scale by spreading computing workload over 2 or more networked servers. 
+- expand server hardware, network. many steps.
+- takes time. months to years.
+- expensive. useful life of hardware 3-5 years.
 
 cloud 
-	- use containers to break down workloads into microservices
-	- immediate on demand availability of hardware
-	- fault tolerance, geo-redundancy
-	- reduce latency to client, central party
-	- use specialised products and services, only available in cloud
+- use containers to break down workloads into microservices
+- immediate on demand availability of hardware
+- fault tolerance, geo-redundancy
+- reduce latency to client, central party
+- use specialised products and services, only available in cloud
 
 hybrid / multi-cloud
-	- move only some workloads to cloud
-	- migrate at own pace
-	- take advantage of cloud's flexibility, scalability, lower computing costs
-	- use specialised service, e.g. ML, AI, content caching, data analysis, long-term storage, loT toolkit
+- move only some workloads to cloud
+- migrate at own pace
+- take advantage of cloud's flexibility, scalability, lower computing costs
+- use specialised service, e.g. ML, AI, content caching, data analysis, long-term storage, loT toolkit
 
 ---
 ## Anthos
@@ -355,52 +355,52 @@ Web Security Scanner
 
 ---
 ## App Engine Environments
-Standard
-	- container instances
-	- preconfigured with runtime and libraries that support app engine standard APIs
-	- support standardised list of languages and versions
-		* Java, Python, node.js, Go, PHP, Ruby
-	- to use Standard environment, need to
-		* use a supported langauge version
-		* conform to sandbox constraints that are dependent on runtime
-	- features:
-		* persistent storage with queries, sorting and transactions
-		* automatic scaling and load balancing
-		* asynchronous task queues for performing work outside scope of a request
-		* scheduled tasks for triggering events at specified times or regular intervals
-		* integrate with other Google Cloud services and APIs
+#### Standard
+- container instances
+- preconfigured with runtime and libraries that support app engine standard APIs
+- support standardised list of languages and versions
+	* Java, Python, node.js, Go, PHP, Ruby
+- to use Standard environment, need to
+	* use a supported langauge version
+	* conform to sandbox constraints that are dependent on runtime
+- features:
+	* persistent storage with queries, sorting and transactions
+	* automatic scaling and load balancing
+	* asynchronous task queues for performing work outside scope of a request
+	* scheduled tasks for triggering events at specified times or regular intervals
+	* integrate with other Google Cloud services and APIs
 	- applications run in secure sandbox environment
 		* irregardless of hardware, OS and geographical location
 		* Google distributes containers and scales servers to meet traffic demand
-	- workflow
-		1. develop web app locally
-		2. deploy to App Engine with SDK
-		3. App Engine scales and services the app
+- workflow
+	1. develop web app locally
+	2. deploy to App Engine with SDK
+	3. App Engine scales and services the app
 
-Flexible
-	- docker containers in Compute Engine VMs
-	- App Engine manages the VMs
-	- features:
-		* VM instances health checked, healed and co-located - for optimal performance.
-		* updates automatically applied to OS
-		* VM instances automatically located in geographical region according to project settings
-		* VM instances restarted weekly. OS and security updates applied during restart.
-	- supports:
-		* microservices
-		* authorization
-		* SQL and NoSQL databases
-		* traffic splitting
-		* logging
-		* search
-		* versioning
-		* security scanning
-		* memcache
-		* content delivery networks
-	- possible customization:
-		* custom configurations and libraries, while focusing on writing code
-		* custom runtime and OS
-		* custom language versions, beyond what's supported by Standard environment
-		* provide custom Docker image or a Dockerfile from open-source community
+#### Flexible
+- docker containers in Compute Engine VMs
+- App Engine manages the VMs
+- features:
+	* VM instances health checked, healed and co-located - for optimal performance.
+	* updates automatically applied to OS
+	* VM instances automatically located in geographical region according to project settings
+	* VM instances restarted weekly. OS and security updates applied during restart.
+- supports:
+	* microservices
+	* authorization
+	* SQL and NoSQL databases
+	* traffic splitting
+	* logging
+	* search
+	* versioning
+	* security scanning
+	* memcache
+	* content delivery networks
+- possible customization:
+	* custom configurations and libraries, while focusing on writing code
+	* custom runtime and OS
+	* custom language versions, beyond what's supported by Standard environment
+	* provide custom Docker image or a Dockerfile from open-source community
 
 |--- | Standard environment | Flexible environment |
 |--- | ---                  | ---                  |
@@ -415,15 +415,15 @@ App Engine vs GKE
 - App Engine Standard environment - for owners who want auto deployment and scaling
 - GKE gives full flexibility of Kubernetes
 
-===
-Google Cloud API management tools
-2 tools: Cloud Endpoints and Apigee Edge
+---
+## Google Cloud API management tools
+2 tools: Cloud Endpoints and Apigee Edge <br>
 API
-	- a clean, well-defined, documented interface. 
-	- hides the complexity and changes of server-side implementation.
-	- can be versioned. add/deprecate features
+- a clean, well-defined, documented interface. 
+- hides the complexity and changes of server-side implementation.
+- can be versioned. add/deprecate features
 
-Cloud Endpoints
+#### Cloud Endpoints
  - a distributed API management system
  - a distributed, extensible service proxy 
  - proxy runs in its own docker container
@@ -434,7 +434,7 @@ Cloud Endpoints
  - supports applications that run on App Engine, GKE, Compute Engine
  - clients include Android, iOS, Javascript
 
-Apigee Edge
+#### Apigee Edge
  - specific focus on business problems
 	- e.g. having quota on API calls, rate limiting, analytics
  - many Apigee Edge users provide software service to clients
@@ -444,8 +444,8 @@ Apigee Edge
 	- peels away services/functions into microservices
 	- until entire legacy application can be retired
 
-===
-Cloud Run
+---
+## Cloud Run
  - managed compute platform
  - serverless stateless containers
  - no infrastructure. focus on developing applications		
@@ -475,7 +475,7 @@ Cloud Run
 	- C++
 	- Cobol, Haskell, Perl
 
-Developer workflow
+#### Developer workflow
 1. write source code
 	- should start a server that listens for web requests
 2. build and package application codes into container image
@@ -490,7 +490,7 @@ Developer workflow
 
 Flow:	client --HTTPS--> https://***.run.app or https://your.domain --> Cloud Run Proxy --HTTP--> Container
 
-Two types of workflow
+#### Two types of workflow
 1. Container-based workflow
 	- transparency
 	- flexibility
@@ -500,9 +500,9 @@ Two types of workflow
 	- Cloud Run uses Buildpacks (https://buildpacks.io/) to package codes into container image -> web app
 	- ensures container image is correctly configured, built in consistent way, secure.
 
-===
+---
 ## Developing and Deploying in the Cloud
-## Development in the Cloud
+### Development in the Cloud
 |Development in the cloud | Deployment |
 |---|---|
 | - Cloud source repositories|  - Infrastructure as a code |
@@ -535,8 +535,8 @@ Cloud Function
  - write in Javascript (node.js), python or Go. manage in node.js environment on Google Cloud.
  - example: upload of image to Cloud Storage triggers cloud function to resize image, convert to standard format and store in specific directories.
 
-===
-## Deployment: Infrastructure as Code
+---
+### Deployment: Infrastructure as Code
 Terraform
  - write a template to specify components of infrastructure
  - deploy to scale and create as many identical application environments as needed
@@ -546,9 +546,9 @@ Terraform
  - more efficient
  - labour intensive if need to manually configure hardware via console or command-line interface
 
-===
-# Logging and Monitoring in the Cloud
-## The importance of monitoring
+---
+## Logging and Monitoring in the Cloud
+### The importance of monitoring
 Monitoring is the foundation of product reliability
  - reveals what needs urgent attention
  - shows trends in application usage patterns
@@ -577,7 +577,7 @@ Pyramid of monitoring
 	 - incident response / failure / security breach -
 	- 		monitoring 			  -
 
-===
+---
 ## Measuring performance and reliability
 4 golden signals
 	- latency
@@ -685,7 +685,7 @@ Service Level Agreement
  - protect reputation
  - alerting thresholds (e.g. 99.9%) set above SLA minimum service level (e.g. 99.5%)
 
-===
+---
 ## Integrated observability tools
  1 monitoring
  2 logging
