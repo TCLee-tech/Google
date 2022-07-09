@@ -566,17 +566,19 @@ Use
  - ensure continued system operations, improvement with data
  - uncover trend analyses over time
  - build dashboards for DevOps
- - alert personnel when systems violate predefined SLOs. alert to important things. automated system for filtering alerts to the most urgent/important ones.
+ - alert key personnel when systems violate predefined SLOs. 
+ 	- automated system for filtering alerts to the most urgent/important ones.
  - compare systems and system changes, debug
  - provide data for improved incident response
+
 Pyramid of monitoring
-	      - 	Product client sees	    -  
-	     - 		   developing		     -	
-	    - 	   capacity planning / deploy 	      -
-	   - 		testing / CICD 		       -
-	  - 	postmortems / root cause analyses 	-
-	 - incident response / failure / security breach -
-	- 		monitoring 			  -
+ - Product client sees
+ - developing
+ - capacity planning / deploy 	      
+ - testing / CICD 		      
+ - postmortems / root cause analyses 	
+ - incident response / failure / security breach
+ - monitoring
 
 ---
 ## Measuring performance and reliability
@@ -634,8 +636,8 @@ Saturation
 	- % CPU utilisation
 	- disk quota
 	- memory quota
-	- # of available connections
-	- # users on the system
+	- \# of available connections
+	- \# users on the system
 
 Errors
  - events that measure system failures or other issues
@@ -647,25 +649,25 @@ Errors
 	- time to send out an alert
  - metrics
 	- wrong answers or incorrect content
-	- # 400/500 HTTP codes
-	- # failed requests
-	- # exceptions
-	- #stack traces
+	- \# 400/500 HTTP codes
+	- \# failed requests
+	- \# exceptions
+	- \#stack traces
 	- servers that fail liveness checks
-	- # dropped connections
+	- \# dropped connections
 
-===
+---
 ## Understanding SLIs, SLOs, and SLAs
 - measures of user experience
 - use as primary driver for decision making
 
-Service Level Indicator
+### Service Level Indicator
  - carefully selected monitoring metrics
  - monitor service reliability
  - number of good events / count of all valid events
  - correlation with user experience
 
-Service Level Objective
+### Service Level Objective
  - combines service level indicator with a target reliability
  - usually just short of 100%, e.g. 99.5%, 99.9%
  - Specific - quantitative
@@ -674,11 +676,11 @@ Service Level Objective
  - Relevant - to user. will it help achieve application goals?
  - Time-bound - 99.9% .. per month or per year? Include weekends in a week? rolling period?
  - concrete actions must be taken if not meeting SLOs, e.g.
-	- slow down rate of change
+   	- slow down rate of change
 	- engineering effort towards eliminating risks
 	- improve reliability
 
-Service Level Agreement
+#### Service Level Agreement
  - commitments to customers
  - that systems and applications will only have certain amount of down time (outage)
  - minimum service level
@@ -714,11 +716,11 @@ Process
 	- SLO - to be adhered to
  4. Troubleshoot
 
-===
+---
 ## Monitoring
  - signal data -> measurements -> maths calculation -> align data over time
 	- e.g. raw CPU usage -> average -> value per minute
- - >1000 streams of metric data available by default on Google Cloud, for incorporation into dashboards etc
+ - \> 1000 streams of metric data available by default on Google Cloud, for incorporation into dashboards etc
  - some examples of data points
  	- run massive scalable queries in BigQuery
 		- want to know queries in flight, scanned bytes billed, data slots used
@@ -733,31 +735,41 @@ Process
  - from application components, e.g. Cassandra, Nginx, Apache Web Server, ElasticSearch
  - ingests data and generate insights to dashboards, metrics explorer, charts, automated alerts
 	
-===
-Logging tools
+---
+## Logging tools
 Cloud logging allows
-	- collect	- store		- search
-	- analyze	- monitor	- alert
+- collect
+- store
+- search
+- analyze
+- monitor
+- alert
 of log entries and events.
 
 Auto logging is enabled for Google Cloud products, e.g. App Engine, Cloud Run, Compute Engine VMs running logging agent, GKE.
+
 Log analysis
  - uses Google Cloud's integrated Logs Explorer
  - entries can be exported for alternative analysis or further analysis
  - pub/sub messages can be analysed in near real-time using custom code or stream processing, e.g. dataflow
  - examine logging data with SQL queries using BigQuery
  - archived log files in Cloud Storage can be analyzed
+
 Log export
  - as files to Cloud Storage
  - as messages through Pub/Sub
  - into BigQuery tables
  - log-based metrics can be created and integrated into dashboards, alerts and service SLOs.
+
 Log retention
  - different log type has different default duration
  - data access logs retained for default 30 days, max 3,650 days
  - admin logs retained for default 400 days
  - logs can be exported to Cloud Storage or BigQuery to extend retention
-Type of log visible in Cloud Logging depends on Cloud product used. 4 key types of logs:
+
+Type of log visible in Cloud Logging depends on Cloud product used. 
+
+4 key types of logs:
 1. Cloud audit logs
 	- who did what, where and when?
 	- admin activity logs track config changes
@@ -782,7 +794,7 @@ Type of log visible in Cloud Logging depends on Cloud product used. 4 key types 
 	-Standard out/error
 	- e.g. container in node.js -> deploy to Cloud Run -> any output to standard out/error will be logged
 
-===
+---
 ## Error reporting and debugging tools
 Error reporting
  - counts, analyzes, aggregates the exceptions (crashes) in running Cloud services
