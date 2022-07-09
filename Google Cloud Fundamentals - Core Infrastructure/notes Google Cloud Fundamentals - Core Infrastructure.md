@@ -160,7 +160,7 @@ Connections to other Google Cloud services and 3rd party clients
 ---
 ## Comparing Storage options
 BigQuery is for database storage and database analysis; "half half .."<br>
-See table for main of storage options
+See table for main storage options
 ![Google Storage Classes](https://github.com/TCLee-tech/Google/blob/e8ce3e2764900ca24a4241196bfbc822d8466041/Google%20Cloud%20Fundamentals%20-%20Core%20Infrastructure/Storage%20comparison.jpg)
 
 ---
@@ -240,7 +240,7 @@ kubernetes' biggest advantage is that it can be declarative
 	- run "kubectl get pods" to get file
 	- unlike imperative commands, e.g. "kubectl run" and "kubectl scale". These are ok for testing.  
 
-To check if number of replicas deployed correctly, use "kubectl get deployments" or "kubestl describe deployments". <br>
+To check if number of replicas deployed correctly, use "kubectl get deployments" or "kubectl describe deployments". <br>
 
 To change number of container replicas, update number in deployment config file, then run "kubectl apply". <br>
 
