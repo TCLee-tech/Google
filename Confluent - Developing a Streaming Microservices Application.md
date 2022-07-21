@@ -36,6 +36,7 @@ https://github.com/confluentinc/kafka-streams-examples
 	- stateless
 	- Google Cloud Functions, Amazon Lambda, Azure Functions, IBM Cloud Functions, Apache OpenWhisk
 	- types of serverless: Functions-as-a-Service(FaaS), Backend-as-a-Service(BaaS), Mobile-Backend-As-A-Service(MBaaS)
+
 https://www.ibm.com/cloud/blog/four-architecture-choices-for-application-development
 
 #### Command Query Responsibility Segregation (CQRS)
@@ -46,4 +47,5 @@ A software architectural pattern
  - fewer for writing
  - do not need same type of database for reading and writing
  - cons/risks: cost, need database expertise, data consistency, more points of failure
+
 https://www.redhat.com/architect/pros-and-cons-cqrs
