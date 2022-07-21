@@ -1,16 +1,16 @@
-Qwiklabs: Confluent: Developing a Streaming Microservices Application
+#### Qwiklabs: Confluent: Developing a Streaming Microservices Application
 https://github.com/confluentinc/examples
 https://github.com/confluentinc/kafka-streams-examples
 
 
-Monolithic (3-tier, MVC) to modern architecture
-modern:
- - cloud-based
+#### Monolithic (3-tier, MVC) to modern architecture
+##### modern:
+ - **cloud-based**
 	- off-prem monolithic
 	- involves, application servers, web servers, databases, load balancers.
 	- leverages on some cloud features, e.g. high availability, scalability, software-defined networking, auto-provisioning.
 	- API Gateway for consistent API UI.
- - cloud native
+ - **cloud native**
 	- is about how applications are created, not where.
 	- follow 12-factors methodology (https://12factor.net/)
 	- containers based
@@ -21,13 +21,13 @@ modern:
 		- messaging middleware (pub/sub)
 		- service mesh
 		- containers orchestration
- - microservice
+ - **microservice**
  	- sidecar, ambassador, adapter framework
 	- containers, encapsulate dependencies
 	- 1 container, 1 business logic/function/service
  	- containers orchestration: Kubernetes (Red Hat OpenShift, Azure AKS, GKE, AWS EKS/ECS/Fargate, IBM Kubernetes)
 	- Istio - service mesh
- - event-driven serverless
+ - **event-driven serverless**
 	- architecture is event-centric. Services respond to events
 	- decoupled services
 	- services are serverless cloud functions
@@ -38,7 +38,7 @@ modern:
 	- types of serverless: Functions-as-a-Service(FaaS), Backend-as-a-Service(BaaS), Mobile-Backend-As-A-Service(MBaaS)
 https://www.ibm.com/cloud/blog/four-architecture-choices-for-application-development
 
-Command Query Responsibility Segregation (CQRS)
+#### Command Query Responsibility Segregation (CQRS)
 A software architectural pattern
  - seperates read tasks from write tasks
  - usually, more reads than writes
