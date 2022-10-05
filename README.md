@@ -77,5 +77,7 @@ Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
     - Select **Kubernetes** on left-hand side menu
     - Tick **Enable Kubernetes** then **Apply and Restart**.
 
-Reference: [Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
+![Enable Kubernetes in Docker Desktop](https://github.com/TCLee-tech/Google/blob/29db0d6df000108b6d07f092bc82e63600233534/images/Enable%20Kubernetes%20in%20Docker%20Desktop.jpg)
+
+Reference: [Microsoft Learn - Kubernetes on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
 
