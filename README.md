@@ -60,7 +60,15 @@ Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
       - Install and restart accordingly.
 
 ![Tick Windows Hypervisor Platform in Windows Features](https://github.com/TCLee-tech/Google/blob/32e0e06495243f19ebeb173cdef1f5381393bd81/images/Windows%20features%20hypervisor%20selection.jpg)
-  
 
-[Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
+3. Enable WSL2 (Windows Subsystem for Linux 2).
+    - Hyper-V is a Type-1 hypervisor.
+    - all Linux containers must run inside a Linux virtual machine. Kubernetes control plane also runs on Linux.
+    - WSL2 offers deeper integration with Windows host, and memory reclaim (i.e. it only uses right amount of RAM to run Linux kernel.
+    - In PowerShell or Windows Command Prompt with **administrator** access, enter `wsl --install`
+    - To list Linux distributions installed and the wsl version each installation is set to, enter `wsl -l -v`
+    - To change wsl to version 2, enter `wsl --set-version <name-of-Linux-distribution> 2`, e.g. `wsl --set-version Ubuntu-20.04 2`.
+    - Reference: [Install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install) 
+
+Reference: [Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
 
