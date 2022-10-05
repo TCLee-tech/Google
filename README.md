@@ -70,5 +70,12 @@ Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
     - To change wsl to version 2, enter `wsl --set-version <name-of-Linux-distribution> 2`, e.g. `wsl --set-version Ubuntu-20.04 2`.
     - Reference: [Install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install) 
 
+4. Install [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+5. Enable Kubernetes in Docker Desktop
+    - Right-click on Docker Desktop icon in taskbar.
+    - Select **Settings**.
+    - Select **Kubernetes** on left-hand side menu
+    - Tick **Enable Kubernetes** then **Apply and Restart**.
+
 Reference: [Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
 
