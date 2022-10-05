@@ -43,4 +43,22 @@ Solution for Challenge Lab: Insights from Data with Big Query<br>
 ### Machine Learning<br>
 Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
 
+<hr>
+
+### How to install Dockers and Kubernetes locally on Windows 11 <br>
+1. Check that hardware virtualisation is enabled in BIOS.
+    - Press **F2 key** during Windows boot/restart to enter BIOS.
+    - Select **Security** tab in BIOS.
+    - Enable **Intel (R) Virtualisation Technology if needed.
+    - Save and Exit.
+2. Enable Microsoft Hyper-V via Windows operating system.
+    - **WIN + R** to open Run window.
+    - or, Search for and select **Control Panel**.
+      - Select **Windows and Features**.
+      - Select **Turn Windows Features on or off**.
+    - Tick **Windows Hypervisor Platform** and click **OK**.
+    - Install and restart accordingly.
+  
+
+[Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
 
