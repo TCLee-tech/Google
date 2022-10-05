@@ -56,8 +56,10 @@ Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
     - or, Search for and select **Control Panel**.
       - Select **Windows and Features**.
       - Select **Turn Windows Features on or off**.
-    - Tick **Windows Hypervisor Platform** and click **OK**.
-    - Install and restart accordingly.
+      - Tick **Windows Hypervisor Platform** and click **OK**.
+      - Install and restart accordingly.
+
+![Tick Windows Hypervisor Platform in Windows Features](https://github.com/TCLee-tech/Google/blob/32e0e06495243f19ebeb173cdef1f5381393bd81/images/Windows%20features%20hypervisor%20selection.jpg)
   
 
 [Installing Kubernetes components individually on Windows](https://learn.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
