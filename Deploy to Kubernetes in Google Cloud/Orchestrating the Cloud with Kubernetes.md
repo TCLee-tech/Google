@@ -224,33 +224,34 @@ https://kubernetes.io/docs/concepts/services-networking/service/
   3. specify where to mount each volume the container uses in `.spec.containers.volumeMounts`
 - see Kubernetes documentation for the different types of volumes
 
+<hr>
 
-Deployments
+#### Deployments  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#what-is-a-deployment
 - describe desired state for Pods and ReplicaSets
 - Deployment Controller will change actual state to desired state at a controlled rate.
 - keep Pods up and running even when nodes fail
 - use cases:
-    - new rollout of ReplicaSet/s. ReplicaSet creates Pods in the background.
+  - new rollout of ReplicaSet/s. ReplicaSet creates Pods in the background.
     - scale up to handle more load
-    - declare new state of the Pods. 
-        - update PodTemplateSpec
-        - new ReplicaSet created
-        - Pods migrated from old to new ReplicaSet
-        - everytime new ReplicaSet created, Deployment revision number updated
-    - check if rollout stuck
-        - via kubectl rollout status deployment/[deployment-name]
-        - can apply actions, e.g. scale down, rollback, pause, based on status
-    - pause
-        - to apply fixes to PodTemplateSpec, then restart with new rollout
-    - clean up old ReplicaSets not needed
-        - consume resources in etcd, and crowd output of `kubectl get rs`
-    - rollback.
-        - if current state not stable
-        - to earlier Deployment version
+  - declare new state of the Pods. 
+    - update PodTemplateSpec
+    - new ReplicaSet created
+    - Pods migrated from old to new ReplicaSet
+    - everytime new ReplicaSet created, Deployment revision number updated
+  - check if rollout stuck
+    - via `kubectl rollout status deployment/[deployment-name]`
+    - can apply actions, e.g. scale down, rollback, pause, based on status
+  - pause
+    - to apply fixes to PodTemplateSpec, then restart with new rollout
+  - clean up old ReplicaSets not needed
+    - consume resources in etcd, and crowd output of `kubectl get rs`
+  - rollback.
+    - if current state not stable
+    - to earlier Deployment version
 
-[Deployment Object](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/)
-- deployment-name.yaml
+- [Deployment Object](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/)  
+  deployment-name.yaml
 ```
 apiVersion: apps/v1             //required field
 kind: Deployment                //required 
@@ -260,9 +261,9 @@ metadata:                       //required
     app: nginx  
 spec:
   replicas: 3                   //number of replicated pods to create. Do not set if using HorizontalPodAutoscaler, allow Kubernetes 
-                                //control plane to mange
+                                //control plane to manage
   selector:                     //required field
-    matchLabels:               //how Deployment identifies the Pods to manage. match selected label. other method is matchExpressions
+    matchLabels:                //how Deployment identifies the Pods to manage. match selected label. other method is matchExpressions
       app: nginx                // label defined in Pod template. map of {key,value} pairs.
   template:                     //required field. .spec.template exactly same schema as Pod template.
     metadata:
@@ -278,111 +279,116 @@ spec:
     type: RollingUpdate         //Recreate or RollingUpdate. "Recreate" terminates old Pods before creation for upgrades.
     rollingUpdate:
     - maxSurge: 25%             //default. value is absolute number or % of desired pods.
-      maxUnavailable:           //default. value is absolute number or % of desired pods.
+      maxUnavailable: 25%       //default. value is absolute number or % of desired pods.
   revisionHistoryLimit: 10      //default. specifies how many old ReplicaSets to retain, rest will be garbage collected. 
                                 //0 means no history, cannot rollback. 
                                 //Old ReplicaSets consume resources in etcd and crowd `kubectl get rs`.   
   progressDeadlineSeconds: 600  //default. How long in sec to wait before report as failed progressing.
 ```
+<br>
 
-Useful commands:
-    - `kubectl apply -f [link-to-manifest.yaml, e.g. https://k8s.io/examples/controllers/nginx-deployment.yaml]`
-        - to create deployment from manifest
-    - `kubectl get deployments`
-        - to get status of deployments
-        - info on how many replicas with desired state ready, up-to-date, available to users
-    - `kubectl rollout status [kind]/[name]`
-        - e.g. `kubectl rollout status deployment/nginx-deployment`
-    - `kubectl get rs`
-        - to get status of the ReplicaSets
-        - name of replica set is in format [deployment-name]-[hash]
-        - name, desired, current, ready, age
-        - to watch status in progress, `kubectl get rs -w`
-    - `kubectl get pods --show-labels`
-        - shows status of each Pod with label. According to selector and Pod template label in Deployment.yaml
-        - Deployment Controller adds a pod-template-hash label to every Pod in the same ReplicaSet to uniquely identify them
-    - `kubectl set image deployment/[deployment-name] [name of container]=[new image label]`
-        - to set container image to diff version
-    - `kubectl edit deployment/[deployment-name]`
-        - to make changes to manifest
-    - `kubectl describe deployment`
-        - for details on Deployment
-    - `kubectl rollout history deployment/[deployment-name]`
-        - for revisions and cause of each new revision
-        - for details on specific ? revision, use `kubectl rollout history deployment/[deployment-name] --revision=?`
-    - `kubectl rollout undo deployment/[deployment-name]`
-        - to undo current rollout, rollback to previous version
-        - to rollback to specific version, use `kubectl rollout undo deployment/[deployment-name] --to-revision=?`
-    - `kubectl scale deployment/[deployment-name] --replicas=10`
-        - for manual scaling to xx ReplicaSets
-    - `kubectl autoscale deployment/[deployment-name] --min=10 --max=15 --cpu-percent=80`
-        - for horizontal Pod auto-scaling
-    `kubectl rollout pause deployment/[deployment-name]`
-        - to pause rollout
-
+**Useful Deployment Commands:**
+  - `kubectl apply -f [link-to-manifest.yaml, e.g. https://k8s.io/examples/controllers/nginx-deployment.yaml]`
+    - to create deployment from manifest
+  - `kubectl get deployments`
+    - to get status of deployments
+    - info on how many replicas with desired state ready, up-to-date, available to users
+  - `kubectl rollout status [kind]/[name]`
+    - e.g. `kubectl rollout status deployment/nginx-deployment`
+  - `kubectl get rs`
+    - to get status of the ReplicaSets
+    - name of replica set is in format [deployment-name]-[hash]
+    - name, desired, current, ready, age
+    - to watch status in progress, `kubectl get rs -w`
+  - `kubectl get pods --show-labels`
+    - shows status of each Pod with label. According to selector and Pod template label in Deployment.yaml
+    - Deployment Controller adds a pod-template-hash label to every Pod in the same ReplicaSet to uniquely identify them
+  - `kubectl set image deployment/[deployment-name] [name of container]=[new image label]`
+    - to set container image to diff version
+  - `kubectl edit deployment/[deployment-name]`
+    - to make changes to manifest
+  - `kubectl describe deployment`
+    - for details
+  - `kubectl rollout history deployment/[deployment-name]`
+    - for revisions and cause of each new revision
+    - for details on specific ? revision, use `kubectl rollout history deployment/[deployment-name] --revision=?`
+  - `kubectl rollout undo deployment/[deployment-name]`
+    - to undo current rollout, rollback to previous version
+    - to rollback to specific version, use `kubectl rollout undo deployment/[deployment-name] --to-revision=?`
+  - `kubectl scale deployment/[deployment-name] --replicas=10`
+    - for manual scaling to xx ReplicaSets
+  - `kubectl autoscale deployment/[deployment-name] --min=10 --max=15 --cpu-percent=80`
+    - for horizontal Pod auto-scaling
+  - `kubectl rollout pause deployment/[deployment-name]`
+    - to pause rollout
+<br>
 
 **NEW** rollout **only** if Deployment's Pod template changed, i.e. changes under `.spec.template`
-    - e.g. label updated, container image changed
-    - default:
-        - max 25% unavailable; 75% of desired number of Pods are up
-        - max 25% more than desired number of Pods are created
-    - if container updated while rollout is in progress, Deployment Controller will create new ReplicaSet for latest desired state and scale up. Will scale down rollout in progress and add to old ReplicaSet list. Does not wait for rollout to be completed before applying new desired state.
-    - change label selector
-        - cannot change for `apiVersion: apps/v1`
-        - adding labels to selector
-            - need to match with same update to Pod template labels
-                - if not -> validation error
-            - will not select existing ReplicaSets and Pods -> become orphans 
-            - will create new ReplicaSet
-            - same effect if value of existing selector key changed
-        - deleting existing label from selector
-            - no need matching change in Pod template labels
-            - no effect on existing ReplicaSets and Pods -> still labelled
-            - no new ReplicaSet created
-            - no orphans
+  - e.g. label updated, container image changed
+  - default:
+    - max 25% unavailable; 75% of desired number of Pods are up
+    - max 25% more than desired number of Pods are created
+  - if container updated while rollout is in progress, Deployment Controller will create new ReplicaSet for latest desired state and scale up. Will scale down rollout in progress and add to old ReplicaSet list. Does not wait for rollout to be completed before applying new desired state.
+  - change label selector
+    - cannot change for `apiVersion: apps/v1`
+  - adding labels to selector
+    - need to match with same update to Pod template labels
+      - if not -> validation error
+    - will not select existing ReplicaSets and Pods -> become orphans 
+    - will create new ReplicaSet
+    - same effect if value of existing selector key changed
+  - deleting existing label from selector
+    - no need matching change in Pod template labels
+    - no effect on existing ReplicaSets and Pods -> still labelled
+    - no new ReplicaSet created
+    - no orphans
+<br>
 
 **Rollback**
-- to a previous revision
-- when rollout stuck, image pull, containers crash
-- a Deployment's revision is created only when there is a rollout, i.e. only when there is a change to `.spec.template`
-- so when rollback, only Deployment's Pod template part is rolled back
-- scaling, meaning changes to `.spec.replicas`, does not change Deployment's revision
+  - to a previous revision
+  - rollback when rollout stuck, image pull fails, containers crash
+  - a Deployment's revision is created only when there is a rollout, i.e. only when there is a change to `.spec.template`
+  - so when rollback to previous revision, only Deployment's Pod template part is rolled back
+  - scaling, meaning changes to `.spec.replicas`, does not change Deployment's revision
     - for both manual- and auto-scaling
     - so rollback has no effect on scaling
-- a faulty rollout will be stopped by Deployment Controller because of `.maxUnavailable`. New faulty Pod will not be ready and available.
-- use `kubectl rollout status deployment/[deployment-name]` to check on status
-- use `kubectl rollout history deployment/[deployment-name]` to check on previous revisions available
-- to undo rollout, `kubectl rollout undo deployment/[deployment-name]`
+  - a faulty rollout will be stopped by Deployment Controller because of `.maxUnavailable`. New faulty Pod will not be ready and available.
+  - use `kubectl rollout status deployment/[deployment-name]` to check on status
+  - use `kubectl rollout history deployment/[deployment-name]` to check on previous revisions available
+  - to undo rollout, `kubectl rollout undo deployment/[deployment-name]`
+<br>
 
 **Scaling**
 - manually change number of ReplicaSets
-    - `kubectl scale deployment/[deployment-name] --replicas=10`
+  - `kubectl scale deployment/[deployment-name] --replicas=10`
 - horizontal auto-scaling
-    - response to workload increase by increasing the number of Pods
-    - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
-    - vertical scaling is to increase CPU and memory allocation per Pod. no change to Pod number.
-    - `kubectl autoscale deployment/[deployment-name] --min=10 --max=15 --cpu-percent=80`
+  - response to workload increase by increasing the number of Pods
+  - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+  - vertical scaling is to increase CPU and memory allocation per Pod. no change to Pod number.
+  - `kubectl autoscale deployment/[deployment-name] --min=10 --max=15 --cpu-percent=80`
 - proportional scaling
-    - when scaling a rolling (in-progress or paused) update
-    - there are more than 1 existing active ReplicaSets
-    - Deployment controller distributes changes into existing ReplicaSets proportionally
-    - obeys `.maxSurge=?` and `.maxUnavailable=?` constraints
+  - when scaling a rolling (in-progress or paused) update
+  - there are more than 1 existing active ReplicaSets
+  - Deployment controller distributes changes into existing ReplicaSets proportionally
+  - obeys `.maxSurge=?` and `.maxUnavailable=?` constraints
+<br>
 
-**Pausing and Resuming rollout**
+**Pausing and Resuming Rollout**
 - rollouts can be paused to apply a few fixes, before resuming
-    - to pause, `kubectl rollout pause deployment/[deployment-name]`
-    - some fixes possible: 
-        - change container image `kubectl set image deployment/[deployment-name] [container-name]=[container-image]`
-        - update resources `kubectl set resources deployment/[deployment-name] -c=[container-name] --limits=cpu=200m --memory=512Mi`
+  - to pause, `kubectl rollout pause deployment/[deployment-name]`
+  - some fixes possible: 
+    - change container image `kubectl set image deployment/[deployment-name] [container-name]=[container-image]`
+    - update resources `kubectl set resources deployment/[deployment-name] -c=[container-name] --limits=cpu=200m --memory=512Mi`
     - to resume, `kubectl rollout resume deployment/[deployment-name]`
+<br>
 
 **States of Deployment**
 1. progressing
     - when
-        1. when creating new ReplicaSet/s
-        2. scaling up latest ReplicaSet
-        3. scaling down old ReplicaSet/s
-        4. new Pods ready or available
+      1. when creating new ReplicaSet/s
+      2. scaling up latest ReplicaSet
+      3. scaling down old ReplicaSet/s
+      4. new Pods ready or available
     - Deployment controller adds attributes to `.status.conditions`:
         ``` 
         type: Progressing
@@ -400,12 +406,12 @@ Useful commands:
         ```
 3. failed to progress
     - when
-        1. insufficient quota for containers
-        2. readiness probe failures
-        3. image pull errors
-        4. insufficient permissions
-        5. limit ranges
-        6. application runtime misconfiguration
+      1. insufficient quota for containers
+      2. readiness probe failures
+      3. image pull errors
+      4. insufficient permissions
+      5. limit ranges
+      6. application runtime misconfiguration
     - detect failed deployment by specifying a deadline for deployment to progress: `.spec.progressDeadlineSeconds`
     - once deadline exceeded, `.status.conditions` updates to
         ```
@@ -415,15 +421,13 @@ Useful commands:
         ```
     - Kubernetes takes no further action after reporting failure. Need an external orchestrator to rollback.
     - can `kubectl describe deployment [deployment-name]` to see reason for failure. For details, use `kubectl get deployment [deployment-name] -o yaml`
+<hr>
 
-
-
-Replica Sets
-https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-purpose: maintain stable set of identical Pods
-use of higher-order Deployment is recommended
-
-frontend.yaml   //ReplicaSet config manifest
+**Replica Sets**
+- https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+- purpose: maintain stable set of identical Pods
+- use of higher-order Deployment is recommended
+- frontend.yaml          //ReplicaSet config manifest
 ```
 apiVersion: apps/v1     //required
 kind: ReplicaSet        //required
@@ -448,8 +452,7 @@ spec:                   //required
         image: gcr.io/google_samples/gb-frontend:v3
 ```
 
-
-frontend-b2zdv.yaml //Pod object
+frontend-b2zdv.yaml          //Pod object
 ```
 apiVersion: v1
 kind: Pod
@@ -469,44 +472,50 @@ metadata:
     uid: f391f6db-bb9b-4c09-ae74-6a1f77f3d5cf
 ```
 
-Some useful commands
+**Useful ReplicaSet Commands**
 1. `kubectl apply -f https://xxxx/frontend.yaml`
 2. `kubectl get rs`
 3. `kubectl describe rs/[ReplicaSet-name]`
 4. `kubectl get pods`
 5. `kubectl get pods [name-of-pod] -o yaml`
+<br>
 
-What happens to Pods not created by ReplicaSet template?
+**What happens to Pods not created by ReplicaSet template?**  
 Pods with label that match selector of ReplicaSet. 
-    - If ReplicaSet has already deployed its own replicas and fulfilled desired state requirements, the new Pods created alone will be acquired and terminated.
-    - if Pods are created from yaml first, then create ReplicaSet, the ready Pods will be selected and acquired to form part of its replica.
+  - If ReplicaSet has already deployed its own replicas and fulfilled desired state requirements, the new Pods created alone will be acquired and terminated.
+  - if Pods are created from yaml first, then create ReplicaSet, the ready Pods will be selected and acquired to form part of its replica.
+<br>
 
-Deleting ReplicaSets with or without its Pods
- - see kubernetes.io documentation
+**Deleting ReplicaSets with or without its Pods**
+  - see kubernetes.io documentation
   - does not update Pods. To do so, use Deployment
+<br>
 
-Isolating Pods from a ReplicaSet
-- remove Pods from service by changing their labels
-- the removed Pods will be replaced
-- e.g. for debugging, data recovery
+**Isolating Pods from a ReplicaSet**
+  - remove Pods from Service by changing their labels
+  - the removed Pods will be replaced
+  - e.g. for debugging, data recovery
+ <br>
 
-Scaling Pods within a ReplicaSet
-- scale by updating `.spec.replicas` field
-- ReplicaSet controller ensures desired number of Pods with matching label selector
-- when scaling down, the Pods are prioritized according to following algorithm:
+**Scaling Pods within a ReplicaSet**
+  - scale by updating `.spec.replicas` field
+  - ReplicaSet Controller ensures desired number of Pods with matching label selector
+  - when scaling down, the Pods are prioritized according to following algorithm:
     1. pending and unscheduled Pods
-    2. if `controller.kubernetes.io//pod-deletion-cost` annotation is set, pod with lower value deleted first
+    2. if `controller.kubernetes.io//pod-deletion-cost` annotation is set, Pod with lower value deleted first
     3. Pods on nodes with more replicas deleted first
     4. Pods created more recently
+<br>
 
-Pod deletion cost
-- set `controller.kubernetes.io/pod-deletion-cost`
-- Pods with lower cost are deleted first
-- implicit value is '0', if not setted
-- updating this annotation generates Pod updates on apiserver, so avoid doing so frequently
-- example use case: different Pods of an application could have different utilization levels. One driver Pod controls scale down. The application updates once before scale down. E.g. Apache Spark
+**Pod deletion cost** 
+  - set `controller.kubernetes.io/pod-deletion-cost`
+  - Pods with lower cost are deleted first
+  - implicit value is '0', if not setted
+  - updating this annotation generates Pod updates on apiserver, so avoid doing so frequently
+  - example use case: different Pods of an application could have different utilization levels. One driver Pod controls scale down. The application updates once before scale down. E.g. Apache Spark
+<br>
 
-Scaling entire ReplicaSets using Horizontal Pod Autoscaler (HPA)
+**Scaling entire ReplicaSets using Horizontal Pod Autoscaler (HPA)**
 - Use `kubectl autoscale rs [replica-name] --max=10 --min=3 --cpu-percent=50`
 - Or `kubectl apply -f https://xxxx/hpa-rs.yaml`
 
@@ -524,15 +533,16 @@ spec:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50
 ```
+<br>
 
-Alternatives to ReplicaSets
+**Alternatives to ReplicaSets**
 1. Deployment (recommended)
 2. Bare Pods
-    - ReplicaSet recommended even when only 1 Pod required
-    - ReplicaSet will ensure replacement of Pod in case Pod terminated or deleted, e.g. when node fails or under maintenance (kernel upgrade)
-    - can supervise multiple Pods across multiple nodes
+  - ReplicaSet recommended even when only 1 Pod required
+  - ReplicaSet will ensure replacement of Pod in case Pod terminated or deleted, e.g. when node fails or under maintenance (kernel upgrade)
+   - can supervise multiple Pods across multiple nodes
 3. Job
-    - for Pods expected to terminate on their own (batch job)
+   - for Pods expected to terminate on their own (batch job)
 4. DaemonSet
-    - for machine-level function, e.g. monitoring and logging
-    - life-time tied to machine. Pod starts before others, terminates when machine shut-down.
+   - for machine-level function, e.g. monitoring and logging
+   - life-time tied to machine. Pod starts before others, terminates when machine shut-down.
