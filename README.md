@@ -2,6 +2,35 @@
 * notes in folder
 <hr>
 
+### Kubernetes  
+[Crossplane](crossplane.io)
+  - extends Kubernetes control plane to orchestrate life cycle of public cloud-based services, e.g. database instances, VMs, ML jobs, Big Data vlusters.
+  - Kubernetes-styled, declarative, API-driven, yaml config, kubectl CLI, IaC
+ 
+[Jib](https://cloud.google.com/java/getting-started/jib)
+  - builds container images without Dockers
+  - Maven and Gradle plugin available
+  - Distroless iamges: only application and runtime dependencies. No package managers, shells and other parts of Linix distribution.
+  - security plus, shorter push/pull time.
+ 
+[Skaffold](https://skaffold.dev/)
+  - handles workflow for container and Kubernetes Continuous Deployment
+  - automates build, debug, test, push, deploy of artifacts
+  - automate `kubectl port-forward` to local machine and log aggregation for feedback
+
+[Helm](https://helm.sh/)
+  - Kubernetes package manager
+  - uses packaging format called __charts__
+  - a chart is a collection of files in a directory, used to describe a related set of Kubernetes resources
+  - chart can be versioned
+
+[Kustomize](https://kustomize.io/)
+  - tool to customize Kubernetes manifest / object
+  - to add, update, remove configuration
+  - use kustomization file
+
+<hr<
+
 ### Cryptography (python) <br>
 https://cryptography.io/en/latest/
 <p>Crypto101s
