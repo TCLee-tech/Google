@@ -29,7 +29,7 @@
   - to add, update, remove configuration
   - use kustomization file
 
-<hr<
+<hr>
 
 ### Cryptography (python) <br>
 https://cryptography.io/en/latest/
