@@ -4,30 +4,52 @@ Lab is to learn how to:
 * deploy and manage Docker containers using kubectl
 * break application into microservices using Kubernetes Deployments and Services
 
-Video
+Video <br>
 https://drive.google.com/file/d/19y4zO9WCk7n7RF1nIBDj-QgapL9sVvup/view?usp=sharing
 
-Example 12-Factor application. 
-https://github.com/kelseyhightower/app
-Monolith to be re-factored into microservices
-    - monolith docker, includes auth and hello services https://hub.docker.com/r/kelseyhightower/monolith
-    - auth microservice, docker, generates JWT tokens for authenticated users. https://hub.docker.com/r/kelseyhightower/auth
-    - hello microservice, docker. https://hub.docker.com/r/kelseyhightower/hello
-    - nginx, official docker image, frontend to auth and hello services. https://hub.docker.com/_/nginx
+<hr>
 
-If starting GKE from Cloud Shell, need to set environment, start cluster, be authenticated to cluster
-    `gcloud config set compute/zone [name of zone]`
+#### Example 12-Factor application
+https://github.com/kelseyhightower/app  
+Monolith to be re-factored into microservices  
+  - docker image of monolith 
+    - includes auth and hello services 
+    - https://hub.docker.com/r/kelseyhightower/monolith    
+to          
+  - auth microservice
+    - docker image  
+    - generates JWT tokens for authenticated users  
+    - https://hub.docker.com/r/kelseyhightower/auth  
+  - hello microservice
+    - docker image  
+    - https://hub.docker.com/r/kelseyhightower/hello  
+  - nginx 
+    - official docker image  
+    - frontend to auth and hello services
+    - https://hub.docker.com/_/nginx  
+
+<hr>
+
+If starting GKE from Cloud Shell, need to 
+  - set environment 
+    - `gcloud config set compute/zone [name of zone]`
+  - start cluster
     `gcloud container clusters create io`
-    `gcloud container clusters get-credentials io` to re-authenticate if lose connection
+  - be authenticated to cluster
+  - `gcloud container clusters get-credentials io` to re-authenticate if lose connection
 
-Quick start of Kubernetes 
-1. using container image
-    kubectl create deployment nginx --image=nginx:1.10.0 
-        - nginx is the [deployment name] 
-        - --image=[docker image name]:[version]
-        - deployments keep pods up even when nodes fail
-2. using pod configuration yaml files
-        ``apiVersion: v1
+<hr>
+
+#### Kubernetes Quick Start Commands
+1. using container image  
+  `kubectl create deployment nginx --image=nginx:1.10.0` 
+    - nginx is the [deployment name] 
+    - --image=[docker image name]:[version]
+    - deployments keep pods up even when nodes fail
+2. using pod configuration yaml file  
+  `kubectl create -f pod/[pod name].yaml`
+```
+          apiVersion: v1
           kind: Pod
           metadata:
             name: [name of pod]
@@ -40,99 +62,97 @@ Quick start of Kubernetes
                 args:
                 ports:
                 resources:
-        ``
-3.  kubectl create -f pod/[pod name].yaml
+```
 
-4.  kubectl get pods
-        - view running containers in default namespace
-5.  kubectl get pods -l 'app=monolith'
-        - same get pods query but with a 'app=monolith' label
-6.  kubectl describe pods [pod name]
-        - get details
+3. `kubectl get pods`  
+    - view running containers in default namespace
+4. `kubectl get pods -l 'app=monolith'`
+    - same get pods query but with a 'app=monolith' label
+5. `kubectl describe pods [pod name]`
+    - get details
+6. `kubectl label pods [pod name] 'name of label'`
+    - add 'name of label' label to the pods named [pod name]
+7. `kubectl get pods [pod name] --show-labels`
+    - to confirm labels applied to pods
+8. `kubectl expose deployment nginx --port 80 --type LoadBalancer`
+    - nginx is the [deployment name]
+    - --port flags port number of container
+    - -- type flags Service type as LoadBalancer(with public IP). 
+    - Other 2 types of Service: ClusterIP(internal), NodePort(externally accessible IP)
+9. `kubectl get services`
+    - view running services
+10. `curl http://[external IP]:[port number]`
+11. `kubectl port-forward [pod name] [local host port]:[pod port]`
+    - by default, pods are allocated private IP addresses can cannot be accessed from outside cluster.
+    - use `kubectl port-forward` to map localhost port to port inside pod
+12. `kubectl logs [pod name]`
+    - to view logs for the pod
+13. `kubectl logs -f [pod name]`
+    - -f to get a real-time stream of the logs
+14. `kubectl exec [pod name] --stdin --tty -c [pod name] -- /bin/sh`
+    - to run interactive shell inside pod
+    - once in shell, you can ping external site from pod. `ping -c 3 [website.com]` will ping [website.com] 3 times.
+    - `exit` when finished using pod shell
 
-7.  kubectl label pods [pod name] 'label name'
-        - add 'label name' label to the pods named [pod name]
-8.  kubectl get pods [pod name] --show-labels
-        - to confirm labels applied to pods
+<hr>
 
-9.  kubectl expose deployment nginx --port 80 --type LoadBalancer
-        - nginx is the [deployment name]
-        - --port flags port number of container
-        - -- type flags Service type as LoadBalancer(with public IP). Other 2 types: ClusterIP(internal), NodePort(externally accessible IP)
-10. kubectl get services
-        - view running services
-
-    
-11. curl http://[external IP]:[port number]
-
-12. kubectl port-forward [pod name] [local host port]:[pod port]
-        - by default, pods are allocated private IP addresses can cannot be accessed from outside cluster.
-        - use `kubectl port-forward` to map local port to port inside pod
-        - to map localhost port to port inside pod
-
-13. kubectl logs [pod name]
-        - to view logs for the pod
-14. kubectl logs -f [pod name]
-        - -f to get a real-time stream of the logs
-
-15. kubectl exec [pod name] --stdin --tty -c [pod name] -- /bin/sh
-        - to run interactive shell inside pod
-        - once in shell, you can ping external site from pod. `ping -c 3 [website name]` will ping xxx website 3 times.
-        - `exit` when finished using pod shell
-
-Pods
+#### Pod  
 https://kubernetes.io/docs/concepts/workloads/pods/
-collection of 1 or more containers.
-generally, if have multiple containers with hard dependency on each other (tightly coupled), package as single pod.
-example: a logical application
-    - containers
-        - (micro)service container, nginx web server container
-    - volumes/storage 
-        - data disks that live as long as pod lives. 
-        - shared by containers in pod
-        - https://kubernetes.io/docs/concepts/storage/volumes/
-    - shared namespace
-        - containers in a pod can communicate with each other, share resources and dependencies
-    - one IP per pod
-        - shared by containers in pod
-    co-located, co-scheduled
-    
-Services
+- collection of 1 or more containers.
+- generally, if have multiple containers with hard dependency on each other (tightly coupled), package as single Pod.
+- example: a logical application ... is made up of
+  - containers
+    - (micro)service container, nginx web server container
+  - volumes/storage 
+    - data disks that live as long as pod lives. 
+    - shared by containers in pod
+    - https://kubernetes.io/docs/concepts/storage/volumes/
+  - shared namespace
+    - containers in a pod can communicate with each other, share resources and dependencies
+  - one IP per pod
+    - shared by containers in pod  
+  - all co-located, co-scheduled
+
+<hr>
+
+#### Services  
 https://kubernetes.io/docs/concepts/services-networking/service/
-3 types of Service
-    - 3 levels of access
-        1. Cluster IP (internal)
-            - Service can only be accessed within cluster
-        2. NodePort
-            - gives each node in cluster an externally accessible IP
-            - remember to config firewall to allow external traffic to access nodePort
-                ```
+- 3 types of Service => 3 levels of access
+    1. Cluster IP (internal)
+       - Service can only be accessed within cluster
+    2. NodePort
+       - gives each node in cluster an externally accessible IP
+       - remember to config firewall to allow external traffic to access nodePort
+       ```
                 gcloud compute firewall-rules create allow-monolith-nodeport \
-                    --allow=tcp:31000
-                ```
-            - use `gcloud compute instances list` to get info on instances, which will include EXTERNAL_IP which can be used to curl pods
-        3. Load Balancer
-            - adds load balancer from cloud provider, which forwards traffic from service to nodes within
-an abstraction to expose an application running on pods as a network service
-    - defines a logical set of Pods, and a policy to access them.
-the set of pods provides one functionality, e.g. "backend", of an application
-    - sometimes called, micro-services
-Although (1) each pod has a fixed IP address. (2) there is a single DNS name for a set of pods (namespace).
-    - pods are created and destroyed to match desired state of cluster (Kubernetes is declarative)
-    - pods can also be stopped and re-created when they fail liveliness and readiness tests
-    - the replicas within a micro-service are fungible
-    - an example is the use of Deployment yaml file to define desired state
-    - the IP address for this functionality changes once pods change (dynamic)
-    - so use Service to abstract away problem, provide static endpoint
-has a selector to target pod. 
-    - use labels to determine which Pods to select. Selected pods will be exposed by the Service.
-    - target pods created with labels defined in Deployment yaml
-    - a controller scans for pods that match selector, and POSTs updates to Endpoint object
-for service discovery in application, can query control plane API server for Endpoints, which will get updated whenever pods for Service change; or query load balancer / NodePort
-enables decoupling
-a REST object in Kubernetes
-    - POST Service definition (yaml file) to API Server to create new instance
-    - ``    apiVersion: v1
+                  --allow=tcp:31000
+       ```
+       - use `gcloud compute instances list` to get info on instances, which will include EXTERNAL_IP which can be used to curl pods
+    3. Load Balancer
+       - adds load balancer from cloud provider, which forwards traffic from Service to nodes within  
+       
+- An abstraction to expose an application running on pods as a network service
+  - defines a logical set of Pods, and a policy to access them.
+- The set of pods provides one functionality, e.g. "backend", of an application
+  - sometimes called, micro-services
+- Although (1) each pod has a fixed IP address. (2) there is a single DNS name for a set of pods (namespace).
+  - pods are created and destroyed to match desired state of cluster (Kubernetes is declarative)
+  - pods can also be stopped and re-created when they fail liveliness and readiness tests
+  - the replicas within a micro-service are fungible
+  - an example is the use of Deployment yaml file to define desired state
+  - the IP address for this functionality changes once Pods change (dynamic)
+  - so use Service to abstract away problem, provide static endpoint
+- Has a selector to target pod. 
+  - use labels to determine which Pods to select. Selected pods will be exposed by the Service.
+  - target pods created with labels defined in Deployment yaml
+  - a controller scans for pods that match selector, and POSTs updates to Endpoint object
+- For service discovery in application, can query control plane API server for Endpoints, which will get updated whenever pods for Service change; 
+  - or query Load Balancer / NodePort
+- Enables decoupling
+- A REST object in Kubernetes
+  - POST Service definition (yaml file) to API Server to create new instance
+  ```
+            apiVersion: v1
             kind: Service
             metadata:
                 name: [service name]
@@ -145,62 +165,63 @@ a REST object in Kubernetes
                   port: 80
                   targetPort: 9376
                   targetPort: [port name]
-      ``
-    - Kubernetes will assign IP to Service ("cluster IP")
-    - can name port in Pod object, and use [port name] in Service object.
-    - Kubernetes support multiple port definitions in a Service object.
-    - can expose different port numbers for versioning
-    - default protocol is TCP, but can support others, e.g. HTTP/S
-Can have Service without selector
-    - abstract to other backends, e.g. external database cluster, Service in other Namespaces or cluster
-    - add Endpoints object with IP and port/s manually (only created automatically with selector)
-    - Kubernetes API Server does not proxy to endpoints that are not mapped to pods
-Endpoints object capacity is 1000
-    - EndpointSlices are more scalable
-    - 100 endpoints per resource
-Virtual IP and Service proxies
-    - every node runs kube-proxy
-    - kube-proxy implements virtual IP ("cluster IP") for Service
-    -kube-proxy runs in iptables mode
-        - install iptables rules. 
-        - backend selected at random. If first Pod does not response, connection fails.
-        - can use readiness probes (https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) to ensure backend Pods are healthy
+      ```
+- Kubernetes will assign IP to Service ("cluster IP")
+  - can name port in Pod object, and use [port name] in Service object.
+  - Kubernetes support multiple port definitions in a Service object.
+  - can expose different port numbers for versioning
+  - default protocol is TCP, but can support others, e.g. HTTP/S
+- Can have Service without selector
+  - abstract to other backends, e.g. external database cluster, Service in other Namespaces or cluster
+  - add Endpoints object with IP and port/s manually (only created automatically with selector)
+  - Kubernetes API Server does not proxy to Endpoints that are not mapped to Pods
+- Endpoints object capacity is 1000
+  - EndpointSlices are more scalable
+  - 100 Endpoints per resource
+- Virtual IP and Service proxies
+  - every node runs kube-proxy
+  - kube-proxy implements virtual IP ("cluster IP") for Service
+    - kube-proxy runs in iptables mode
+      - install iptables rules. 
+      - backend selected at random. If first Pod does not response, connection fails.
+      - can use readiness probes (https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) to ensure backend Pods are healthy
     - kube-proxy runs in ipvs mode 
-        - lower latency, higher throughput than iptables mode
-        - uses hash table as underlying table structure, works in kernel space
-To bind particular client to same Pod, use sessionAffinity: "client IP"
-When Pod runs on Node, kubelet adds environment variables for active Service.
-    - must create Service before Pod because must publish cluster IP and port first
-Best practice to setup DNS for cluster using add-on (https://kubernetes.io/docs/concepts/cluster-administration/addons/)
-    - pings Kubernetes API to detect new Services -> set up DNS
-Headless Service -> no cluster IP
-Avoiding collisions
-    - each Service receives unique cluster IP
-    - internal allocator atomically updates global allocation map in etcd b4 creating each Service
-Useful commands
-    `cat services.yaml` to read config file
-    `kubectl create -f services.yaml` to create Service from config file
-    `kubectl get services [service name]` for basic name/type/IPs/Port/Age info
-    `kubectl describe services [service name]` to see details
-    `kubectl describe services [service name] | grep Endpoints` to get Endpoint IP of Service
+      - lower latency, higher throughput than iptables mode
+      - uses hash table as underlying table structure, works in kernel space
+- To bind particular client to same Pod, use `sessionAffinity: "client IP"`
+- When Pod runs on Node, kubelet adds environment variables for active Service.
+  - must create Service before Pod because must publish cluster IP and port first
+- Best practice to setup DNS for cluster using add-on (https://kubernetes.io/docs/concepts/cluster-administration/addons/)
+  - pings Kubernetes API to detect new Services -> set up DNS
+- Headless Service -> no cluster IP
+- Avoiding collisions
+  - each Service receives unique cluster IP
+  - internal allocator atomically updates global allocation map in etcd b4 creating each Service
+- Useful commands
+  - `cat services.yaml` to read config file
+  - `kubectl create -f services.yaml` to create Service from config file
+  - `kubectl get services [service name]` for basic name/type/IPs/Port/Age info
+  - `kubectl describe services [service name]` to see details
+  - `kubectl describe services [service name] | grep Endpoints` to get Endpoint IP of Service
 
+<hr>
 
-Volume
+#### Volume
 - a directory, perhaps with data on it, that is accessible to containers in a pod.
-- files in a container are lost when container crash. kubelet restarts container with clean slate.
-    - second problem is how to share files between containers in a pod.
+- files in a container are lost when container crash. Kubelet restarts container with clean slate.
+  - second problem is how to share files between containers in a pod.
 - A Docker volume is a directory on disk or in another container.
-    - there are volume drivers
-    - concept is looser and less managed
+  - there are volume drivers
+  - concept is looser and less managed
 - Kubernetes support many specific types of volumes
-    - a Pod can use any number of volume types simultaneously
-    - ephemeral volume type exists during lifetime of Pod only
-    - Kubernetes does not destroy persistent volume types
-    - data is preserved across container restarts
+  - a Pod can use any number of volume types simultaneously
+  - ephemeral volume type exists during lifetime of Pod only
+  - Kubernetes does not destroy persistent volume types
+  - data is preserved across container restarts
 - to use
-    1. volumes must exist
-    2. declare in the Pod manifest .spec.volumes
-    3. specify where to mount each volume the container uses in .spec.containers.volumeMounts
+  1. volumes must exist
+  2. declare in the Pod manifest .spec.volumes
+  3. specify where to mount each volume the container uses in `.spec.containers.volumeMounts`
 - see Kubernetes documentation for the different types of volumes
 
 
