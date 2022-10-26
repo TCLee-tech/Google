@@ -40,7 +40,26 @@ If starting GKE from Cloud Shell, need to
 
 <hr>
 
-#### Kubernetes Quick Start Commands
+#### Kubernetes Quick Start Commands  
+Syntax:
+kubectl [command] [TYPE] [NAME] [flags]  
+
+  `command`: specifies the operation you want to perform on resources, e.g. create, get, describe, delete  
+  `TYPE`: case-insensitive, insensitive to singular, plural or abbreviated forms.  
+  `NAME`: name of the resource. If omitted, details of all resources displayed.  
+  - can specify resources by type and name.
+    - group by same resource type: TYPE1 name1 name2 ..  
+      Example: kubectl get pods example-pod1 example-pod2
+    - specify multiple resource types individually: TYPE1/name1 TYPE1/name2 TYPE2/name2  
+      Example: kubectl get pod/example-pod1 replicationcontroller/example-rc1
+  - can specify resources by file: -f file1 -f file2
+    - yaml or jason  
+      Example: kubeclt get -f ./pod.yaml
+  
+  `flags`: from CLI will override default values and any environmental variables
+ 
+ `kubectl help`
+  
 1. using container image  
   `kubectl create deployment nginx --image=nginx:1.10.0` 
     - nginx is the [deployment name] 
