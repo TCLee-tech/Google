@@ -102,24 +102,24 @@ Kubernetes will create load balancer, network forwarding rules, firewall rules, 
 2. To get the externally-accessible IP, get Kubernetes to list services `kubectl get services`
 
 ### Task 6: Scale up service
-1. Kubernetes can scale horizontally. Handle increased/decreased load.
-Declarative approach: declare target state.
-Manual: `kubectl scale deployment hello-node --replicas=4`
-Autoscale: `kubectl autoscale [TYPE] [NAME] --min=? --max=? --cpu-percent=?`
-2. To check deployment, `kubectl get deployment`
-To list pods, `kubectl get pods`
+1. Kubernetes can scale horizontally. Handle increased/decreased load.  
+Declarative approach: declare target state.  
+Manual: `kubectl scale deployment hello-node --replicas=4`  
+Autoscale: `kubectl autoscale [TYPE] [NAME] --min=? --max=? --cpu-percent=?`  
+2. To check deployment, `kubectl get deployment`  
+To list pods, `kubectl get pods`  
 
 ### Task 7: Update to application
-1. Changes to application, e.g. bug fixes, new features
+1. Changes to application, e.g. bug fixes, new features.  
 `vi server.js` ... `i` ... xxx Esc,`:wq`
-2. Build new container image
+2. Build new container image.  
 `docker build -t gcr.io/PROJECT_ID/hello-node:v2 .`
-3. Push to container registry  
-`docker push gcr.io/PROJECT_ID/hello-node:v2`
-This will push v2 of application to container registry. v1 still exists in registry.
-4. Need to edit deployment yaml manifest to change image from v1 to v2.
-`kubectl edit deployment hello-node`, `i` to insert
-Save and close yaml file after editing. ESC, `:wq`
-5. Check deployment
-`kubectl get deployments`
+3. Push to container registry.    
+`docker push gcr.io/PROJECT_ID/hello-node:v2`  
+This will push v2 of application to container registry. v1 still exists in registry.  
+4. Need to edit deployment yaml manifest to change image from v1 to v2.  
+`kubectl edit deployment hello-node`, `i` to insert.  
+Save and close yaml file after editing. ESC, `:wq`  
+5. Check deployment  
+`kubectl get deployments`  
 https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/
