@@ -1,5 +1,5 @@
-# Introduction to Docker
-docker.com  
+## Introduction to [Docker](docker.com)
+  
 Open-source platform for developing, shipping and running applications in containers.  
 Containers are sandboxed processes isolated from all other processes on host machine.  
 [Demystifying Containers - Part I: Kernel Space](https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504)  
@@ -15,7 +15,7 @@ Containers are sandboxed processes isolated from all other processes on host mac
 - To list all Docker images, `docker images`
     - image ID is in [SHA256 hash](https://www.movable-type.co.uk/scripts/sha256.html) format
 
-- To list containers: `docker ps`. 
+- To list containers: `docker ps` 
   - default lists running containers.
   - to list all containers, including those already exited and no longer running: `docker ps -a`
   - [`docker ps [OPTIONS]` reference](https://docs.docker.com/engine/reference/commandline/ps/)
@@ -24,20 +24,20 @@ Containers are sandboxed processes isolated from all other processes on host mac
 ### Build
 - to build a Docker image, need a Dockerfile and an application.  
 
-1. create a Dockerfile
+1. create a Dockerfile.  
 A Dockerfile is a text document containing all the commands a user will call on a command line to assemble an image.  
 [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)  
 
 ```
 cat > Dockerfile <<EOF
-FROM node:lts           //specifies base parent image. Example here is Docker Official Image for node.js. [Docker Hub](https://hub.docker.com/search?image_filter=official&q=&page=2)
-
+FROM node:lts           //specifies base parent image. Example here is Docker Official Image for node.js. 
 WORKDIR /app            //set working (current) directory of container
 ADD . /app              //add current directory's contents (".") into container's /app folder
 EXPOSE 80               //expose container's port 80 to accept connections
 CMD ["node", "app.js"]  //run app.js using node when container launches
 EOF                     //end of file
 ```
+[Docker Hub images](https://hub.docker.com/search?image_filter=official&q=&page=2)
 
 Aside:
   - **EOF** is a "Here tag".
@@ -83,19 +83,20 @@ process.on('SIGINT', function() {
     });
 EOF
 ```
-3. `docker build -t node-app:0.1 .`
-  - must run `docker build` from directory that **has Dockerfile**. "." means the current directory.   
-  - `-t` is to tag image with [name:tag] syntax. 
+
+3. `docker build -t node-app:0.1 .`  
+    - must run `docker build` from directory that **has Dockerfile**. "." means the current directory.   
+    - `-t` is to tag image with [name:tag] syntax. 
     - tag recommended for versioning. 
     - If not specified, tag will default to "latest". 
     - it is hard to distinguish new and old images without tagging.
 
-4. List all Docker images 
-  - `docker images`
-  - to verify 
-  - will see `node` base image and newly built `node-app` image
-  - cannot remove base image without removing images built on it
-  - [Docker Official Image for node](https://hub.docker.com/_/node)
+4. List all Docker images  
+    - `docker images`
+    - to verify build
+    - will see `node` base image and newly built `node-app` image
+    - cannot remove base image without removing images built on it
+    - [Docker Official Image for node](https://hub.docker.com/_/node)
     - node Image variants `node:<version>-alpine` and `node:<version>-slim` are even smaller in sizes, more portable
 
 ### Run
@@ -146,8 +147,10 @@ An example of a container registry is the [Google Container Registry](https://cl
 To push a local image to a registry, you need to **tag** the image with the registry name.  
   - tag is in the format `[hostname, e.g. gcr.io]/[repo or project-id]/[image-name]: [tag]`
   - `docker tag [image-name]:[tag] [hostname, e.g. gcr.io]/[repo or project-id]/[image-name]:[tag]`
-  - use `docker images` to verify
+  - use `docker images` to verify    
+
 To push to registry, `docker push [hostname][repo or project-id]/[image-name]:[tag]`  
-  - to verify, visit registry webpage
+    - to verify, visit registry webpage  
+
 To pull image from registry, `docker pull [hostname][repo or project-id]/[image-name]:[tag]`
   - then `docker run -p 8080:80 -d [...full image tagged name]`
