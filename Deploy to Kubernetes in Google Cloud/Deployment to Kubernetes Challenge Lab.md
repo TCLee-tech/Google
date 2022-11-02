@@ -96,6 +96,8 @@ When your container is running you will see the page by Web Preview.
 
 Click Check my progress to verify the objective.
 
+<hr>
+
 ##### Task 3. Push the Docker image to the Container Repository  
 
 1. Push the Docker image `Image with Tag` into the Container Registry.
@@ -108,6 +110,8 @@ Click Check my progress to verify the objective.
 >  To verify: `docker images`  
 >  `docker push gcr.io/GCP Project ID/[Image Name]:[Tag name]`  
 >  To verify image exists in GCR, navigate via GCP console to **Navigation Menu > Container Registry**. Or visit http://gcr.io/GCP Project ID/[Image Name]  
+
+<hr>
 
 ##### Task 4. Create and expose a deployment in Kubernetes  
 Kurt created the `deployment.yaml` and `service.yaml` to deploy your new container image to a Kubernetes cluster (called valkyrie-dev). The two files are in `valkyrie-app/k8s`.
@@ -156,6 +160,8 @@ Kurt created the `deployment.yaml` and `service.yaml` to deploy your new contain
 
 Click Check my progress to verify the objective.
 
+<hr>
+  
 ##### Task 5. Update the deployment with a new version of valkyrie-app
 1. Before deploying the new code, increase the replicas from 1 to `Replicas count` to ensure you don't cause an outage.
 
@@ -184,6 +190,8 @@ Kurt made changes to the source code (he put the changes in a branch called kurt
 > To verify: `kubectl get replicaset`. `kubectl rollout history deployment/[deployment name]` will show new entry.  
 
 Click Check my progress to verify the objective.
+
+<hr> 
 
 ##### Task 6. Create a pipeline in Jenkins to deploy your app
 This process of building the container and pushing to the container repository can be automated using Jenkins. There is a Jenkins deployment in your `valkyrie-dev` cluster - connect to Jenkins and configure a job to build when you push a change to the source code.
