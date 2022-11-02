@@ -2,7 +2,10 @@
 * notes in folder
 <hr>
 
-### Kubernetes  
+### Kubernetes
+
+[kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)
+
 [Crossplane](crossplane.io)
   - extends Kubernetes control plane to orchestrate life cycle of public cloud-based services, e.g. database instances, VMs, ML jobs, Big Data vlusters.
   - Kubernetes-styled, declarative, API-driven, yaml config, kubectl CLI, IaC
