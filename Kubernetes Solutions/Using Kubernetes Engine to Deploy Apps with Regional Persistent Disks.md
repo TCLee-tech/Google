@@ -21,8 +21,8 @@ Deploying an application (WordPress as example) using a regional Kubernetes Engi
   - can over-provision scaling limits, to ensure minimum availability.
   - e.g. over-provision three-zone cluster to 150% (50% excess capacity), 100% traffic routed to available zones if one zone's capacity lost.
 - limitations
-  1. 9 nodes (3 per zone) consume 9 IP addresses. Can reduce to one node per zone.
-    - newly created Cloud Billing accounts granted only 8 IP addresses per region, so need to request for quota increase.
+  1. 9 nodes (3 per zone) consume 9 IP addresses. Can reduce to one node per zone.  
+    newly created Cloud Billing accounts grant only 8 IP addresses per region, so need to request for quota increase.
   2. to run GPUs in regional cluster, must have GPUs available in all 3 zones.
   3. node-node traffic across zone incurs cost.
 - GKE assigns persistent disk to single, random zone.
