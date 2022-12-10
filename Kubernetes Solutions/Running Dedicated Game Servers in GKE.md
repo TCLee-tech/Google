@@ -17,14 +17,14 @@ Infrastructure components:
 
 [Overview of Cloud Game Infrastructure](https://cloud.google.com/architecture/cloud-game-infrastructure#high-level_components)
 
-#### Task 1. Containerizing the Dedicated Game Server (DGS)
+### Task 1. Containerizing the Dedicated Game Server (DGS)
 DGS pattern:
 1. Server binary compiled from same code base as client.
 2. The only data in server binary are those needed to run simulation.
 3. Server container image: base OS image + binaries + minimum libraries needed to run server process.
 4. Assets mounted from separate persistent volume.
 
-#### Task 2. Creating a Dedicated Game Server container image
+### Task 2. Creating a Dedicated Game Server container image
 1. Create a VM
     - From Cloud Console, **Compute Engine** -> **VM Instances** -> **Create Instance**
     - **Identity and API access** -> **Allow full access to all Cloud APIs** -> **Create**
@@ -63,7 +63,7 @@ DGS pattern:
     - docker build. `docker build -t ${GCR_REGION}.gcr.io/${PROJECT_ID}/openarena:0.8.8 .`
     - docker push. `gcloud docker -- push ${GCR_REGION}.gcr.io/${PROJECT_ID}/openarena:0.8.8`   
 
-#### Task 3. Create asset disk
+### Task 3. Create asset disk
 Game assets put on a read-only [persistent disk](https://cloud.google.com/compute/docs/disks/#pdspecs), attached to multiple VM instances running DGS containers.
 1. Store a zone ID in an environment variable
 ```
@@ -126,7 +126,7 @@ Advice:
   - use script running gcloud commands to automate persistent disk creation
   - create multiple copies of PD, and attach to VMs in balanced manner to mitigate failure risk
 
-#### Task 4. Setting up a Kubernetes cluster
+### Task 4. Setting up a Kubernetes cluster
 It is important to choose the correct [machine type](https://cloud.google.com/compute/docs/machine-resource) for the cluster.
 Two factors to consider:
   * The largest number of concurrent DGS pods you plan to run. [Kubernetes has a max number of nodes per cluster](https://kubernetes.io/docs/setup/best-practices/cluster-large/). 1 node is 1 physical or virtual machine. Each machine can have multi-core (vCPUs). Each vCPU can run one or more DGS. A multi-core VM can support more DGS than a single-core VM.
@@ -182,7 +182,7 @@ kubectl apply -f k8s/asset-volumeclaim.yaml
   - no need for auto restart of pods. If DGS crash, state lost, player just start afresh, new DGS pod.
   - no need for [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
 
-#### Task 5. Setting up the scaling manager
+### Task 5. Setting up the scaling manager
 Scaling manager
   - scales the number of VMs used as nodes based on DGS load
   - VMs as [managed instance groups](https://cloud.google.com/compute/docs/instance-groups/)
@@ -246,7 +246,7 @@ Scale down DGS pods
   - DGS pods are configured to exit when game complete (single match, time constraint etc). No extra script needed.
   - matchmaker system only adds DGS pods for new matches.
 
-#### Task 6. Testing the setup
+### Task 6. Testing the setup
 1. Test pod deployment  
    - update the template `openarena/k8s/openarena-pod.yaml` with [GCR_REGION] and [PROJECT_ID] environment variables.  
      ```
