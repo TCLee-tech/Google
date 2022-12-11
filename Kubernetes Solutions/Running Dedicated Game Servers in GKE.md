@@ -32,8 +32,7 @@ DGS pattern:
 1. Server binary compiled from same code base as client.
 2. The only data in server binary are those needed to run simulation.
 3. Server container image: base OS image + binaries + minimum libraries needed to run server process.
-4. Assets mounted from separate persistent volume.  
-
+4. Assets mounted from separate persistent volume.
 Architecture benefits:
 1. Faster image distribution
 2. Only binaries replaced during update -> less load, faster, less cost.
@@ -46,7 +45,8 @@ Architecture benefits:
     - **SSH** into instance
 2. Install kubectl and docker on VM
     - `sudo apt-get update`
-    - `sudo apt-get -y install kubectl google-cloud-sdk-gke-gcloud-auth-plugin`
+    - `sudo apt-get -y install kubectl google-cloud-sdk-gke-gcloud-auth-plugin`  
+    - [kubectl authentication coming in GKE v1.26](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke)
     - install docker dependencies
     ```
     sudo apt-get -y install \
@@ -70,7 +70,9 @@ Architecture benefits:
       `sudo apt-get -y install docker-ce docker-ce-cli containerd.io`
     - run as non-root user   
       `sudo usermod -aG docker $USER`
-3. Generate container image
+    - exit from SSH console.
+3. Generate container image  
+    - re-enter the SSH console of the VM.  
     - clone server files. `gsutil -m cp -r gs://spls/gsp133/gke-dedicated-game-server .`
     - select `gcr.io` regon closest to Kubernetes cluster. [Pushing and pulling images documentation](https://cloud.google.com/container-registry/docs/pushing-and-pulling#choosing_a_registry_name)
     - prepare environment. `export GCR_REGION=<REGION> PROJECT_ID=<PROJECT_ID> printf "$GCR_REGION \n$PROJECT_ID\n"`
@@ -79,14 +81,14 @@ Architecture benefits:
     - docker push. `gcloud docker -- push ${GCR_REGION}.gcr.io/${PROJECT_ID}/openarena:0.8.8`   
 
 ### Task 3. Create asset disk
-Game assets put on a read-only [persistent disk](https://cloud.google.com/compute/docs/disks/#pdspecs), attached to multiple VM instances running DGS containers.
+Game assets put on a read-only [persistent disk](https://cloud.google.com/compute/docs/disks/#pdspecs), attached to multiple VM instances running DGS containers.  
 1. Store a zone ID in an environment variable
 ```
 region=us-east1
 zone_1=${region}-b
 gcloud config set compute/region ${region}
 ```
-2. Create asset-builder VM instance using gcloud
+2. Create asset-builder VM instance
 ```
 gcloud compute instances create openarena-asset-builder \
    --machine-type f1-micro \
@@ -106,7 +108,7 @@ gcloud compute instances create openarena-asset-builder \
 /usr/share/games/openarena/baseoa/" \
    --zone ${zone_1}
 ```
-4. Attach persistent disk
+4. Attach persistent disk to asset-builder VM
 ```
 gcloud compute instances attach-disk openarena-asset-builder \
    --disk openarena-assets --zone ${zone_1}
@@ -131,9 +133,9 @@ sudo gsutil cp gs://qwiklabs-assets/single-match.cfg /usr/share/games/openarena/
 sudo umount -f -l /usr/share/games/openarena/baseoa/
 sudo shutdown -h now
 ```
-9. Delete asset-builder VM instance. In main lab VM instance SSH console,  
-  `echo $zone_1`  
-  `region=us-east1 zone_1=${region}-b`  
+9. Delete asset-builder VM instance.  
+  In main lab VM instance SSH console, check if environment variables are correct, `echo $zone_1`  
+  If not us-east1-b, `region=us-east1 zone_1=${region}-b`  
   `gcloud compute instances delete openarena-asset-builder --zone ${zone_1}`  
 
 Advice:
@@ -160,7 +162,9 @@ gcloud container clusters create openarena-cluster \
    --network game \
    --machine-type=n1-standard-2 \
    --zone=${zone_1}
+   --disable-addons=HttpLoadBalancing,HorizontalPodAutoscaling
 ```
+Note that HTTP load balancing and auto-scaling feature of Managed Instance Group are disabled, because we are implementing a custom scaling manager in this lab.  
 With managed instance group, the default Container Engine image template includes Kubernetes components and automatically registers node with master on startup.  
 
 3. Set up local Cloud Shell with [authentication credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials) to access Kubernetes cluster.  
@@ -170,7 +174,9 @@ With managed instance group, the default Container Engine image template include
 Typical DGS pod do not need write access to game assets
  - read-only persistent disk can mount to multiple DGS pods
 1. Create a `persistentVolume` resource to detects the persistent disk.
-  Create a [persistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) resource for pod to claim persistentVolume resource
+  Create a [persistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) resource for pod to claim persistentVolume resource.  
+Example yaml files are in the openarena/k8s/ directory.  
+In SSH console of main VM instance, CD to /gke-dedicated-game-server/openarena  
  ```
 kubectl apply -f k8s/asset-volume.yaml
 kubectl apply -f k8s/asset-volumeclaim.yaml
@@ -208,8 +214,8 @@ Scaling manager
   
 In practice,
 1. Docker files in `scaling_manager/` directory
-2. Configure environment variables   
-    `export GCR_REGION=us/eu`    
+2. From `openarena/` directory, configure environment variables   
+    `export GCR_REGION=us/eu/asia`    
     `export PROJECT_ID=[PROJECT_ID]`  
 3. Run build-and-push shell script to build docker image and push to gcr.io
 ```
