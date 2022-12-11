@@ -17,12 +17,26 @@ Infrastructure components:
 
 [Overview of Cloud Game Infrastructure](https://cloud.google.com/architecture/cloud-game-infrastructure#high-level_components)
 
+Some game constraints:
+1. Each Dedicated Game Server (DGS) runs 1 match.
+2. DGS communicates over UDP.
+3. Every DGS genertes ~ same amount of load.
+4. Matches have max length.
+5. DGS startup time is negligible. 'Pre-warming' is not necessary.
+6. Unfinished matches should not terminate prematurely in order to scale down pods.
+7. If DGS encouters issues and fails, match state is lost, and user must restart.
+8. DGS process loads static assets from persistent disk but does not write to it.
+
 ### Task 1. Containerizing the Dedicated Game Server (DGS)
 DGS pattern:
 1. Server binary compiled from same code base as client.
 2. The only data in server binary are those needed to run simulation.
 3. Server container image: base OS image + binaries + minimum libraries needed to run server process.
 4. Assets mounted from separate persistent volume.
+Architecture benefits:
+1. Faster image distribution
+2. Only binaries replaced during update -> less load, faster, less cost.
+3. Less disk space -> less cost
 
 ### Task 2. Creating a Dedicated Game Server container image
 1. Create a VM
