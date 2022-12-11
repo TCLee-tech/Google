@@ -32,7 +32,8 @@ DGS pattern:
 1. Server binary compiled from same code base as client.
 2. The only data in server binary are those needed to run simulation.
 3. Server container image: base OS image + binaries + minimum libraries needed to run server process.
-4. Assets mounted from separate persistent volume.
+4. Assets mounted from separate persistent volume.  
+
 Architecture benefits:
 1. Faster image distribution
 2. Only binaries replaced during update -> less load, faster, less cost.
