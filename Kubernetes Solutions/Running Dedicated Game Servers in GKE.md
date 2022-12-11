@@ -298,3 +298,5 @@ Scale down DGS pods
    - In Cloud Console -> **Kubernetes** -> **Workloads**, will see sequence of workloads startup. 
    - Initially, test containers will show as error state of 'unavailable'.
    - However,  scaling manager kicks in to add VM instances and later test containers will start successfully.
+
+[Video for trouble-shooting](https://drive.google.com/file/d/1tz_7moxbkqHbaidtz-rqpMKBp6ELn8SG/view)
