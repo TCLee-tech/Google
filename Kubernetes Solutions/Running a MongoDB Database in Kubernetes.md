@@ -1,16 +1,16 @@
 # Running a MongoDB Database in Kubernetes with StatefulSets
 Using persistent storage with Kubernetes  
-Example: Run a stateful application (MongoDB database) on a stateless service (container).
+Example: Run a stateful application (MongoDB database) on a stateless service (container)
 
 Learning points:
-1. Deploy a Kubernetes cluster 
-2. Instantiate a headless service, a StatefulSet, a StorageClass and git clone MongoDB replica set/sidecar.
+1. Deploy a Kubernetes cluster. 
+2. Instantiate a Headless Service, a StatefulSet, a StorageClass. Git clone MongoDB replica set/sidecar.
 3. Connect Kubernetes cluster to MongoDB replica set.
 4. Scale MongoDB replica set instances up and down.
 5. Clean up StatefulSet environment and shut down services.
 
 ## Task 1. Set a compute zone
-- Set a compute zone so that all VMs in cluster created in same region.
+- Set a compute zone so that all VMs in cluster are created in same region.
 - Use [gcloud command line tool](https://cloud.google.com/sdk/gcloud/)
 - `gcloud config set compute/zone us-central1-f`
 
@@ -32,12 +32,13 @@ Learning points:
 - `kubectl apply` a [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 
 - clone MongoDB replica set from Github repo.   
-  `gsutil -m cp -r gs://spls/gsp022/mongo-k8s-sidecar .`
+  `gsutil -m cp -r gs://spls/gsp022/mongo-k8s-sidecar .`  
   `cd ./mongo-k8s-sidecar/example/StatefulSet/`
-- set the [type of storage](https://cloud.google.com/compute/docs/disks/) to use for database nodes. Instantiate StorageClass.
-  `kubectl apply -f googlecloud_ssd.yaml`
+- set the [type of storage](https://cloud.google.com/compute/docs/disks/) to use for database nodes.  
+  - Instantiate StorageClass.
+  `kubectl apply -f googlecloud_ssd.yaml`  
   - StorageClass has provisioner that specifies what disk will be used to provide persistenceVolume (PV).
-- deploy headless service and StatefulSet.
+- deploy headless service and StatefulSet.  
   `kubectl apply -f mongo-statefulset.yaml`
   - headless service overview
     - first section of `mongo-statefulset.yaml` refers to a `headless service`.
@@ -148,17 +149,18 @@ spec:
 ## Task 7. Using the MongoDB replica set
 - DNS of pod in a StatefulSet linked to a Headless Service is `<pod name>.<service name>`, e.g. mongo-0.mongo
 - this is used in [connection string URI](https://www.mongodb.com/docs/manual/reference/connection-string/) used to connect applications to mongoDB instances.
-  - syntax for replicaset: <mongodb://><host name: port for all mongod instances listed in replicaset config></dbName>
+  - syntax for replicaset: [mongodb://][host name: port for all mongod instances listed in replicaset config][/dbName]
   - e.g. `mongodb://mongo-0.mongo,mongo-1.mongo:27017/dbName_?`
 
 ## Task 8. Clean up
-- need to delete StatefulSet, Headless Service, provisioned volumes (PVC), and the Kubernetes cluster.
-`kubectl delete statefulset mongo`
-`kubectl delete svc mongo`
-`kubectl delete pvc -l role=mongo`  //-l for label
-`gcloud container clusters delete 'hello-world"`
+- need to delete StatefulSet, Headless Service, provisioned volumes (PVC), and the Kubernetes cluster.  
+`kubectl delete statefulset mongo`  
+`kubectl delete svc mongo`  
+`kubectl delete pvc -l role=mongo`  //-l for label  
+`gcloud container clusters delete 'hello-world"`  
 
 <hr>
+
 ## StatefulSets
 - API object used to manage stateful applications
 - manages deployment and scaling of Pods
