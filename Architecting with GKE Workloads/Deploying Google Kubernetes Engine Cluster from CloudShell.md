@@ -7,16 +7,16 @@
 5. Exercute commands directly in container using bash shell
 
 ### Task 1. Deploy GKE clusters
-1. Before deploying GKE clusters, set environment variables for zone and cluster name.
-`export $my_zone=us-central1-a`
-`export $my_cluster-standard-cluster-1`
+1. Before deploying GKE clusters, set environment variables for zone and cluster name.  
+`export $my_zone=us-central1-a`  
+`export $my_cluster-standard-cluster-1`  
 2. Create Kubernetes cluster using [gcloud container clusters create](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create)  
 `gcloud container clusters create $my_cluster --num-nodes 3 --zone $my_zone --enable-ip-alias`
 3. To verify, check Google Cloud Console > **Kubernetes Engine** > **Clusters**  
 
 ### Task 2. Modify GKE clusters
 1. To change number of nodes, `gcloud container clusters resize $my_cluster --zone $my_zone --num-nodes=4`  
-  - When issuing cluster commands, typically need to specify cluster name and cluster location (region or zone).
+    - When issuing cluster commands, typically need to specify cluster name and cluster location (region or zone).
 2. To verify, check Google Cloud Console > **Kubernetes Engine** > **Clusters**. The number of nodes has changed from 3 to 4.
 
 ### Task 3. Connect to a GKE cluster
@@ -78,11 +78,11 @@
   ```
   3. `CTRL+X` > `Y` to save and exit nano editor.
   4. copy file into right location of nginx container for it to be served as static html
-    `kubectl cp ~/test.html $my_nginx_pod:/usr/share/nginx/html/test.html`
+    `kubectl cp ~/test.html $my_nginx_pod:/usr/share/nginx/html/test.html`  
     - default copies file to 1st container in pod
     - to copy to other containers, use `-c` option, followed by names of other containers.
-- to expose a pod to clients outside the cluster, need a service.
-  `kubectl expose pod $my_nginx_pod --port=80 --type=LoadBalancer`
+- to expose a pod to clients outside the cluster, need a service.  
+  `kubectl expose pod $my_nginx_pod --port=80 --type=LoadBalancer`  
   - to verify, `kubectl get services` then copy EXTERNAL-IP for `curl http://[EXTERNAL-IP]/test.html`
 
 ### Task 6. Introspect GKE Pods
@@ -90,42 +90,42 @@
 - for debug, experiment
 - no change to container image, so any changes not present in replicas
 1. pod deployment
-  - preferred method is to use manifest/config files
-    - yaml syntax
-    - hierachical structuring of objects and properties
-  - `git clone https://github.com/GoogleCloudPlatform/training-data-analyst`
-  - soft link to working directory `ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s`
-  - change directory `cd ~/ak8s/GKE_Shell/`
-  - kubectl apply manifest yaml file `kubectl apply -f ./new-nginx-pod.yaml`
-  - verify, `kubectl get pods`
+    - preferred method is to use manifest/config files
+      - yaml syntax
+      - hierachical structuring of objects and properties
+    - `git clone https://github.com/GoogleCloudPlatform/training-data-analyst`
+    - soft link to working directory `ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s`
+    - change directory `cd ~/ak8s/GKE_Shell/`
+    - kubectl apply manifest yaml file `kubectl apply -f ./new-nginx-pod.yaml`
+    - verify, `kubectl get pods`
 2. redirect shell to connect to pod
-  - some container images include shell environment that can be launched.
-  - e.g. bash shell with nginx container
-  - to start new interactive bash shell in "new-nginx" container `kubectl exec -it new-nginx /bin/bash`
-    - `exec`: execute
-    - `-i` flag: stdin
-    - `-t` flag: tty, send stdin to 'bash' in container, and stdout/stderr from 'bash' back to client
-    - `-c` flag can be used to specify particular container by name
-    - [kubectl exec](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec)
-  - when in nginx bash shell, install nano editor
-    `apt-get update`  
-    `apt-get install nano`  
-  - then create `test.html` and place in directory serving static files
-    `cd /usr/share/nginx/html`  
-    `nano test.html`  
-    Paste into test.html
-    ```
-    <html> <header><title>This is title</title></header>
-    <body> Hello world </body>
-    </html>
-    ```
-    `CTRL+X` then `Y` to save and exit nano editor
-  - `exit` nginx bash shell
-3. port-forward from Google Cloud shell (port 10081) to nginx bash shell (port 80) 
-  `kubectl port-forward new-nginx 10081:80`  
-  - to test, open new Cloud Shell session and curl(transfer data) from `test.html`   
-  `curl http://127.0.0.1:10081/test.html`
+    - some container images include shell environment that can be launched.
+    - e.g. bash shell with nginx container
+    - to start new interactive bash shell in "new-nginx" container `kubectl exec -it new-nginx /bin/bash`
+      - `exec`: execute
+      - `-i` flag: stdin
+      - `-t` flag: tty, send stdin to 'bash' in container, and stdout/stderr from 'bash' back to client
+      - `-c` flag can be used to specify particular container by name
+      - [kubectl exec](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec)
+    - when in nginx bash shell, install nano editor  
+      `apt-get update`     
+      `apt-get install nano`    
+    - then create `test.html` and place in directory serving static files  
+      `cd /usr/share/nginx/html`   
+      `nano test.html`   
+      Paste into test.html  
+      ```
+      <html> <header><title>This is title</title></header>
+      <body> Hello world </body>
+      </html>
+      ```
+      `CTRL+X` then `Y` to save and exit nano editor
+    - `exit` nginx bash shell
+3. port-forward from Google Cloud shell (port 10081) to nginx bash shell (port 80)   
+    `kubectl port-forward new-nginx 10081:80`  
+    - to test, open new Cloud Shell session and curl(transfer data) from `test.html`   
+    `curl http://127.0.0.1:10081/test.html`
 4. view logs of a pod
-  - open another new Cloud Shell session
-  - to display logs to date and stream new logs, `kubectl logs new-nginx -f --timestamps`
-    - `--timestamps` flag is to include timestamps
+    - open another new Cloud Shell session  
+    - to display logs to date and stream new logs, `kubectl logs new-nginx -f --timestamps`  
+      - `--timestamps` flag is to include timestamps  
