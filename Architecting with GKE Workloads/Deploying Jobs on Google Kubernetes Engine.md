@@ -64,7 +64,7 @@ spec:
   - pods complete and terminated, but not deleted > can retrieve logs and interact with them
 1. To retrieve log file from the pod that ran the Job  
 `kubectl log [pod name]`
-2. To delete Job,  
+2. Deleting a Job will clean up all pods it created. To delete a Job,  
 `kubectl delete job [name of job]`
     - if try to query logs after deletion, fail as no pods found
 
