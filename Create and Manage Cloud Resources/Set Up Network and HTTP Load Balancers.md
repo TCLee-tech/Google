@@ -62,8 +62,115 @@ To verify. Observe that traffic sent to external IP address forwarded to differe
 `IPADDRESS=$(gcloud compute forwarding-rules describe www-rule --region  --format="json" | jq -r .IPAddress)`
 3. Show the IP address  
 `echo $IPADDRESS`
-4. Send data over url to the IP addresses  
+4. Continuously send data over url to the IP addresses  
 `while true; do curl -m1 $IPADDRESS; done`  
 `CTRL + c` to stop running command.  
 
+<br>
 <hr>
+
+### Task 5. Create an HTTP load balancer
+HTTP(S) load balancers are implemented on Google Front End (GFE).
+  - GFEs are globally distributed, linked to Google's network infrastructure and control plane.
+  - Backend VMs must be in a (managed) instance group.
+    - [Managed instance group](https://cloud.google.com/compute/docs/instance-groups) runs same app on multiple identical VMs
+    - workloads benefit from 
+      1. recreation of VMs if crash/deleted accidentally, 
+      2. application-based health check and auto-healing
+      3. auto-scaling
+      4. load balancing
+      5. automated updates
+      5. if regional (multi-zone), can protect against zonal failures
+      6. support for stateful data or configuration
+
+**Steps**
+1. Create template of instances  
+2. Create managed instance group  
+    - use flag to indicate instance template and size of group
+3. Create firewall rules.   
+    - Allow ingress traffic from Google Cloud health checking systems (130.211.0.0/22 and 35.191.0.0/16) to check on load balancer and backend service.
+    - Use target tag to identify VMs.
+4. Reserve global static external IP address  
+.....
+5. Create [health checks](https://cloud.google.com/load-balancing/docs/health-checks)   
+6. Create backend service to load balancer    
+7. Add instance group as backend to backend service   
+.....
+8. Create [URL map](https://cloud.google.com/load-balancing/docs/url-map-concepts)  
+    - route incoming HTTP requests to correct backend services and buckets
+    - it splits domain name into hostname and path portions
+    - works by matching host rules and path matcher/path rules 
+9. Create target HTTP proxy that will apply above URL map  
+10. Create global [forwarding rule](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts) to route incoming requests from external IP to target HTTP proxy.
+
+```
+gcloud compute instance-templates create lb-backend-template \
+   --region= \
+   --network=default \
+   --subnet=default \
+   --tags=allow-health-check \
+   --machine-type=e2-medium \
+   --image-family=debian-11 \
+   --image-project=debian-cloud \
+   --metadata=startup-script='#!/bin/bash
+     apt-get update
+     apt-get install apache2 -y
+     a2ensite default-ssl
+     a2enmod ssl
+     vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+     http://169.254.169.254/computeMetadata/v1/instance/name)"
+     echo "Page served from: $vm_hostname" | \
+     tee /var/www/html/index.html
+     systemctl restart apache2'
+```
+`gcloud compute instance-groups managed create lb-backend-group --template=lb-backend-template --size=2 --zone= `  
+```
+gcloud compute firewall-rules create fw-allow-health-check \
+  --network=default \
+  --action=allow \
+  --direction=ingress \
+  --source-ranges=130.211.0.0/22,35.191.0.0/16 \
+  --target-tags=allow-health-check \
+  --rules=tcp:80
+```
+```
+gcloud compute addresses create lb-ipv4-1 \
+  --ip-version=IPV4 \
+  --global
+```
+Verifying IPv4 address reserved,
+```
+gcloud compute addresses describe lb-ipv4-1 \
+  --format="get(address)" \
+  --global
+```
+`gcloud compute health-checks create http http-basic-check --port 80`
+```
+gcloud compute backend-services create web-backend-service \
+  --protocol=HTTP \
+  --port-name=http \
+  --health-checks=http-basic-check \
+  --global
+```
+```
+gcloud compute backend-services add-backend web-backend-service \
+  --instance-group=lb-backend-group \
+  --instance-group-zone= \
+  --global
+```
+`gcloud compute url-maps create web-map-http --default-service web-backend-service`
+`gcloud compute target-http-proxies create http-lb-proxy --url-map web-map-http`
+```
+gcloud compute forwarding-rules create http-content-rule \
+    --address=lb-ipv4-1\
+    --global \
+    --target-http-proxy=http-lb-proxy \
+    --ports=80
+```
+
+### Task 6. Testing traffic sent to your instances
+- In Cloud Console, `Navigation menu` > `Network services` > `Load balancing`.
+- Click on load balancer(web-map-http)
+- In `Backend` section, click on name of backend and confirm that VMs are `Healthy`.
+- Test load balancer. http://IP_ADDRESS using load-balancer IP.
+- Should see page rendered with name of instance and zone, e.g. `Page served from: lb-backend-group-xxxx`.
