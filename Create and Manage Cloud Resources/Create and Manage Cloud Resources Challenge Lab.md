@@ -82,6 +82,8 @@ You need to:
 - Create a forwarding rule.
 
 **Solution**
+![Drawing of components for Task 3](https://github.com/TCLee-tech/Google/blob/b4fa7f3f12577182094c228cc16737b284e6fbf9/Create%20and%20Manage%20Cloud%20Resources/Task%203%20drawing.jpg)
+
 1. Create startup script `startup.sh`
 ```
 cat << EOF > startup.sh
