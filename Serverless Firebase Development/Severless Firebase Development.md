@@ -41,6 +41,7 @@ In Cloud Shell CLI, enter `gcloud firestore databases create --region=nam5`
 In this scenario, populate the database using test data.
 
 A high level architecture diagram below summarizes the general architecture.
+![Task 2 Image 3](https://github.com/TCLee-tech/Google/blob/d348c801d996e8e2092acf9f41ec974850117bc7/Serverless%20Firebase%20Development/Task%202%20Image%203.png)
 
 Example Firestore schema:
 
