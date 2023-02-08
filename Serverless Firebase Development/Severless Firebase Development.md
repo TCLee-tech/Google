@@ -27,3 +27,47 @@ To complete this section successfully, you are required to implement the followi
 - Cloud Firestore Database
 - Use Firestore Native Mode
 - Add location Nam5 (United States)
+
+### = Task 1 Solution =
+[Getting Started with Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart)  
+1. In the Cloud Console, go to **Navigation menu** and select **Firestore**.
+2.  Click the **Select Native Mode** button.
+3. In the **Select a location** dropdown, choose **Nam5** and then click **Create Database**.  
+
+OR  [Reference](https://cloud.google.com/sdk/gcloud/reference/firestore/databases/create)  
+In Cloud Shell CLI, enter `gcloud firestore databases create --region=nam5`  
+
+### Task 2. Populate the Database
+In this scenario, populate the database using test data.
+
+A high level architecture diagram below summarizes the general architecture.
+
+Example Firestore schema:
+
+|Collection |	Document |	Field |
+| ---       | ---        | ---    |
+|data |	70234439 |	[dataset] |
+
+The [Netflix Shows Dataset](https://www.kaggle.com/datasets/shivamb/netflix-shows) includes the following information:
+
+|Field |	Description |
+| ---  | ---            |
+|show_id: |	Unique ID for every Movie / Tv Show |
+|type: |	Identifier - A Movie or TV Show |
+|title:	| Title of the Movie / Tv Show |
+|director: |	Director of the Movie |
+|cast:	| Actors involved in the movie / show |
+|country:	| Country where the movie / show was produced |
+|date_added: |	Date it was added on Netflix |
+|release_year: |	Actual Release year of the move / show |
+|rating: |	TV Rating of the movie / show |
+|duration:	| Total Duration - in minutes or number of seasons |
+
+To complete this section successfully, you are required to implement the following tasks:
+
+1. Use the sample code from `pet-theory/lab06/firebase-import-csv/solution`:  
+`npm install`  
+2. To import CSV use the node `pet-theory/lab06/firebase-import-csv/solution/index.js`:  
+`node index.js netflix_titles_original.csv`  
+
+Note: Verify the Firestore Database has been updated by viewing the data in the Firestore UI.  
