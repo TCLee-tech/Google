@@ -72,3 +72,25 @@ To complete this section successfully, you are required to implement the followi
 `node index.js netflix_titles_original.csv`  
 
 Note: Verify the Firestore Database has been updated by viewing the data in the Firestore UI.  
+
+### Task 3. Create a REST API
+In this scenario, create an example REST API.
+
+A high level architecture diagram below summarizes the general architecture.
+
+Cloud Run development
+|Field |	Value |
+| ---  | ---      |
+|Container Registry Image |	rest-api:0.1 |
+|Cloud Run Service |	Dataset Service Name |
+|Permission |	--allow-unauthenticated |
+
+To complete this section successfully, you are required to implement the following tasks:
+
+1. Access `pet-theory/lab06/firebase-rest-api/solution-01`.
+2. Build and Deploy the code to Google Container Registry.
+3. Deploy the image as a Cloud Run service.  
+Note: Deploy your service with 1 max instance to ensure you do not exceed the max limit for Cloud Run instances.
+4. Go to Cloud Run and click `Dataset Service Name` then copy the service URL:  
+`SERVICE_URL=copy url from your Dataset Service Name`  
+`curl -X GET $SERVICE_URL` should respond with: {"status":"Netflix Dataset! Make a query."}  
