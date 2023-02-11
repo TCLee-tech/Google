@@ -78,6 +78,8 @@ In this scenario, create an example REST API.
 
 A high level architecture diagram below summarizes the general architecture.
 
+![Task3 image](https://github.com/TCLee-tech/Google/blob/2db3b2912128b850d660feceb001c307b91fd0aa/Serverless%20Firebase%20Development/Task%203%20Image%204.png)
+
 Cloud Run development
 |Field |	Value |
 | ---  | ---      |
