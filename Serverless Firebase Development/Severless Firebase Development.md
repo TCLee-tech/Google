@@ -141,3 +141,34 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 `SERVICE_URL=url copied from Cloud Console`  
 `curl -X GET $SERVICE_URL` should respond with json dataset   
 
+
+### Task 5. Deploy the Staging Frontend
+In this scenario, deploy the Staging Frontend.
+
+A high level architecture diagram below summarizes the general architecture.
+
+Deploy Frontend
+
+|Field |	Value |
+| ---  | ---      |
+|REST_API_SERVICE |	REST API SERVICE URL |
+|Container Registry Image |	frontend-staging:0.1 |
+|Cloud Run Service |	Frontend Staging Service Name |
+
+To complete this section successfully, you are required to implement the following tasks:
+
+1. Access `pet-theory/lab06/firebase-frontend`.  
+2. Build the frontend staging application.  
+3. Use Cloud Build to tag and deploy image revision to Container Registry.  
+4. Deploy the new image as a Cloud Run service.  
+Note: Deploy your service with 1 max instance to ensure you do not exceed the max limit for Cloud Run instances.  
+5. Frontend access to Rest API and Firestore Database.  
+6. Access the Frontend Service URL.  
+Note: It's using a demo dataset to provide the onscreen entries.  
+
+### = Task 5 Solution =
+For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-frontend
+1. `cd ~/pet-theory/lab06/firebase-frontend`  
+2. To build a container image of frontend-staging:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`
+3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend Staging Service Name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`
+4. When the deployment is completed, you will see a similar message to .....
