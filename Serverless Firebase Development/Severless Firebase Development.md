@@ -73,6 +73,11 @@ To complete this section successfully, you are required to implement the followi
 
 Note: Verify the Firestore Database has been updated by viewing the data in the Firestore UI.  
 
+### = Task 2 Solution =
+1. `cd ~/pet-theory/lab06/firebase-import-csv/solution`
+2. `npm install`
+3. `node index.js netflix_titles_original.csv`
+
 ### Task 3. Create a REST API
 In this scenario, create an example REST API.
 
@@ -96,3 +101,43 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 4. Go to Cloud Run and click `Dataset Service Name` then copy the service URL:  
 `SERVICE_URL=copy url from your Dataset Service Name`  
 `curl -X GET $SERVICE_URL` should respond with: {"status":"Netflix Dataset! Make a query."}  
+
+### = Task 3 Solution =
+1. `cd ~/pet-theory/lab06/firebase-rest-api/solution-01`  
+2. To build container with code and put it in Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1`  
+3. To verify, in Cloud console, go to **Navigation menu** > **Container Registry** > refresh to see `rest-api`  
+4. Once the container has been built, deploy it: `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=2`  
+5. In Cloud Console > `Cloud Run`, click `[Dataset Service Name]` and copy `service URL`  
+  `SERVICE_URL=url copied from Cloud Console`  
+  `curl -X GET $SERVICE_URL` should respond with {"status":"Netflix Dataset!Make a query."}  
+
+### Task 4. Firestore API access
+In this scenario, deploy an updated revision of the code to access the Firestore DB.
+
+Deploy Cloud Run revision 0.2
+
+|Field |	Value |
+| ---  | ---      |
+|Container Registry Image |	rest-api:0.2 |
+|Cloud Run Service |	Dataset Service Name |
+|Permission |	--allow-unauthenticated |
+
+To complete this section successfully, you are required to implement the following tasks:
+
+1. Access `pet-theory/lab06/firebase-rest-api/solution-02`.  
+2. Build the updated application.  
+3. Use Cloud Build to tag and deploy image revision to Container Registry.  
+4. Deploy the new image as Cloud Run service.    
+Note: Deploy your service with 1 max instance to ensure you do not exceed the max limit for Cloud Run instances.  
+5. Go to Cloud Run and click `[Dataset Service Name]` then copy the `service URL`:  
+`SERVICE_URL=copy url from your Dataset Service Name`  
+`curl -X GET $SERVICE_URL/2019` should respond with json dataset.  
+
+### = Task 4 Solution =
+1. `cd ~/pet-theory/lab06/firebase-rest-api/solution-02`  
+2. To build a new container image of application, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2`  
+3. To deploy updated image as Cloud Run service, `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`  
+4. In Cloud Console > `Cloud Run`, click `[Dataset Service Name]` and copy `service URL`  
+`SERVICE_URL=url copied from Cloud Console`  
+`curl -X GET $SERVICE_URL` should respond with json dataset   
+
