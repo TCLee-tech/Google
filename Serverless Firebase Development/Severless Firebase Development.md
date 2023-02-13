@@ -146,6 +146,7 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 In this scenario, deploy the Staging Frontend.
 
 A high level architecture diagram below summarizes the general architecture.
+![Task 5 image](https://github.com/TCLee-tech/Google/blob/ec58a699341c7fd6348936983c0c28afb112f1d2/Serverless%20Firebase%20Development/Task%205%20Image%205.png)
 
 Deploy Frontend
 
@@ -172,3 +173,37 @@ For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-fro
 2. To build a container image of frontend-staging:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`
 3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend Staging Service Name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`
 4. When the deployment is completed, you will see a similar message to .....
+
+### Task 6. Deploy the Production Frontend
+In this scenario, update the Staging Frontend to use the Firestore database.
+
+Deploy Frontend
+
+|Field |	Value |
+| ---  | ---      |
+|REST_API_SERVICE |	REST API SERVICE URL |
+|Container Registry Image |	frontend-production:0.1 |
+|Cloud Run Service |	Frontend Production Service Name |
+
+To complete this section successfully, you are required to implement the following tasks:
+
+1. Access `pet-theory/lab06/firebase-frontend/public`.
+2. Update the frontend application i.e. app.js to use the REST API.
+3. Don't forget to append the year to the SERVICE_URL.
+4. Use Cloud Build to tag and deploy image revision to Container Registry.
+5. Deploy the new image as Cloud Run service
+Note: Deploy your service with 1 max instance to ensure you do not exceed the max limit for Cloud Run instances.
+6. Frontend access to Rest API and Firestore Database.
+Now that the services have been deployed you will be able to see the contents of the Firestore database using the frontend service.
+
+### = Task 6 Solution =
+For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-frontend/public
+1. `cd ~/pet-theory/lab06/firebase-frontend/public`  
+2. Open `app.js`, `nano app.js`
+3. Delete the line `const REST_API_SERVICE = "data/netflix.json"` 
+4. Uncomment `//const REST_API_SERVICE = "https://XXXX-SERVICE.run.app/2023" `, replace with REST API SERVICE URL for lab.
+5. Save and exit, `CTRL X` > `Y` > `ENTER`
+6. Go up one level to directory with Dockerfile, index.js and package.json `cd ..`
+7. To build a container image of frontend-production:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1`
+8. To deploy image as Cloud Run service, `gcloud run deploy [Frontend Production Service Name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`
+9. Click on the url to verify frontend-production url.
