@@ -179,7 +179,7 @@ For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-fro
 1. `cd ~/pet-theory/lab06/firebase-frontend`  
 2. To build a container image of frontend-staging:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`
 3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend-Staging-Service-Name, e.g. frontend-staging-service-244] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`
-4. When the deployment is completed, go to Cloud Console > `Cloud Run` > click `[Frontend-Staging-Service-Name]` > copy `service URL` > paste in a new browser window to see frontend served by Cloud Run. 
+4. When the deployment is completed, go to Cloud Console > `Cloud Run` > click `[Frontend-Staging-Service-Name, e.g. frontend-staging-service-244]` > copy `service URL` > paste in a new browser window to see frontend served by Cloud Run. 
 
 ![Staging Frontend served by Cloud Run](https://github.com/TCLee-tech/Google/blob/a471ff9a211a856469506497dfd44af1357ac2be/Serverless%20Firebase%20Development/staging%20frontend%20served%20by%20Cloud%20Run.jpg)
 
@@ -216,3 +216,5 @@ For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-fro
 7. To build a container image of frontend-production:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1`
 8. To deploy image as Cloud Run service, `gcloud run deploy [Frontend-Production-Service-Name, e.g. frontend-production-service-647] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`
 9. In Cloud Console > `Cloud Run`, click `[Frontend-Production-Service-Name, e.g. frontend-production-service-647]` and click on `service URL` to see frontend of production app. 
+
+![Production Frontend served by Cloud Run](https://github.com/TCLee-tech/Google/blob/57f8af32ef0c94d67cb3604b2156c8bdfed37bf8/Serverless%20Firebase%20Development/production%20frontend%20served%20by%20Cloud%20Run.jpg)
