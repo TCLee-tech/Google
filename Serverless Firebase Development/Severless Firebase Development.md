@@ -32,7 +32,7 @@ To complete this section successfully, you are required to implement the followi
 [Getting Started with Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart)  
 1. In the Cloud Console, go to **Navigation menu** and select **Firestore**.
 2.  Click the **Select Native Mode** button.
-3. In the **Select a location** dropdown, choose **Nam5** and then click **Create Database**.  
+3. In the **Select a location** dropdown, choose **nam5** and then click **Create Database**.  
 
 OR  [Reference](https://cloud.google.com/sdk/gcloud/reference/firestore/databases/create)  
 In Cloud Shell CLI, enter `gcloud firestore databases create --region=nam5`  
@@ -78,6 +78,7 @@ Note: Verify the Firestore Database has been updated by viewing the data in the 
 2. `npm install`
 3. `node index.js netflix_titles_original.csv`
 
+
 ### Task 3. Create a REST API
 In this scenario, create an example REST API.
 
@@ -89,7 +90,7 @@ Cloud Run development
 |Field |	Value |
 | ---  | ---      |
 |Container Registry Image |	rest-api:0.1 |
-|Cloud Run Service |	Dataset Service Name |
+|Cloud Run Service |	Dataset-Service-Name, e.g. netflix-dataset-service-811 |
 |Permission |	--allow-unauthenticated |
 
 To complete this section successfully, you are required to implement the following tasks:
@@ -98,18 +99,21 @@ To complete this section successfully, you are required to implement the followi
 2. Build and Deploy the code to Google Container Registry.
 3. Deploy the image as a Cloud Run service.  
 Note: Deploy your service with 1 max instance to ensure you do not exceed the max limit for Cloud Run instances.
-4. Go to Cloud Run and click `Dataset Service Name` then copy the service URL:  
-`SERVICE_URL=copy url from your Dataset Service Name`  
+4. Go to Cloud Run and click `Dataset-Service-Name` then copy the service URL:  
+`SERVICE_URL=copy url from your Dataset-Service-Name`  
 `curl -X GET $SERVICE_URL` should respond with: {"status":"Netflix Dataset! Make a query."}  
 
 ### = Task 3 Solution =
 1. `cd ~/pet-theory/lab06/firebase-rest-api/solution-01`  
 2. To build container with code and put it in Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1`  
 3. To verify, in Cloud console, go to **Navigation menu** > **Container Registry** > refresh to see `rest-api`  
-4. Once the container has been built, deploy it: `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=2`  
-5. In Cloud Console > `Cloud Run`, click `[Dataset Service Name]` and copy `service URL`  
-  `SERVICE_URL=url copied from Cloud Console`  
+4. Once the container has been built, deploy it: `gcloud run deploy [dataset-service-name, e.g. netflix-dataset-service-811] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`  
+5. In Cloud Console > `Cloud Run`, click `[Dataset-Service-Name]` and copy `service URL`  
+![Image from Cloud Console for Cloud Run service URL]()
+6. In Cloud Shell, `SERVICE_URL=url copied from Cloud Console`  
   `curl -X GET $SERVICE_URL` should respond with {"status":"Netflix Dataset!Make a query."}  
+
+[Firestore data locations](https://cloud.google.com/firestore/docs/locations)
 
 ### Task 4. Firestore API access
 In this scenario, deploy an updated revision of the code to access the Firestore DB.
@@ -119,7 +123,7 @@ Deploy Cloud Run revision 0.2
 |Field |	Value |
 | ---  | ---      |
 |Container Registry Image |	rest-api:0.2 |
-|Cloud Run Service |	Dataset Service Name |
+|Cloud Run Service |	Dataset-Service-Name, e.g. netflix-dataset-service-811 |
 |Permission |	--allow-unauthenticated |
 
 To complete this section successfully, you are required to implement the following tasks:
@@ -136,10 +140,11 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 ### = Task 4 Solution =
 1. `cd ~/pet-theory/lab06/firebase-rest-api/solution-02`  
 2. To build a new container image of application, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2`  
-3. To deploy updated image as Cloud Run service, `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`  
-4. In Cloud Console > `Cloud Run`, click `[Dataset Service Name]` and copy `service URL`  
+3. To deploy updated image as Cloud Run service, `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`  
+4. In Cloud Console > `Cloud Run`, click `[Dataset-Service-Name]` and copy `service URL`  
+![Image from Cloud Console for Cloud Run service URL]()
 `SERVICE_URL=url copied from Cloud Console`  
-`curl -X GET $SERVICE_URL` should respond with json dataset   
+`curl -X GET $SERVICE_URL/2019` should respond with json dataset   
 
 
 ### Task 5. Deploy the Staging Frontend
@@ -154,7 +159,7 @@ Deploy Frontend
 | ---  | ---      |
 |REST_API_SERVICE |	REST API SERVICE URL |
 |Container Registry Image |	frontend-staging:0.1 |
-|Cloud Run Service |	Frontend Staging Service Name |
+|Cloud Run Service |	Frontend-Staging-Service-Name |
 
 To complete this section successfully, you are required to implement the following tasks:
 
@@ -171,8 +176,8 @@ Note: It's using a demo dataset to provide the onscreen entries.
 For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-frontend
 1. `cd ~/pet-theory/lab06/firebase-frontend`  
 2. To build a container image of frontend-staging:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`
-3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend Staging Service Name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`
-4. When the deployment is completed, you will see a similar message to .....
+3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend-Staging-Service-Name, e.g. frontend-staging-service-244] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`
+4. When the deployment is completed, go to Cloud Console > `Cloud Run` > click `[Frontend-Staging-Service-Name]` > copy `service URL` > paste in a new browser window to see frontend served by Cloud Run. 
 
 ### Task 6. Deploy the Production Frontend
 In this scenario, update the Staging Frontend to use the Firestore database.
@@ -183,7 +188,7 @@ Deploy Frontend
 | ---  | ---      |
 |REST_API_SERVICE |	REST API SERVICE URL |
 |Container Registry Image |	frontend-production:0.1 |
-|Cloud Run Service |	Frontend Production Service Name |
+|Cloud Run Service |	Frontend-Production-Service-Name, e.g. frontend-production-service-647 |
 
 To complete this section successfully, you are required to implement the following tasks:
 
@@ -199,11 +204,11 @@ Now that the services have been deployed you will be able to see the contents of
 ### = Task 6 Solution =
 For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-frontend/public
 1. `cd ~/pet-theory/lab06/firebase-frontend/public`  
-2. Open `app.js`, `nano app.js`
+2. Open `app.js`: `nano app.js`
 3. Delete the line `const REST_API_SERVICE = "data/netflix.json"` 
-4. Uncomment `//const REST_API_SERVICE = "https://XXXX-SERVICE.run.app/2023" `, replace with REST API SERVICE URL for lab.
-5. Save and exit, `CTRL X` > `Y` > `ENTER`
+4. Uncomment `//const REST_API_SERVICE = "https://XXXX-SERVICE.run.app/2023" `, replace REST API SERVICE URL with [Dataset-Service-Name, e.g. netflix-dataset-service-811] from Task 4. Don't forget to append date at end of URL.
+5. Save and exit: `CTRL X` > `Y` > `ENTER`
 6. Go up one level to directory with Dockerfile, index.js and package.json `cd ..`
 7. To build a container image of frontend-production:0.1, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1`
-8. To deploy image as Cloud Run service, `gcloud run deploy [Frontend Production Service Name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1 --platform managed --region Nam5 --allow-unauthenticated --max-instances=1`
-9. Click on the url to verify frontend-production url.
+8. To deploy image as Cloud Run service, `gcloud run deploy [Frontend-Production-Service-Name, e.g. frontend-production-service-647] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-production:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`
+9. In Cloud Console > `Cloud Run`, click `[Frontend-Production-Service-Name, e.g. frontend-production-service-647]` and click on `service URL` to see frontend of production app. 
