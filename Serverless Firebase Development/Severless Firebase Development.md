@@ -109,8 +109,8 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 2. To build container with code and put it in Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1`  
 3. To verify, in Cloud console, go to **Navigation menu** > **Container Registry** > refresh to see `rest-api`  
 4. Once the container has been built, deploy it: `gcloud run deploy [dataset-service-name, e.g. netflix-dataset-service-811] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`  
-5. In Cloud Console > `Cloud Run`, click `[Dataset-Service-Name]` and copy `service URL`  
-![Image from Cloud Console for Cloud Run service URL]()
+5. In Cloud Console > `Cloud Run`, click `[Dataset-Service-Name, e.g. netflix-dataset-service-811]` and copy `service URL`  
+![Image from Cloud Console for Cloud Run service URL](https://github.com/TCLee-tech/Google/blob/3a65ea21b493fed3c1ecbbe23edc0113c4c60385/Serverless%20Firebase%20Development/API%20service%20URL.jpg)
 6. In Cloud Shell, `SERVICE_URL=url copied from Cloud Console`  
   `curl -X GET $SERVICE_URL` should respond with {"status":"Netflix Dataset!Make a query."}  
 
@@ -141,12 +141,12 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 ### = Task 4 Solution =
 1. `cd ~/pet-theory/lab06/firebase-rest-api/solution-02`  
 2. To build a new container image of application, tag it and push to Container Registry, `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2`  
-3. To deploy updated image as Cloud Run service, `gcloud run deploy [dataset service name] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`  
+3. To deploy updated image as Cloud Run service, `gcloud run deploy [dataset-service-name, e.g. netflix-dataset-service-811] --image gcr.io/$GOOGLE_CLOUD_PROJECT/rest-api:0.2 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`  
 4. In Cloud Console > `Cloud Run`, click `[Dataset-Service-Name]` and copy `service URL`  
 ![Image from Cloud Console for Cloud Run service URL]()
 `SERVICE_URL=url copied from Cloud Console`  
 `curl -X GET $SERVICE_URL/2019` should respond with json dataset   
-
+![Image of json dataset]()
 
 ### Task 5. Deploy the Staging Frontend
 In this scenario, deploy the Staging Frontend.
