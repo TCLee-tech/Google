@@ -146,7 +146,8 @@ Note: Deploy your service with 1 max instance to ensure you do not exceed the ma
 ![Image from Cloud Console for Cloud Run service URL]()
 `SERVICE_URL=url copied from Cloud Console`  
 `curl -X GET $SERVICE_URL/2019` should respond with json dataset   
-![Image of json dataset]()
+
+![Image of json dataset](https://github.com/TCLee-tech/Google/blob/8cb06230cd9a6aa7dd0eb8b9ca667d4bae02f36e/Serverless%20Firebase%20Development/Task%204%20solution.jpg)
 
 ### Task 5. Deploy the Staging Frontend
 In this scenario, deploy the Staging Frontend.
