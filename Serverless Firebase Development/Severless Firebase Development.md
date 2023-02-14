@@ -181,6 +181,8 @@ For reference: https://github.com/rosera/pet-theory/tree/main/lab06/firebase-fro
 3. To deploy updated image as Cloud Run service, `gcloud run deploy [Frontend-Staging-Service-Name, e.g. frontend-staging-service-244] --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 --platform managed --region us-central1 --allow-unauthenticated --max-instances=1`
 4. When the deployment is completed, go to Cloud Console > `Cloud Run` > click `[Frontend-Staging-Service-Name]` > copy `service URL` > paste in a new browser window to see frontend served by Cloud Run. 
 
+![Staging Frontend served by Cloud Run](https://github.com/TCLee-tech/Google/blob/a471ff9a211a856469506497dfd44af1357ac2be/Serverless%20Firebase%20Development/staging%20frontend%20served%20by%20Cloud%20Run.jpg)
+
 ### Task 6. Deploy the Production Frontend
 In this scenario, update the Staging Frontend to use the Firestore database.
 
