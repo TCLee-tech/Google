@@ -20,13 +20,13 @@ Requirements:
 |Field |	Value |
 | ---  |     ---  |
 |Cloud Firestore |	Native Mode |
-|Location	| Nam5 (United States) |
+|Location	| nam5 (United States) |
 
 To complete this section successfully, you are required to implement the following:
 
 - Cloud Firestore Database
 - Use Firestore Native Mode
-- Add location Nam5 (United States)
+- Add location nam5 (United States)
 
 ### = Task 1 Solution =
 [Getting Started with Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart)  
@@ -34,8 +34,8 @@ To complete this section successfully, you are required to implement the followi
 2.  Click the **Select Native Mode** button.
 3. In the **Select a location** dropdown, choose **nam5** and then click **Create Database**.  
 
-OR  [Reference](https://cloud.google.com/sdk/gcloud/reference/firestore/databases/create)  
-In Cloud Shell CLI, enter `gcloud firestore databases create --region=nam5`  
+OR  
+In Cloud Shell CLI, enter `gcloud firestore databases create --region=nam5`  [Reference](https://cloud.google.com/sdk/gcloud/reference/firestore/databases/create)  
 
 ### Task 2. Populate the Database
 In this scenario, populate the database using test data.
@@ -77,6 +77,7 @@ Note: Verify the Firestore Database has been updated by viewing the data in the 
 1. `cd ~/pet-theory/lab06/firebase-import-csv/solution`
 2. `npm install`
 3. `node index.js netflix_titles_original.csv`
+4. Refresh Firestore UI to check if data uploaded
 
 
 ### Task 3. Create a REST API
