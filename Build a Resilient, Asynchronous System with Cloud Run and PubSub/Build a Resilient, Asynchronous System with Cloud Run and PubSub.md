@@ -35,7 +35,7 @@ Any service (e.g. Email Service and SMS Service in diagram) subscribed to topic 
 ![Async w Cloud Run and PubSub Task 2](https://github.com/TCLee-tech/Google/blob/5180bcea5d9c85e4dd247125c64c3753b478f6ba/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%202.jpg)  
 
 This Cloud Run Service has 2 functions:
-  1. Receive lab report HTTPS POST request and response back.
+  1. Receive lab report HTTPS POST request and respond back.
   2. Publish message on PubSub.  
 
 #### Steps to code Lab Report Service:
@@ -139,3 +139,52 @@ gcloud run deploy lab-report-service \                      //Deploy container a
     - [Reference for chmod command in linux](https://linuxize.com/post/chmod-command-in-linux/)
 5. Deploy script.  
   `./deploy.sh`
+
+#### Testing the Lab Report Service
+Simulate 3 HTTPS POSTs by the lab company.  
+Each HTTP POST represents a lab report sent to Lab Report Service (Cloud Run).  
+Because this is a test, each lab report will only contain an ID.  
+
+Steps:
+1. Put the Lab Report Service URL (https://xxx.run.app) in an environment variable to make it easier to work with.  
+`export LAB_REPORT_SERVICE_URL=$(gcloud run services describe lab-report-service --platform managed --region us-east1 --format="value(status.address.url)")`  
+2. Confirm URL captured in environment variable:  
+  `echo $LAB_REPORT_SERVICE_URL`
+3. Put the code for 3 HTTP POSTs into a script named `post-reports.sh`:
+```
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d "{\"id\": 12}" \
+  $LAB_REPORT_SERVICE_URL &
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d "{\"id\": 34}" \
+  $LAB_REPORT_SERVICE_URL &
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d "{\"id\": 56}" \
+  $LAB_REPORT_SERVICE_URL &
+```
+Note -
+  * cURL, short for client URL, is a tool for transferring data to and from a server. [What is cURL?](https://developer.ibm.com/articles/what-is-curl-command/)  
+  * `-X` specifies custom request method to use when communicating with HTTP server. Default is GET.  
+  * `-H` specifies header to be added to the info sent. Custom addition to the regular request headers. Will replace internal header if name is the same.  
+  * `-d` specifies data to pass to the HTTP server.  
+  * [Refer to curl.1 man page](https://curl.se/docs/manpage.html)  
+
+4. Make the `post-reports.sh` script executable:  
+`chmod u+x post-reports.sh`  
+5. Run script:  
+`./post-reports.sh`
+6. Check Cloud Run log to verify.  
+  In Cloud console > **Navigation menu** > **Cloud Run** > **Services** > **lab-report-service** > Click on the **Logs** tab > check if there are 3 POST 204 entries.
+
+<hr>
+
+### Task 3. The Email Service
+![Email Service](https://github.com/TCLee-tech/Google/blob/80e35c533e797f95717671da672f3c7a0868acf1/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%203%20Image%201.jpg)
+
+This Cloud Run Service has 2 functions:
+  1. Receive messages from subscribed PubSub topic and respond back.
+  2. sendEmail() function.  
+
