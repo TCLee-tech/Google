@@ -188,3 +188,59 @@ This Cloud Run Service has 2 functions:
   1. Receive messages from subscribed PubSub topic and respond back.
   2. sendEmail() function.  
 
+
+The key files are:
+  - package.json
+  - index.js
+  - Dockerfile
+
+#### Add codes for the Email Service
+1. Change to Email Service directory  
+  `cd ~/pet-theory/lab05/email-service`
+2. Install packages/dependencies for node.js Express framework and to handle incoming HTTPS requests. These commands will update `package.json`:  
+```
+npm install express
+npm install body-parser
+```
+3. Update `package.json`. In the "scripts" section, add `"start": "node index.js"` as shown below:  
+```
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  ```  
+To open package.json with nano editor: `nano package.json`  
+To save: `CTRL+X` then `Y`.  
+
+4. Create `index.js`.  
+  To create a new file: `nano index.js`  
+  Then paste in the following code:  
+```
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log('Listening on port', port);
+});
+app.post('/', async (req, res) => {
+  const labReport = decodeBase64Json(req.body.message.data);
+  try {
+    console.log(`Email Service: Report ${labReport.id} trying...`);
+    sendEmail();
+    console.log(`Email Service: Report ${labReport.id} success :-)`);
+    res.status(204).send();
+  }
+  catch (ex) {
+    console.log(`Email Service: Report ${labReport.id} failure: ${ex}`);
+    res.status(500).send();
+  }
+})
+function decodeBase64Json(data) {
+  return JSON.parse(Buffer.from(data, 'base64').toString());
+}
+function sendEmail() {
+  console.log('Sending email');
+}
+```
