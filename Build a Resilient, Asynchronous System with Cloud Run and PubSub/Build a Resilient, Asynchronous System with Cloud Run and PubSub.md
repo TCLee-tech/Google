@@ -29,3 +29,81 @@ To create a PubSub topic,
 To enable Cloud Run,   
   `gcloud services enable run.googleapis.com`  
 Any service (e.g. Email Service and SMS Service in diagram) subscribed to topic will be able to consume notification message from Lab Report Service.  
+
+
+### Task 2: Build the Lab Report Service
+![Async w Cloud Run and PubSub Task 2]()
+This Cloud Run Service has 2 functions:
+  1. Receive lab report HTTPS POST request and response back.
+  2. Publish message on PubSub.
+Steps to code Lab Report Service:
+1. Git clone repolistory
+  `git clone https://github.com/rosera/pet-theory.git`
+2. Change to `lab-service` directory
+  `cd pet-theory/lab05/lab-service`
+3. Key files:
+  - package.json
+  - index.js
+  - Dockerfile
+3. Install node packages/dependencies needed to parse incoming HTTPS requests and publish to PubSub. These commands will update `package.json`
+```
+npm install express
+npm install body-parser
+npm install @google-cloud/pubsub
+```
+4. Update `package.json`. In the "scripts" section, add `"start": "node index.js"` as shown below:
+```
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  ```
+  To open package.json with nano editor, `nano package.json`
+  To save, `CTRL+X` then `Y`
+5. Create new file `index.js` and add its code.
+  To create new file, `nano index.js`  
+  Then paste the following code:
+```
+const {PubSub} = require('@google-cloud/pubsub');
+const pubsub = new PubSub();
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+const port = process.env.PORT || 8080;
+app.listen(port, () => {                    //node express listens to port and handles requests with zero fn that console logs
+  console.log('Listening on port', port);
+});
+app.post('/', async (req, res) => {         //Express server handles requests to `/` endpoint with async function
+  try {
+    const labReport = req.body;             //** block-scoped constant labReport extracts HTTPS POST request body
+    await publishPubSubMessage(labReport);  //** this expression awaits a function (publishPubSubMessage) that returns a promise. Execution of codes suspended (synchronous effect) until promise fulfilled. 
+    res.status(204).send();                 //response with 204 status once awaited promise fulfilled
+  }
+  catch (ex) {
+    console.log(ex);
+    res.status(500).send(ex);
+  }
+})
+async function publishPubSubMessage(labReport) {          //awaited async function
+  const buffer = Buffer.from(JSON.stringify(labReport));
+  await pubsub.topic('new-lab-report').publish(buffer);
+}
+```
+  `CTRL+X` then `Y` to save and exit `index.js`
+Details:    
+[node Express POST routing](https://expressjs.com/en/guide/routing.html)    
+[Javascript const](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)  
+[Javascript async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)  
+6. Create Dockerfile that defines how to package "Lab Report Service" Cloud Run Service into container. 
+  To create new file, `nano Dockerfile`  
+  Add the following code:  
+```
+FROM node:10
+WORKDIR /usr/src/app
+COPY package.json package*.json ./
+RUN npm install --only=production
+COPY . .
+CMD [ "npm", "start" ]
+```
+  `CTRL+X` then `Y` to save and exit.  
