@@ -101,7 +101,7 @@ References:
 [Javascript const](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)  
 [Javascript async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)  
 
-6. Create Dockerfile that defines how to package "Lab Report Service" Cloud Run Service into container.  
+7. Create Dockerfile that defines how to package "Lab Report Service" Cloud Run Service into container.  
   To create new file, `nano Dockerfile`  
   Add the following code:  
 ```
