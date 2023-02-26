@@ -188,7 +188,6 @@ This Cloud Run Service has 2 functions:
   1. Receive messages from subscribed PubSub topic and respond back.
   2. sendEmail() function.  
 
-
 The key files are:
   - package.json
   - index.js
@@ -225,16 +224,16 @@ app.listen(port, () => {
   console.log('Listening on port', port);
 });
 app.post('/', async (req, res) => {
-  const labReport = decodeBase64Json(req.body.message.data);
+  const labReport = decodeBase64Json(req.body.message.data);  //function (decodeBase64Json) that parse request body containing lab report data.
   try {
     console.log(`Email Service: Report ${labReport.id} trying...`);
-    sendEmail();
+    sendEmail();                                                      //function to send email. Add codes later.
     console.log(`Email Service: Report ${labReport.id} success :-)`);
-    res.status(204).send();
+    res.status(204).send();                                           //If PubSub message processed successfully, send HTTP 204 response back to PubSub.
   }
   catch (ex) {
     console.log(`Email Service: Report ${labReport.id} failure: ${ex}`);
-    res.status(500).send();
+    res.status(500).send();                                           //If PubSub message not processed (exception), return 500 status code. So that PubSub knows message not processed and can re-post later.
   }
 })
 function decodeBase64Json(data) {
