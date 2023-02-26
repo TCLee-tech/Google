@@ -113,3 +113,29 @@ COPY . .
 CMD [ "npm", "start" ]
 ```
   `CTRL+X` then `Y` to save and exit.  
+
+#### Deploy the Lab Report Service
+1. Create a script named `deploy.sh`: `nano deploy.sh`
+2. Paste below commands into it:
+```
+gcloud builds submit \                                      //Cloud Build - build container with tag
+  --tag gcr.io/$GOOGLE_CLOUD_PROJECT/lab-report-service
+
+gcloud run deploy lab-report-service \                      //Deploy container as Cloud Run Service with "lab-report-service" name
+  --image gcr.io/$GOOGLE_CLOUD_PROJECT/lab-report-service \
+  --platform managed \
+  --region us-east1 \
+  --allow-unauthenticated \
+  --max-instances=1
+  ```
+3. Save and exit: `CTRL+X` then `Y`.
+4. Make the `deploy.sh` script executable.  
+  `chmod u+x deploy.sh`
+    - chmod command changes permission in the file
+    - syntax: chmod [user flag] [-+=] [permissions] [file name]
+    - `u` for file owner
+    - `+` for add
+    - `x` for execution permission
+    - [Reference for chmod command in linux](https://linuxize.com/post/chmod-command-in-linux/)
+5. Deploy script.  
+  `./deploy.sh`
