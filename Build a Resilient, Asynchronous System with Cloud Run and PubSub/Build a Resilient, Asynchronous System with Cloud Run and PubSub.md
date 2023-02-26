@@ -243,3 +243,32 @@ function sendEmail() {
   console.log('Sending email');
 }
 ```
+To save and exit: `CTRL+X` then `Y`  
+
+5. Create a `Dockerfile` and add the code below:  
+```
+FROM node:10
+WORKDIR /usr/src/app
+COPY package.json package*.json ./
+RUN npm install --only=production
+COPY . .
+CMD [ "npm", "start" ]
+```
+
+#### Deploy the Email Service
+1. Create a new script `deploy.sh` and add the following codes:
+```
+gcloud builds submit \                            //Build and tag container using Cloud Build
+  --tag gcr.io/$GOOGLE_CLOUD_PROJECT/email-service
+
+gcloud run deploy email-service \                 //Deploy Cloud Run Service using container image
+  --image gcr.io/$GOOGLE_CLOUD_PROJECT/email-service \
+  --platform managed \
+  --region us-east1 \
+  --no-allow-unauthenticated \
+  --max-instances=1
+```
+2. Make `deploy.sh` executable:  
+`chmod u+x deploy.sh`  
+3. Deploy the script  
+`./deploy.sh`
