@@ -38,7 +38,7 @@ This Cloud Run Service has 2 functions:
   1. Receive lab report HTTPS POST request and response back.
   2. Publish message on PubSub.  
 
-Steps to code Lab Report Service:
+#### Steps to code Lab Report Service:
 1. Git clone repository  
   `git clone https://github.com/rosera/pet-theory.git`  
 2. Change to `lab-service` directory  
