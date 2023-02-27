@@ -258,17 +258,52 @@ CMD [ "npm", "start" ]
 #### Deploy the Email Service
 1. Create a new script `deploy.sh` and add the following codes:
 ```
-gcloud builds submit \                            //Build and tag container using Cloud Build
+gcloud builds submit \                                  //Build and tag container using Cloud Build
   --tag gcr.io/$GOOGLE_CLOUD_PROJECT/email-service
 
-gcloud run deploy email-service \                 //Deploy Cloud Run Service using container image
+gcloud run deploy email-service \                       //Deploy Cloud Run Service using container image
   --image gcr.io/$GOOGLE_CLOUD_PROJECT/email-service \
   --platform managed \
   --region us-east1 \
   --no-allow-unauthenticated \
   --max-instances=1
 ```
+To create new `deploy.sh` with nano editor: `nano deploy.sh`    
+To save: `CTRL+X` then `Y`  
+
 2. Make `deploy.sh` executable:  
 `chmod u+x deploy.sh`  
 3. Deploy the script  
 `./deploy.sh`
+
+#### Configure PubSub to trigger the Email Service
+![Async Cloud Run and PubSub Task 3 Image 2]()
+
+To link PubSub message from PubSub topic to Cloud Run Service, need
+1. service account that will invoke Cloud Run Service
+2. iam policy for service account to invoke Cloud Run
+3. iam policy for PubSub to create authentication tokens
+4. create PubSub subscription for the Cloud Run Service  
+<br>
+
+1. Create service account for PubSub.  
+`gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`  
+2. Add IAM policy for service account to invoke Cloud Run in response to PubSub messages.  
+`gcloud run services add-iam-policy-binding email-service --member=serviceAccount:pubsub-cloud-run-invoker@GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com --role=roles/run.invoker --region us-east1 --platofrm managed`  
+3. Add IAM policy to enable project to create PubSub authentication tokens.  
+    - `PROJECT_NUMBER=$(gcloud projects list --filter="qwiklabs-gcp" --format='value(PROJECT_NUMBER)')`  
+    - `gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com --role=roles/iam.serviceAccountTokenCreator`  
+4. Create PubSub subscription.  
+    - put URL of Email Service in an environment variable  
+      `EMAIL_SERVICE_URL=$(gcloud run services describe email-service --platform managed --region us-east1 --format="value(status.address.url)")`  
+    - confirm EMAIL_SERVICE_URL  
+      `echo $EMAIL_SERVICE_URL`  
+    - PubSub subscription  
+      `gcloud pubsub subscriptions create email-service-sub --topic new-lab-report --push-endpoint=$EMAIL_SERVICE_URL --push-auth-service-account=pubsub-cloud-run-invoker@GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com`  
+
+#### Test Lab Report Service and Email Service together
+Use the `post-reports.sh` script that simulates HTTP POSTs from the external lab company.  
+`~/pet-theory/lab05/lab-service/post-reports.sh`  
+In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service** and **lab-report-service**. Click on **email-service** > **Logs**. You will see the result of email-service being triggered by PubSub.  
+
+<hr>
