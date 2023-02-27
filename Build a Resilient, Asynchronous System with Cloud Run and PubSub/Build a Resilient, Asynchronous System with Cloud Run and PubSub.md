@@ -277,7 +277,7 @@ To save: `CTRL+X` then `Y`
 `./deploy.sh`
 
 #### Configure PubSub to trigger the Email Service
-![Async Cloud Run and PubSub Task 3 Image 2]()
+![Async Cloud Run and PubSub Task 3 Image 2](https://github.com/TCLee-tech/Google/blob/62f855372d2a798091e50c78d2764e89f197dfdf/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%203%20Image%202.jpg)
 
 To link PubSub message from PubSub topic to Cloud Run Service, need
 1. service account that will invoke Cloud Run Service
@@ -286,6 +286,7 @@ To link PubSub message from PubSub topic to Cloud Run Service, need
 4. create PubSub subscription for the Cloud Run Service  
 <br>
 
+So, 
 1. Create service account for PubSub.  
 `gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`  
 2. Add IAM policy for service account to invoke Cloud Run in response to PubSub messages.  
