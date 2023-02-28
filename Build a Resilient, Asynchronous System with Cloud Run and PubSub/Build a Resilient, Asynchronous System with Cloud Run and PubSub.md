@@ -308,3 +308,134 @@ Use the `post-reports.sh` script that simulates HTTP POSTs from the external lab
 In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service** and **lab-report-service**. Click on **email-service** > **Logs**. You will see the result of email-service being triggered by PubSub.  
 
 <hr>
+
+### Task 4: The SMS Service
+![Async w Cloud Run and PubSub Task 4 Image 1]()
+
+#### Add codes for the SMS Service
+1. Change to directory for SMS service.
+`cd ~/pet-theory/lab05/sms-service`
+2. Install pacakages/dependencies to handle incoming HTTPS requests.
+```
+npm install express
+npm install body-parser
+```
+3. Add `"start": "node index.js"` to "scripts" section in `package.json`.
+`nano package.json` to edit file
+```
+...
+"scripts": {
+  "start": "node index.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+...
+```
+4. Create `index.js` and add the following codes:
+```
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log('Listening on port', port);
+});
+app.post('/', async(req, res) => {
+  const labReport =  decodeBase64Json(req.body.message.data);
+  try {
+    console.log('SMS Service: Report ${labReport.id} trying...');
+    sendSMS();
+    console.log('SMS Service: Report ${labReport.id} success :-)');
+    res.status(204).send();
+  }
+  catch (ex) {
+    console.log('SMS Service: Report ${labReport.id} failure: ${ex}');
+    res.status(500).send();
+  }
+})
+function decodeBase64Json(data) {
+  return JSON.parse(Buffer.from(data, 'base64').toString());
+}
+function sendSMS() {
+  console.log('Sending SMS');
+}
+```
+5. Create Dockerfile, adding codes below:
+```
+From node:10
+WORKDIR /use/src/app
+COPY package.json package*.json ./
+RUN npm install --only=production
+COPY . .
+CMD [ "npm", "start" ]
+```
+
+#### Deploy the SMS Service
+1. Create deployment script `deploy.sh` and add the following codes:
+```
+gcloud builds submit \
+  --tag gcr.io/$GOOGLE_CLOUD_PROJECT/sms-service
+gcloud run deploy sms-service \
+  --image gcr.io/$GOOGLE_CLOUD_PROJECT/sms-service \
+  --platform managed \
+  --region us-east1 \
+  --no-allow-unauthenticated \
+  --max-instances=1
+```
+2. Make `deploy.sh` executable.
+`chmod u+x deploy.sh`
+3. Deploy the Cloud Run service.
+`./deploy.sh`
+
+#### Configure Cloud PubSub to trigger SMS Service
+![Async w Cloud Run and PubSub Task 4 Image 2]()
+
+To link PubSub message from PubSub topic to Cloud Run Service, need
+1. service account that will invoke Cloud Run Service
+2. iam policy for service account to invoke Cloud Run
+3. iam policy for PubSub to create authentication tokens
+4. create PubSub subscription for the Cloud Run Service
+
+(1) was created in previous Email Service Task
+2. Enable IAM permission to invoke SMS Service
+`gcloud run services add-iam-policy-binding sms-service --member=serviceAccount:pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com --role=roles/run.invoker --region us-east1 --platform managed`
+(3) was created in precious Email Service Task
+4. Create PubSub subscription for SMS Service
+  `SMS_SERVICE_URL=$(gcloud run services describe sms-service --platform managed --region us-east1 --format="value(status.address.url)")`
+  `echo $SMS_SERVICE_URL`
+  `gcloud pubsub subscriptions create sms-service-sub --topic new-lab-report --push-endpoint=$SMS_SERVICE_URL --push-auth-service-account=pubsub-cloud-run-invoker$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com`
+
+#### Test Lab Report Service and SMS Service together
+Use the `post-reports.sh` script that simulates HTTP POSTs from the external lab company.  
+`~/pet-theory/lab05/lab-service/post-reports.sh`  
+In Cloud console **Nagivation Menu** > **Cloud Run**, will see **sms-service**, **email-service** and **lab-report-service**. Click on **sms-service** > **Logs**. You will see the result of sms-service being triggered by PubSub.  
+
+### Task 5: Test the resiliency of the system
+- simulate what happens when a service fails: deploy a bad version of Email Service.
+1. Go to `email-service` directory.
+`cd ~/pet-theory/lab05/email-service`
+2. Add `throw 'Email server is down'` to sendEmail() function in `index.js`. This will throw an exception.
+```
+...
+function sendEmail() {
+  throw 'Email server is down';
+  console.log('Sending email');
+}
+...
+```
+3. Deploy
+`./deploy.sh`
+4. HTTPS POST lab data to system again using `post-reports.sh` script.
+`~/pet-theory/lab05/lab-service/post-reports.sh`
+5. In Cloud console **Nagivation Menu** > **Cloud Run**, look at **email-service** > **Logs**. You will see the service returning service code 500, and PubSub keep retrying calling this service. If you check logs for SMS service, you will see that it works fine.
+6. Remove `throw 'Email server is down'` in `index.js` to correct the error and let Email Service execute correctly.
+7. Deploy the fixed version of Email Service.
+`./deploy.sh`
+8. Check the logs for email-service. You will see PubSub stopped invoking Email Service, the service returning status code 204, and the emails finally sent.
+  - Notice: PubSub kept retrying until successful.
+
+### Take Aways
+1. If micro-services communicate **asynchronously** via **PubSub**, the system can be more **resilient**.
+2. The Cloud Run services are independent of each other, thanks to use of PubSub. For example, if customers want to receive lab results via another messaging service, it can be added without affecting others.
+3. **PubSub** handles **retries**. The services don't have to. Services only return a status code: success or failure.
+4. Because PubSub retries, if a service goes down, the system automatically "heals" itself when that service comes back online.
