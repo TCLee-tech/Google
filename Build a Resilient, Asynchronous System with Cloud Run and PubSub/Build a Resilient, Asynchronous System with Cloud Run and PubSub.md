@@ -434,7 +434,7 @@ function sendEmail() {
 6. Remove `throw 'Email server is down'` in `index.js` to correct the error and let Email Service execute correctly.  
 7. Deploy the fixed version of Email Service.  
 `./deploy.sh`  
-8. Check the logs for email-service. You will see PubSub stopped repeatedly invoking Email Service, the service returning status code 204, and the emails finally sent.  
+8. Check the logs for email-service. You will see Email Service returning status code 204, PubSub stopped invoking the service once it received a success response.  
     - Notice: PubSub kept retrying until successful.
 
 ### Take Aways
