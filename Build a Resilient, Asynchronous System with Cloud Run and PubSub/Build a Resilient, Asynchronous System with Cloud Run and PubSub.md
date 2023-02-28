@@ -437,6 +437,8 @@ function sendEmail() {
 8. Check the logs for email-service. You will see Email Service returning status code 204, PubSub stopped invoking the service once it received a success response.  
     - Notice: PubSub kept retrying until successful.
 
+![Cloud Run Email Service fail and success logs](https://github.com/TCLee-tech/Google/blob/e777fd11849e41e7d743c081b12d8591dac69e85/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Cloud%20Run%20Email%20Service%20fail%20and%20success%20log.jpg)
+
 ### Take Aways
 1. If micro-services communicate **asynchronously** via **PubSub**, the system can be more **resilient**.
 2. The Cloud Run services are independent of each other, thanks to use of PubSub. For example, if customers want to receive lab results via another messaging service, it can be added without affecting others.
