@@ -177,7 +177,7 @@ Note -
 5. Run script:  
 `./post-reports.sh`
 6. Check Cloud Run log to verify.  
-  In Cloud console > **Navigation menu** > **Cloud Run** > **Services** > **lab-report-service** > Click on the **Logs** tab > check if there are 3 POST 204 entries.
+  In Cloud console > **Navigation menu** > **Cloud Run** > **Services** > **lab-report-service** > Click on the **LOGS** tab > check if there are three POST 204 entries.
 
 <hr>
 
@@ -305,7 +305,7 @@ So,
 #### Test Lab Report Service and Email Service together
 Use the `post-reports.sh` script that simulates HTTP POSTs from the external lab company.  
 `~/pet-theory/lab05/lab-service/post-reports.sh`  
-In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service** and **lab-report-service**. Click on **email-service** > **Logs**. You will see the result of email-service being triggered by PubSub.  
+In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service** and **lab-report-service**. Click on **email-service** > **LOGS**. You will see the result of email-service being triggered by PubSub.  
 
 <hr>
 
@@ -409,7 +409,7 @@ So,
 #### Test Lab Report Service and SMS Service together
 Use the `post-reports.sh` script that simulates HTTP POSTs from the external lab company.  
 `~/pet-theory/lab05/lab-service/post-reports.sh`  
-In Cloud console **Nagivation Menu** > **Cloud Run**, will see **sms-service**, **email-service** and **lab-report-service**. Click on **sms-service** > **Logs**. You will see the result of sms-service being triggered by PubSub.  
+In Cloud console **Nagivation Menu** > **Cloud Run**, will see **sms-service**, **email-service** and **lab-report-service**. Click on **sms-service** > **LOGS**. You will see the result of sms-service being triggered by PubSub.  
 
 <hr>
 
@@ -430,11 +430,11 @@ function sendEmail() {
 `./deploy.sh`  
 4. HTTPS POST lab data to system again using `post-reports.sh` script.  
 `~/pet-theory/lab05/lab-service/post-reports.sh`  
-5. In Cloud console **Nagivation Menu** > **Cloud Run**, look at **email-service** > **Logs**. You will see the service returning service code 500, and PubSub keep retrying calling this service. If you check logs for SMS service, you will see that it works fine.  
+5. In Cloud console **Nagivation Menu** > **Cloud Run**, look at **email-service** > **LOGS**. You will see the service returning service code 500, and PubSub keep retrying calling this service. If you check logs for SMS service, you will see that it works fine.  
 6. Remove `throw 'Email server is down'` in `index.js` to correct the error and let Email Service execute correctly.  
 7. Deploy the fixed version of Email Service.  
 `./deploy.sh`  
-8. Check the logs for email-service. You will see PubSub stopped invoking Email Service, the service returning status code 204, and the emails finally sent.  
+8. Check the logs for email-service. You will see PubSub stopped repeatedly invoking Email Service, the service returning status code 204, and the emails finally sent.  
     - Notice: PubSub kept retrying until successful.
 
 ### Take Aways
