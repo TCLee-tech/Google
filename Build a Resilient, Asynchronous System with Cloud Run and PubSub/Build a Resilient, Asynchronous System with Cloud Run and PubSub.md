@@ -310,22 +310,22 @@ In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service**
 <hr>
 
 ### Task 4: The SMS Service
-![Async w Cloud Run and PubSub Task 4 Image 1]()
+![Async w Cloud Run and PubSub Task 4 Image 1](https://github.com/TCLee-tech/Google/blob/24cf3c9ff569bcc3f0dd476652f1e48a1faf4b11/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%204%20Image%201.jpg)
 
 #### Add codes for the SMS Service
-1. Change to directory for SMS service.
+1. Change to directory for SMS service.  
 `cd ~/pet-theory/lab05/sms-service`
-2. Install pacakages/dependencies to handle incoming HTTPS requests.
+2. Install pacakages/dependencies to handle incoming HTTPS requests.  
 ```
 npm install express
 npm install body-parser
 ```
-3. Add `"start": "node index.js"` to "scripts" section in `package.json`.
-`nano package.json` to edit file
+3. Add `"start": "node index.js"` to "scripts" section in `package.json`.  
+`nano package.json` to edit file.  
 ```
 ...
 "scripts": {
-  "start": "node index.js",
+  "start": "node index.js",                             <= //add
   "test": "echo \"Error: no test specified\" && exit 1"
 },
 ...
@@ -382,10 +382,10 @@ gcloud run deploy sms-service \
   --no-allow-unauthenticated \
   --max-instances=1
 ```
-2. Make `deploy.sh` executable.
-`chmod u+x deploy.sh`
-3. Deploy the Cloud Run service.
-`./deploy.sh`
+2. Make `deploy.sh` executable.  
+`chmod u+x deploy.sh`  
+3. Deploy the Cloud Run service.  
+`./deploy.sh`  
 
 #### Configure Cloud PubSub to trigger SMS Service
 ![Async w Cloud Run and PubSub Task 4 Image 2]()
