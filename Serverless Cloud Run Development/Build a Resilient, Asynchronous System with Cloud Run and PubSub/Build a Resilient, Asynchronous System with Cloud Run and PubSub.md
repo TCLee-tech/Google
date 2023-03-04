@@ -32,7 +32,7 @@ Any service (e.g. Email Service and SMS Service in diagram) subscribed to topic 
 
 
 ### Task 2: Build the Lab Report Service
-![Async w Cloud Run and PubSub Task 2](https://github.com/TCLee-tech/Google/blob/5180bcea5d9c85e4dd247125c64c3753b478f6ba/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%202.jpg)  
+![Async w Cloud Run and PubSub Task 2](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%202.jpg)  
 
 This Cloud Run Service has 2 functions:
   1. Receive lab report HTTPS POST request and respond back.
@@ -182,7 +182,7 @@ Note -
 <hr>
 
 ### Task 3. The Email Service
-![Email Service](https://github.com/TCLee-tech/Google/blob/80e35c533e797f95717671da672f3c7a0868acf1/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%203%20Image%201.jpg)
+![Email Service](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%202.jpg)
 
 This Cloud Run Service has 2 functions:
   1. Receive messages from subscribed PubSub topic and respond back.
@@ -277,7 +277,7 @@ To save: `CTRL+X` then `Y`
 `./deploy.sh`
 
 #### Configure PubSub to trigger the Email Service
-![Async Cloud Run and PubSub Task 3 Image 2](https://github.com/TCLee-tech/Google/blob/62f855372d2a798091e50c78d2764e89f197dfdf/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%203%20Image%202.jpg)
+![Async Cloud Run and PubSub Task 3 Image 2](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%203%20Image%202.jpg)
 
 To link PubSub message from PubSub topic to Cloud Run Service, need
 1. service account that will invoke Cloud Run Service
@@ -310,7 +310,7 @@ In Cloud console **Nagivation Menu** > **Cloud Run**, will see **email-service**
 <hr>
 
 ### Task 4: The SMS Service
-![Async w Cloud Run and PubSub Task 4 Image 1](https://github.com/TCLee-tech/Google/blob/24cf3c9ff569bcc3f0dd476652f1e48a1faf4b11/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%204%20Image%201.jpg)
+![Async w Cloud Run and PubSub Task 4 Image 1](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%204%20Image%201.jpg)
 
 #### Add codes for the SMS Service
 1. Change to directory for SMS service.  
@@ -388,7 +388,7 @@ gcloud run deploy sms-service \
 `./deploy.sh`  
 
 #### Configure Cloud PubSub to trigger SMS Service
-![Async w Cloud Run and PubSub Task 4 Image 2](https://github.com/TCLee-tech/Google/blob/eefaf668f4a308a2c515cded29b768e01e337d4e/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%204%20Image%202.jpg)
+![Async w Cloud Run and PubSub Task 4 Image 2](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Async%20w%20Cloud%20Run%20and%20PubSub%20Task%204%20Image%202.jpg)
 
 To link PubSub message from PubSub topic to Cloud Run Service, need
 1. service account that will invoke Cloud Run Service
@@ -437,7 +437,7 @@ function sendEmail() {
 8. Check the logs for email-service. You will see Email Service returning status code 204, PubSub stopped invoking the service once it received a success response.  
     - Notice: PubSub kept retrying until successful.
 
-![Cloud Run Email Service fail and success logs](https://github.com/TCLee-tech/Google/blob/e777fd11849e41e7d743c081b12d8591dac69e85/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Cloud%20Run%20Email%20Service%20fail%20and%20success%20log.jpg)
+![Cloud Run Email Service fail and success logs](https://github.com/TCLee-tech/Google/blob/52ea84f89f3c6da5b6d52aa8854c976abdbf02a2/Serverless%20Cloud%20Run%20Development/Build%20a%20Resilient,%20Asynchronous%20System%20with%20Cloud%20Run%20and%20PubSub/Cloud%20Run%20Email%20Service%20fail%20and%20success%20log.jpg)
 
 ### Take Aways
 1. If micro-services communicate **asynchronously** via **PubSub**, the system can be more **resilient**.
