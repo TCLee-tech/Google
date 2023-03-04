@@ -213,7 +213,7 @@ A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) 
 `gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`  
     - Service Account is named `pubsub-cloud-run-invoker`
 
-3. Bind IAM policy to service account invoking the Cloud Run service
+3. Bind IAM policy to Service Account invoking the Cloud Run
     ```
     gcloud run services add-iam-policy-binding pdf-converter \
         --member=serviceAccount:pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
@@ -221,13 +221,14 @@ A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) 
         --region us-east1 \
         --platform managed
     ```
-      - name of Cloud Run service: `pdf-converter`
+      - name of Cloud Run Service (Go application): `pdf-converter`
       - `--member=PRINCIPAL` 
           -  Format is `user|group|serviceAccount:email` or `domain:domain`. 
           -  Identifies the Service Account named `pubsub-cloud-run-invoker`.
       - for the role of `run.invoker`
       - [gcloud run services add-iam-policy-binding](https://cloud.google.com/sdk/gcloud/reference/run/services/add-iam-policy-binding)
-  3. Enable project to create PubSub authentication tokens
+  
+  3. Enable project to create PubSub authentication tokens  
       `PROJECT_NUMBER=$(gcloud projects list --format="value(PROJECT_NUMBER)" --filter="$GOOGLE_CLOUD_PROJECT")`  
       ```
       gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
@@ -237,15 +238,15 @@ A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) 
 
 ### Task 5: Testing the Cloud Run Service
 Test if URL of deployed Cloud Run Service is protected by authentication.  
-1. Save URL into an environmental variable **$SERVICE_URL**:
-  `SERVICE_URL=$(gcloud run services describe pdf-converter --platform managed --regions us-east1 --format "value(status.url)")
-2. Verify if URL saved: `echo $SERVICE_URL`
-3. GET without authentication:
-   `curl -X GET $SSERVICE_URL`
-   GET request will fail with reponse `Your client does not have permission to get URL`
-4. Try GET again, with authentication:  
-   `curl -X GET -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL` 
-   Success! You will get response "Ready to process POST requests from Cloud Storage trigger`
+1. Save URL into an environmental variable **$SERVICE_URL**:  
+  `SERVICE_URL=$(gcloud run services describe pdf-converter --platform managed --region us-east1 --format "value(status.url)")`  
+2. Verify if URL saved: `echo $SERVICE_URL`  
+3. GET without authentication:  
+   `curl -X GET $SSERVICE_URL`  
+   GET request will fail with reponse `Your client does not have permission to get URL`  
+4. Try GET again, with authentication:    
+   `curl -X GET -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`   
+   Success! You will get response "Ready to process POST requests from Cloud Storage trigger`  
 
 ### Task 6: Subscribe to PubSub topic
 Event (upload to GCS) > notification message from GCS to PubSub topic queue > message pushed to subscribed Cloud Run service
@@ -256,15 +257,18 @@ gcloud pubsub subscriptions create pdf-conv-sub \       <= pdf-conv-pub is name 
   --push-auth-service-account=pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com <= [name of service account]@[email.com]
 ```
 ### Task 7: Testing Cloud Storage Notification
-Upload some files to `gs://$GOOGLE_CLOUD_PROJECT-upload` and check if you get PDF files in `gs://$GOOGLE_CLOUD_PROJECT-processed` 
+Upload some files to `gs://$GOOGLE_CLOUD_PROJECT-upload` and check if your files get converted into PDFs in `gs://$GOOGLE_CLOUD_PROJECT-processed`  
 `gsutil -m cp -r gs://spls/gsp762/* gs://$GOOGLE_CLOUD_PROJECT-upload`  
+
 [gsutil command](https://cloud.google.com/storage/docs/gsutil/commands/cp) syntax: gsutil cp [flags] [source_url] [destination_url]
   - `cp` for copy
   - `-r` to copy entire dir directory
   - `-m` for multi-thread parallel processing
-In Cloud console, go to **Cloud Storage** > **Buckets**
-  - in bucket with name ending in `-upload`, **Refresh** and see the files deleted as they are converted to PDFs
-  - in bucket with name ending in `-processed`, **Refresh** and see PDF version of all files. They should open properly.
+
+In Cloud console, go to **Cloud Storage** > **Buckets**.
+  - in bucket with name ending in `-upload`, **Refresh** and see the files deleted as they are converted to PDFs.  
+  - in bucket with name ending in `-processed`, **Refresh** and see PDF version of all files. They should open properly.  
+  
 Check log of Cloud Run for file conversions.
-  - **Navigation menu** > **Cloud Run** > **pdf-converter** > **LOGS** tab > filter for "Converting"
-  - can tally with files in `-upload` and `-processed` buckets
+  - **Navigation menu** > **Cloud Run** > **pdf-converter** > **LOGS** tab > filter for "Converting".  
+  - verify if logs tally with files in `-upload` and `-processed` buckets.  
