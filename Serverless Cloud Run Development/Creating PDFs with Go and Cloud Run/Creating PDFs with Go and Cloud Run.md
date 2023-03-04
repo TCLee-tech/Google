@@ -1,12 +1,12 @@
 # Creating PDFs with Go and Cloud Run
-To build a web app running on serverless Cloud Run. App automatically converts files uploaded into a Google Cloud Storage (GCS)folder into PDFs and store them in a different GCS folder.
+Aim: To build a web application running on serverless Cloud Run. The app automatically converts files uploaded into a Google Cloud Storage (GCS)folder into PDFs and store them in a different GCS folder.
 
 To learn:
 1. Convert Go application into a container.
 2. Build containers using Cloud Build
-3. Deploy a Cloud Run service using container built
-4. How to create Service Accounts and add permissions
-5. How to use event processing with Google Cloud Storage
+3. Deploy a Cloud Run service using built container
+4. Create Service Accounts and add permissions
+5. Use event processing with Google Cloud Storage
 
 ### Architecture
 ![overall]()
@@ -18,17 +18,19 @@ APIs that should be enabled:
 | Cloud Build | cloudbuild.googleapis.com |
 | Cloud Storage | storage-component.googleapis.com |
 | Cloud Run | run.googleapis.com |
+<hr>
 
 ### Task 1: Get the source code
-1. Activate lab account
-`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
-2. Clone Pet Theory repository
-`git clone https://github.com/Deleplace/pet-theory.git`
-3. Change to directory for lab
-`cd pet-theory/lab03`
+1. Activate lab account  
+`gcloud auth list --filter=status:ACTIVE --format="value(account)"`  
+2. Clone Pet Theory repository  
+`git clone https://github.com/Deleplace/pet-theory.git`  
+3. Change to directory for lab  
+`cd pet-theory/lab03`  
+<hr>
 
 ### Task 2: Create the application
-Add the codes for the application written in Go to `server.go`.  
+Add the codes for the application written in Go to `server.go`  
 To edit `server.go`, you can click on `Open Editor` in Cloud Shell. Then click on `Open in a new window`.  
 Navigate to `pet-theory` > `lab03` > `server.go`  
 ```
@@ -155,13 +157,14 @@ func convertToPDF(localFilePath string, localDir string) (resultFilePath string,
 ```
 To build the Go application:   
 `go build -o server`
+<hr>
 
 ### Task 3: Create a PDF conversion service
 Use open-source LibreOffice to convert .docx documents into PDFs.  
 Add LibreOffice package into container with Go application.  
-1. Edit `Dockerfile` manifest to include LibreOffice package:
-In Cloud Shell, click on `Open editor` and browse to Dockerfile. Or `nano Dockerfile`.
-Update `Dockerfile` to below:
+1. Edit `Dockerfile` manifest to include LibreOffice package.  
+  In Cloud Shell, click on `Open editor` and browse to Dockerfile. Or `nano Dockerfile`.  
+  Update `Dockerfile` to below:
 ```
 FROM DEBIAN:BUSTER
 RUN apt-get update -y \
@@ -171,9 +174,11 @@ WORKDIR /usr/src/app
 COPT server .
 CMD [ "./server"]
 ```  
-**File** > **Save** for Cloud Shell Editor, or `CTRL+X` then `Y` for nano editor.  
+`File` > `Save` for Cloud Shell Editor. `CTRL+X` then `Y` for nano editor.  
+
 2. Build `pdf-converter` container image using Cloud Build:  
 `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`
+
 3. Deploy image as Cloud Run Service named `pdf-converter`: 
 ```
 gcloud run deploy pdf-converter \
@@ -184,6 +189,8 @@ gcloud run deploy pdf-converter \
   --no-allow-unauthenticated \
   --set-env-vars PDF_BUCKET=$GOOGLE_CLOUD_PROJECT-processed \
   --max-instances=3
+```
+<hr>
 
 ### Task 4: Create the Service Account
 1. Integrate Cloud Storage with PubSub. Create notifications to PubSub topic "new-doc" on event (file uploaded to Google Cloud Storage bucket named "upload").
