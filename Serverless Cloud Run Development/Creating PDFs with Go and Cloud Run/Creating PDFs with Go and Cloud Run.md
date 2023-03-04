@@ -235,6 +235,7 @@ A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) 
         --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
         --role=roles/iam.serviceAccountTokenCreator
       ```  
+<hr>
 
 ### Task 5: Testing the Cloud Run Service
 Test if URL of deployed Cloud Run Service is protected by authentication.  
@@ -247,6 +248,7 @@ Test if URL of deployed Cloud Run Service is protected by authentication.
 4. Try GET again, with authentication:    
    `curl -X GET -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`   
    Success! You will get response "Ready to process POST requests from Cloud Storage trigger`  
+<hr>
 
 ### Task 6: Subscribe to PubSub topic
 Event (upload to GCS) > notification message from GCS to PubSub topic queue > message pushed to subscribed Cloud Run service
@@ -256,6 +258,8 @@ gcloud pubsub subscriptions create pdf-conv-sub \       <= pdf-conv-pub is name 
   --push-endpoint=$SERVICE_URL \                        <= URL for Cloud Run service
   --push-auth-service-account=pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com <= [name of service account]@[email.com]
 ```
+<hr>
+
 ### Task 7: Testing Cloud Storage Notification
 Upload some files to `gs://$GOOGLE_CLOUD_PROJECT-upload` and check if your files get converted into PDFs in `gs://$GOOGLE_CLOUD_PROJECT-processed`  
 `gsutil -m cp -r gs://spls/gsp762/* gs://$GOOGLE_CLOUD_PROJECT-upload`  
