@@ -9,7 +9,7 @@ To learn:
 5. Use event processing with Google Cloud Storage
 
 ### Architecture
-![overall](https://github.com/TCLee-tech/Google/blob/fcd6f8f7270dd51f34fe28ccfb0b6be96905fcb1/Serverless%20Cloud%20Run%20Development/Creating%20PDFs%20with%20Go%20and%20Cloud%20Run/Create%20PDFs%20with%20Go%20and%20Cloud%20Run%20Task%203%20Image.jpg)
+![overall](https://github.com/TCLee-tech/Google/blob/0af88a9e890c110fecafb9083188160e40a9657a/Serverless%20Cloud%20Run%20Development/Creating%20PDFs%20with%20Go%20and%20Cloud%20Run/overall%20architecture.jpg)
 
 ### Using Googleapis
 APIs that should be enabled:
@@ -161,7 +161,8 @@ To build the Go application:
 
 ### Task 3: Create a PDF conversion service
 Use open-source LibreOffice to convert .docx documents into PDFs.  
-Add LibreOffice package into container with Go application.  
+Add LibreOffice package into container with Go application.
+![LibreOffice in container with Go application](https://github.com/TCLee-tech/Google/blob/0af88a9e890c110fecafb9083188160e40a9657a/Serverless%20Cloud%20Run%20Development/Creating%20PDFs%20with%20Go%20and%20Cloud%20Run/Create%20PDFs%20with%20Go%20and%20Cloud%20Run%20Task%203%20Image.jpg)
 1. Edit `Dockerfile` manifest to include LibreOffice package.  
   In Cloud Shell, click on `Open editor` and browse to Dockerfile. Or `nano Dockerfile`.  
   Update `Dockerfile` to below:
@@ -193,24 +194,26 @@ gcloud run deploy pdf-converter \
 <hr>
 
 ### Task 4: Create the Service Account
-1. Integrate Cloud Storage with PubSub. Create notifications to PubSub topic "new-doc" on event (file uploaded to Google Cloud Storage bucket named "upload").
+1. Integrate Cloud Storage with PubSub. Create notifications to PubSub topic "new-doc" on event (file uploaded to Google Cloud Storage bucket named "upload").  
 `gsutil notification create -t new-doc -f json -e OBJECT_FINALIZE gs://$GOOGLE_CLOUD_PROJECT-upload`
-  - [gsutil notification command](https://cloud.google.com/storage/docs/gsutil/commands/notification)
-  - `-t` flag specifies PubSub topic
-  - '-f' flag specifies payload format of notification message
-  - '-e' flag filters for event type
-  - `OBJECT_FINALIZE` is when new object is created (event type)
-  - `gs://xxxx` is the source GCS bucket      
+    - [gsutil notification command](https://cloud.google.com/storage/docs/gsutil/commands/notification)  
+    - `-t` flag specifies PubSub topic  
+    - '-f' flag specifies payload format of notification message  
+    - '-e' flag filters for event type  
+    - `OBJECT_FINALIZE` is when new object is created (event type)  
+    - `gs://xxxx` is the source GCS bucket      
 
-  Notice that 2 GCS buckets were pre-created. Cloud console > **Navigation menu** > **Cloud Storage**.
-    - PROJECT_ID-processed
-    - PROJECT_ID-upload
+Notice that 2 GCS buckets were pre-created.  
+  - Cloud console > **Navigation menu** > **Cloud Storage**.   
+    - PROJECT_ID-processed  
+    - PROJECT_ID-upload  
 
 2. Create a Service Account to access Cloud Run  
-A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) is a special type of account used by an application or a compute workload. It can be granted permission to access certain resources based on IAM policy/roles. If a Service Account is attached to a resource (e.g. Compute Engine) running an application, the application can authenticate as the service account and make authorized API calls. 
-  1. Creating service account named `pubsub-cloud-run-invoker`
-    `gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`
-  2. Bind IAM policy to service account invoking the Cloud Run service
+A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) is a special type of account used by an application or a compute workload. It can be granted permission to access certain resources based on IAM policy/roles. If a Service Account is attached to a resource (e.g. Compute Engine) running an application, the application can authenticate as the service account and make authorized API calls.  
+`gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`  
+    - Service Account is named `pubsub-cloud-run-invoker`
+
+3. Bind IAM policy to service account invoking the Cloud Run service
     ```
     gcloud run services add-iam-policy-binding pdf-converter \
         --member=serviceAccount:pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
@@ -219,9 +222,11 @@ A [Service Account](https://cloud.google.com/iam/docs/service-account-overview) 
         --platform managed
     ```
       - name of Cloud Run service: `pdf-converter`
-      - `--member=PRINCIPAL` Format is `user|group|serviceAccount:email` or `domain:domain`. Identifies the Service Account named `pubsub-cloud-run-invoker`.
+      - `--member=PRINCIPAL` 
+          -  Format is `user|group|serviceAccount:email` or `domain:domain`. 
+          -  Identifies the Service Account named `pubsub-cloud-run-invoker`.
       - for the role of `run.invoker`
-      [gcloud run services add-iam-policy-binding](https://cloud.google.com/sdk/gcloud/reference/run/services/add-iam-policy-binding)
+      - [gcloud run services add-iam-policy-binding](https://cloud.google.com/sdk/gcloud/reference/run/services/add-iam-policy-binding)
   3. Enable project to create PubSub authentication tokens
       `PROJECT_NUMBER=$(gcloud projects list --format="value(PROJECT_NUMBER)" --filter="$GOOGLE_CLOUD_PROJECT")`  
       ```
