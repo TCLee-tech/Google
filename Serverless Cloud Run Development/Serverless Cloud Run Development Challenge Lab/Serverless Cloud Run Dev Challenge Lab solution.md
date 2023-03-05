@@ -3,8 +3,9 @@
 ### Situational Overview
 Pet Theory is a veterinary practice which is keen to utilize serverless architecture to update their existing systems.
 #### Architecture
-Pet Theory has nominated the existing monolithic Billing application to be reimagined using serverless.
-![Serverless architecture for Billing application]()
+Pet Theory has nominated the existing monolithic Billing application to be reimagined using serverless.  
+Over the course of this lab, you will be expected to implement this design update.  
+![Serverless architecture for Billing application](https://github.com/TCLee-tech/Google/blob/94ca284b785d14e38cba2ab4179f1c61fcdb6dbd/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20architecture%20for%20billing%20application.jpg)  
 The development team will provide either the code or an image to be deployed as part of the solution.
 
 ### Developing a Minimal Viable Product (MVP)
@@ -16,16 +17,16 @@ You will build a prototype that meets the following high-level requirements:
 | 3   | Secure access between components in production architecture |
 
 ### Provision the lab environment
-**TO DO**
-1. Open Cloud Shell.
-2. Set default project in environment.
-`$(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')`
-3. Set region.
-`gcloud config set run/region us-central1`
-4. Set Cloud Run platform.
-`gcloud config set run/platform managed`
-5. Clone Pet Theory repo.
-`git clone https://github.com/rosera/pet-theory.git && cd pet-theory/lab07`
+**:point_right:^TO DO^**
+1. Open Cloud Shell.  
+2. Set default project in environment.  
+`$(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')`  
+3. Set region.  
+`gcloud config set run/region us-central1`  
+4. Set Cloud Run platform.  
+`gcloud config set run/platform managed`  
+5. Clone Pet Theory repo.  
+`git clone https://github.com/rosera/pet-theory.git && cd pet-theory/lab07`  
 
 ### Task 1: Enable a Public Service
 1. Set up a Rest API for the billing service. Use the information in the table below:
