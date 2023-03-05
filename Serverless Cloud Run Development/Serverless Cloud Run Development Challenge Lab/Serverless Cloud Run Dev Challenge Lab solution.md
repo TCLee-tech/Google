@@ -1,14 +1,15 @@
 # Serverless Cloud Run Development: Challenge Lab
 
-### Situational Overview
+#### Situational Overview
 Pet Theory is a veterinary practice which is keen to utilize serverless architecture to update their existing systems.
+
 #### Architecture
 Pet Theory has nominated the existing monolithic Billing application to be reimagined using serverless.  
 Over the course of this lab, you will be expected to implement this design update.  
 ![Serverless architecture for Billing application](https://github.com/TCLee-tech/Google/blob/94ca284b785d14e38cba2ab4179f1c61fcdb6dbd/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20architecture%20for%20billing%20application.jpg)  
 The development team will provide either the code or an image to be deployed as part of the solution.
 
-### Developing a Minimal Viable Product (MVP)
+#### Developing a Minimal Viable Product (MVP)
 You will build a prototype that meets the following high-level requirements:
 | Ref | Definition of Done |
 | --- | ---                |
@@ -16,7 +17,8 @@ You will build a prototype that meets the following high-level requirements:
 | 2   | Deploy production architecture |
 | 3   | Secure access between components in production architecture |
 
-### Provision the lab environment
+#### Provision the lab environment
+
 **:point_right:^TO DO^**
 1. Open Cloud Shell.  
 2. Set default project in environment.  
@@ -28,6 +30,8 @@ You will build a prototype that meets the following high-level requirements:
 5. Clone Pet Theory repo.  
 `git clone https://github.com/rosera/pet-theory.git && cd pet-theory/lab07`  
 
+<Hr>
+
 ### Task 1: Enable a Public Service
 1. Set up a Rest API for the billing service. Use the information in the table below:
 
@@ -38,11 +42,11 @@ You will build a prototype that meets the following high-level requirements:
 | Authentication | unauthenticated |
 | Code | pet-theory/lab07/unit-api-billing |
 
-##### Architecture
-![Task 1 architecture]()
+#### Architecture
+![Task 1 architecture](https://github.com/TCLee-tech/Google/blob/5ae829ca609861815b1bd67659d7f5a4f65d9834/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%201%20image.jpg)  
 2. Using the available code, deploy the Billing Service.
 
-##### Assessment
+#### Assessment
 To complete this task successfully, you are required to implement the following:
 
   - Build an image using Cloud Build.
@@ -51,26 +55,28 @@ To complete this task successfully, you are required to implement the following:
 
 Note: Activity Tracking can take some time to register. Wait 30 seconds before retrying.
 
-**TO DO**
-1. Change to sub-directory containing code for this task.
+**:point_right:^TO DO^**
+1. Change to sub-directory containing code for this task.  
 `cd ~/pet-theory/lab07/unit-api-billing`
-2. Build container image with tag. It will be uploaded to gcr.io.
+2. Build container image with tag. It will be uploaded to gcr.io.  
 `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.1`
-3. Deploy image as running container on Cloud Run Service.
-```
-gcloud run deploy [Public billing service, e.g. public-billing-service-346] \
-    --image gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.1 \
-    --allow-unauthenticated
-```
-  - region and Cloud Run platform have been preset during provision of lab environment in step above.
-4. Test Cloud Run Service's URL endpoint.
-  - save URL of service in environmental variable **SERVICE_URL**.
-    `SERVICE_URL=$(gcloud run services describe [Public billing service] --format "value(status.url)")`
-  - display SERVICE_URL to verify.
-    `echo $SERVICE_URL`
-  - Make annoymous GET request to service URL.
-    `curl -X GET $SERVICE_URL`
-  - You should get a response ...
+3. Deploy image as running container on Cloud Run Service.  
+  ```
+  gcloud run deploy [Public billing service, e.g. public-billing-service-346] \
+  --image gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.1 \
+  --allow-unauthenticated
+  // Cloud Run region and platform have been preset during provision of lab environment before Task 1.  
+  ```  
+  
+
+4. Test Cloud Run Service's URL endpoint.  
+    - save URL of Public billing service in environmental variable **SERVICE_URL**.  
+      `SERVICE_URL=$(gcloud run services describe [Public billing service] --format "value(status.url)")`  
+    - display SERVICE_URL to verify.  
+      `echo $SERVICE_URL`  
+    - Make annoymous GET request to service URL.  
+      `curl -X GET $SERVICE_URL`  
+    - You should get a response ...
 
 <Hr>
 
@@ -84,17 +90,17 @@ Set up a Frontend Service. Use the information in the table below:
 | Authentication | unauthenticated |
 | Code | pet-theory/lab07/staging-frontend-billing |
 
-##### Architecture
+#### Architecture
 ![Task 2 architecture]()
 
-##### Assessment
+#### Assessment
 To complete this section successfully, you are required to implement the following tasks:
 
 - Build an image using Cloud Build.
 - Deploy the image to Cloud Run as an unauthenticated service.
 - Service should respond when the endpoint is accessed.
 
-**TO DO**
+**:point_right:^TO DO^**
 1. Change to sub-directory containing codes for this task.
 `cd ~/pet-theory/lab07/staging-frontend-billing`
 2. Build container image with tag, and upload to gcr.io.
@@ -125,10 +131,10 @@ gcloud run deploy [Frontend staging service, e.g. frontend-staging-service-756] 
 | Authentication | authenticated |
 | Code | pet-theory/lab07/staging-api-billing |
 
-##### Architecture
+#### Architecture
 ![Task 3 architecture]()
 
-##### Assessment: Cloud Run Development
+#### Assessment: Cloud Run Development
 To complete this section successfully, you are required to implement the following tasks:
 
 - Delete the existing Billing Service.
@@ -146,7 +152,7 @@ BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
 - Service should respond when the endpoint is accessed
   `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`
 
-**TO DO**
+**:point_right:^TO DO^**
 A Cloud Run Billing Service was deployed in Task 1.
 [View a list of available Cloud Run Services](https://cloud.google.com/run/docs/managing/services#viewing_the_list_of_services_in_your_project) to confirm, `gcloud run services list`
 1. [Delete](https://cloud.google.com/sdk/gcloud/reference/run/services/delete) the existing Cloud Run Billing Service.
@@ -188,13 +194,13 @@ In preparation for the deployment to production, you will need to create a Servi
 | Service Name | billing-service|
 | Role | N/A |
 
-##### Architecture
+#### Architecture
 ![Task 4 architecture]()
 
-##### Assessment: Service Account
+#### Assessment: Service Account
 To complete this section successfully, you are required to create a Service Account.
 
-**TO DO**
+**:point_right:^TO DO^**
 To create service account for the Billing Service on Cloud Run,
 `gcloud iam service-accounts create [Billing service account] --display-name "Billing Service Cloud Run"`
 [Create service account reference](https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-gcloud)
@@ -212,10 +218,10 @@ Associate the Billing Service Account with Billing Service:
 | Code | pet-theory/lab07/prod-api-billing |
 | Service Account | Billing service account, e.g. billing-service-sa-524|
 
-##### Architecture
+#### Architecture
 ![Task 5 Architecture]()
 
-##### Assessment: Cloud Run Development
+#### Assessment: Cloud Run Development
 To complete this section successfully, you are required to implement the following tasks:
 
 - Deploy the image to Cloud Run.
@@ -239,7 +245,7 @@ $BILLING_URL
 ```
 
 
-**TO DO**
+**:point_right:^TO DO^**
 1. Change to sub-directory containing codes for Task 5.
 `cd ~/pet-theory/lab07/prod-api-billing`
 2. Build tagged container image of "Billing production service" using codes in this sub-directory.
@@ -296,10 +302,10 @@ Create a new Service Account for the Frontend capable of invoking the Billing Se
 | Service Name | frontend-prod-service |
 | Role | run.invoker |
 
-##### Architecture
+#### Architecture
 ![Task 6 Architecture]()
 
-##### Assessment
+#### Assessment
 To complete this section successfully, you are required to implement the following tasks:
 
 - Create a Service Account.
@@ -307,7 +313,7 @@ To complete this section successfully, you are required to implement the followi
 - Give Service Account run.invoker permission.
 - Bind Account to Service.
 
-**TO DO**
+**:point_right:^TO DO^**
 1. Create Frontend service account.
 `gcloud iam service-accounts create [Frontend service account] --display-name "Billing Service Cloud Run Invoker"`
 2. Apply Frontend service account to Frontend staging service (from Task 2)
@@ -333,10 +339,10 @@ Use the new Service Account and redeploy the Frontend Service:
 | Code | pet-theory/lab07/prod-frontend-billing |
 | Service Account | Frontend service account, e.g. frontend-service-sa-975 |
 
-##### Architecture
+#### Architecture
 ![Task 7 Architecture]()
 
-##### Assessment: Cloud Run Development
+#### Assessment: Cloud Run Development
 To complete this section successfully, you are required to implement the following tasks:
 
 - Deploy the image to Cloud Run.
@@ -344,7 +350,7 @@ To complete this section successfully, you are required to implement the followi
 - Enable Service Account.
 - Service should respond when the endpoint is accessed.
 
-**TO DO**
+**:point_right:^TO DO^**
 1. Change to sub-directory containing codes for Task 7.  
   `cd ~/pet-theory/lab07/prod-frontend-billing`
 2. Build tagged container image of "Frontend production service" using codes in this sub-directory.  
