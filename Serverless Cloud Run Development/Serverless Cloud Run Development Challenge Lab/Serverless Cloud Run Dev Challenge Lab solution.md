@@ -91,7 +91,7 @@ Set up a Frontend Service. Use the information in the table below:
 | Code | pet-theory/lab07/staging-frontend-billing |
 
 #### Architecture
-![Task 2 architecture]()
+![Task 2 architecture](https://github.com/TCLee-tech/Google/blob/864f971a0facf9162a0aa214fb239a6383c3f559/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%202%20image.jpg)  
 
 #### Assessment
 To complete this section successfully, you are required to implement the following tasks:
@@ -101,25 +101,27 @@ To complete this section successfully, you are required to implement the followi
 - Service should respond when the endpoint is accessed.
 
 **:point_right:^TO DO^**
-1. Change to sub-directory containing codes for this task.
-`cd ~/pet-theory/lab07/staging-frontend-billing`
-2. Build container image with tag, and upload to gcr.io.
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`
-3. Deploy the image to Cloud Run.
+1. Change to sub-directory containing codes for this task.  
+`cd ~/pet-theory/lab07/staging-frontend-billing`  
+2. Build container image with tag, and upload to gcr.io.  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1`  
+3. Deploy the image to Cloud Run.  
 ```
 gcloud run deploy [Frontend staging service, e.g. frontend-staging-service-756] \
 --image gcr.io/$GOOGLE_CLOUD_PROJECT/frontend-staging:0.1 \
 --allow-unauthenticated
 ```
-4. Test Cloud Run Service's URL endpoint.
-  - save URL of service in environmental variable **SERVICE_URL_TASK2**  
-    `SERVICE_URL_TASK2=$(gcloud run services describe [Frontend staging service] --format "value(status.url)")`  
-  - display SERVICE_URL_TASK2 to verify.  
-    `ECHO $SERVICE_URL_TASK2`  
-  - make annoymous GET request to service URL.  
-    `curl -X get $SERVICE_URL_TASK2`  
-  - You should get a reponse ...  
+4. Test frontend-staging-service-xxx URL endpoint.  
+    - save URL of service in environmental variable **SERVICE_URL_TASK2**  
+      `SERVICE_URL_TASK2=$(gcloud run services describe [Frontend staging service] --format "value(status.url)")`  
+    - display SERVICE_URL_TASK2 to verify.  
+      `ECHO $SERVICE_URL_TASK2`  
+    - make annoymous GET request to service URL.  
+      `curl -X get $SERVICE_URL_TASK2`  
+    - You should get a reponse ...  
 
+<Hr>
+  
   ### Task 3. Deploy a Private Service  
   The development team updated their application and would like this deployed to the staging environment:
   
