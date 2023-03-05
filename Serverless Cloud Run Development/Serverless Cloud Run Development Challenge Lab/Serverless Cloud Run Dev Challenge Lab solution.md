@@ -283,7 +283,7 @@ Create a new Service Account for the Frontend capable of invoking the Billing Se
 | Role | run.invoker |
 
 #### Architecture
-![Task 6 Architecture]()
+![Task 6 Architecture](https://github.com/TCLee-tech/Google/blob/8a6290f5d56fdfdaaa185d23aadf84050f7d215c/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%206%20image)
 
 #### Assessment
 To complete this section successfully, you are required to implement the following tasks:
@@ -294,10 +294,10 @@ To complete this section successfully, you are required to implement the followi
 - Bind Account to Service.
 
 **:point_right:^TO DO^**
-1. Create Frontend service account.
-`gcloud iam service-accounts create [Frontend service account] --display-name "Billing Service Cloud Run Invoker"`
-2. Apply Frontend service account to Frontend staging service (from Task 2)
-```
+1. Create Frontend service account.  
+`gcloud iam service-accounts create [Frontend service account] --display-name "Billing Service Cloud Run Invoker"`  
+2. Apply Frontend service account to Frontend production service
+```  
 gcloud run services add-iam-policy-binding frontend-prod-service \
   --member=serviceAccount:[Frontend service account, e.g. frontend-service-sa-975]@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
   --role=roles/run.invoker \
