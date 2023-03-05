@@ -221,7 +221,7 @@ Associate the Billing Service Account with Billing Service:
 | Service Account | Billing service account, e.g. billing-service-sa-524|
 
 #### Architecture
-![Task 5 Architecture]()
+![Task 5 Architecture](https://github.com/TCLee-tech/Google/blob/4e4822d85186d035aaa58a96884c64a39e3fa86d/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%205%20image)
 
 #### Assessment: Cloud Run Development
 To complete this section successfully, you are required to implement the following tasks:
@@ -234,7 +234,7 @@ To complete this section successfully, you are required to implement the followi
 
 Note: Replace PRIVATE_BILLING_SERVICE inside the code-block with [private billing service from Task 3, e.g. private-billing-service-630]
 ```
-BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
+PROD_BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
 --platform managed \
 --region us-central1 \
 --format "value(status.url)")
@@ -243,54 +243,32 @@ Access the deployed endpoint:
 ```
 curl -X get -H "Authorization: Bearer \
 $(gcloud auth print-identity-token)" \
-$BILLING_URL
+$PROD_BILLING_URL
 ```
 
 
 **:point_right:^TO DO^**
-1. Change to sub-directory containing codes for Task 5.
-`cd ~/pet-theory/lab07/prod-api-billing`
-2. Build tagged container image of "Billing production service" using codes in this sub-directory.
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/billing-prod-api:0.1`
-3. Deploy image to Cloud Run, requiring authentication.
+1. Change to sub-directory containing codes for Task 5.  
+`cd ~/pet-theory/lab07/prod-api-billing`  
+2. Build tagged container image of billing-prod-service-xxx using codes in this sub-directory.  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/billing-prod-api:0.1`  
+3. Deploy image to Cloud Run, requiring authentication.  
 ```
 gcloud run deploy [Billing production service, e.g. billing-prod-service-638] \
 --image gcr.io/$GOOGLE_CLOUD_PROJECT/billing-prod-api:0.1 \
 --no-allow-unauthenticated
 ```
-
-/// I think no need ..
-4. Bind IAM permission to invoke "Billing production service" to service account created in Task 4.
-```
-gcloud run services add-iam-policy-binding [Billing production service] \
-  --member=serviceAccount:[Billing service account]@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
-  --role=roles/run.invoker \
-  --region us-central1 \
-  --platform managed
-```
-5. Enable project to create PubSub authentication tokens:
-  - extract Project Number to an environment variable
-  `PROJECT_NUMBER=$(gcloud projects list --format="value(PROJECT_NUMBER)" --FILTER="$GOOGLE_CLOUD_PROJECT")`
-  - add-iam-policy-binding to project
-  ```
-  `gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
-    --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
-    --role=roles/iam.serviceAccountTokenCreator
-  ```
-///
-
-
-6. Test the Billing production service endpoint
-  - set BILLING_URL environment variable to Cloud Run Private billing service endpoint (from Task 3).
-  ```
-  BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
-  --platform managed \
-  --region us-central1 \
-  --format 'value(status.url)')
-  ```
-  - access the deployed endpoint.
-  `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`
-  You should get response `"status":"Billing Service Rest API: Online"}`.
+4. Test the billing-prod-service-xxx  endpoint
+    - set PROD_BILLING_URL environment variable to private-billing-service-xxx endpoint (from Task 3).
+    ```
+    PROD_BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
+    --platform managed \
+    --region us-central1 \
+    --format 'value(status.url)')
+    ```
+    - access the deployed endpoint.  
+    `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $PROD_BILLING_URL`  
+    You should get response `"status":"Billing Service Rest API: Online"}`.
 
 <Hr>
 
