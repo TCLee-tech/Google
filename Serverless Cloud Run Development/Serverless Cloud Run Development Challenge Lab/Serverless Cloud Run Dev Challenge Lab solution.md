@@ -134,7 +134,7 @@ gcloud run deploy [Frontend staging service, e.g. frontend-staging-service-756] 
 | Code | pet-theory/lab07/staging-api-billing |
 
 #### Architecture
-![Task 3 architecture]()
+![Task 3 architecture](https://github.com/TCLee-tech/Google/blob/144bdd4409319b76b91fb1f2a3d9ff43a2ce681d/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%203%20image.jpg)  
 
 #### Assessment: Cloud Run Development
 To complete this section successfully, you are required to implement the following tasks:
@@ -142,47 +142,47 @@ To complete this section successfully, you are required to implement the followi
 - Delete the existing Billing Service.
 - Build an image using Cloud Build.
 - Deploy the image to Cloud Run requiring authentication.
-- Assign the BILLING_URL to an environment variable.
-    Note: Replace PRIVATE_BILLING_SERVICE inside the code-block with [Private billing service]  
+- Assign the BILLING_URL to an environment variable.  
+
+  Note: Replace PRIVATE_BILLING_SERVICE inside the code-block with private-billing-service-xxx  
 ```
-BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
---platform managed \
---region us-central1 \
---format "value(status.url)")
-```  
+  BILLING_URL=$(gcloud run services describe PRIVATE_BILLING_SERVICE \
+  --platform managed \
+  --region us-central1 \
+  --format "value(status.url)")
+  ```  
+- Service should respond when the endpoint is accessed  
+  `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`  
 
-- Service should respond when the endpoint is accessed
-  `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`
-
-**:point_right:^TO DO^**
-A Cloud Run Billing Service was deployed in Task 1.
-[View a list of available Cloud Run Services](https://cloud.google.com/run/docs/managing/services#viewing_the_list_of_services_in_your_project) to confirm, `gcloud run services list`
-1. [Delete](https://cloud.google.com/sdk/gcloud/reference/run/services/delete) the existing Cloud Run Billing Service.
-`gcloud run services delete [Public billing service from Task 1] --platform managed  --region us-central1`  
-Verify Billing Service removed, `gcloud run services list`  
-2. Change to sub-directory containing codes for task 3.
-`cd ~/pet-theory/lab07/staging-api-billing`
-3. Build tagged container image using codes in this sub-directory.
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.2`
-4. Deploy image to [Cloud Run requiring authentication](https://cloud.google.com/sdk/gcloud/reference/run/deploy#--[no-]allow-unauthenticated).
+**:point_right:^TO DO^**  
+A Public billing service was deployed in Task 1.  
+  - [View a list of available Cloud Run Services](https://cloud.google.com/run/docs/managing/services#viewing_the_list_of_services_in_your_project) to confirm: `gcloud run services list`  
+1. [Delete](https://cloud.google.com/sdk/gcloud/reference/run/services/delete) the existing Public billing service from Task 1.  
+`gcloud run services delete [Public billing service from Task 1] --platform managed  --region us-central1`    
+To verify Public billing service removed: `gcloud run services list`    
+2. Change to sub-directory containing codes for task 3.  
+`cd ~/pet-theory/lab07/staging-api-billing`  
+3. Build tagged container image using codes in this sub-directory.  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.2`  
+4. Deploy image to [Cloud Run requiring authentication](https://cloud.google.com/sdk/gcloud/reference/run/deploy#--[no-]allow-unauthenticated).  
 ```
 gcloud run deploy [Private billing service, e.g. private-billing-service-630] \
   --image gcr.io/$GOOGLE_CLOUD_PROJECT/billing-staging-api:0.2 \
   --no-allow-unauthenticated
 ```
-5. Test Billing Service URL endpoint.
-  - assign URL of service to an environment variable **BILLING_URL**  
-   ```
-   BILLING_URL=$(gcloud run services describe [Private billing service, e.g. private-billing-service-630] \
-    --platform managed \
-    --region us-central1 \
-    --format "value(status.url)")
-  ```
-  - display BILLING_URL to verify if assignment successful.
-    `echo $BILLING_URL`
-  - make GET request with authorization to Billing Service endpoint.
-    `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`
-  - Service should response with `{"status":"Billing Service Rest API: Online"}`.
+5. Test Private billing service URL endpoint.  
+    - assign URL of service to an environment variable **BILLING_URL**  
+     ```
+    BILLING_URL=$(gcloud run services describe [Private billing service, e.g. private-billing-service-630] \
+      --platform managed \
+      --region us-central1 \
+      --format "value(status.url)")
+    ```
+    - display BILLING_URL to verify if assignment successful.  
+      `echo $BILLING_URL`  
+    - make GET request with authorization to this Private billing service endpoint.  
+      `curl -X get -H "Authorization: Bearer $(gcloud auth print-identity-token)" $BILLING_URL`  
+    - Service should response with `{"status":"Billing Service Rest API: Online"}`.  
  
 <Hr>
 
