@@ -356,15 +356,15 @@ To complete this section successfully, you are required to implement the followi
   You should get a response `{"status":"Billing Service Rest API: Online"}`  
 6. Access the production frontend service to display the user interface.  
     - save URL of production frontend service to an environment variable **FRONTEND_URL**:  
-  ```
-  FRONTEND_URL=$(gcloud run services describe [frontend production service] \
-    --platform managed \
-    --region us-central1 \
-    --format "value (status.url)")
-  ```
-  - display FRONTEND_URL  
-    `echo $FRONTEND_URL`  
-  - make an annoymous unauthenticated GET request to frontend URL:  
-    `curl -X get $FRONTEND_URL`  
-  - You should see info on screen from the Billing Service.  
+    ```
+    FRONTEND_URL=$(gcloud run services describe [frontend production service] \
+      --platform managed \
+      --region us-central1 \
+      --format "value (status.url)")
+    ```
+    - display FRONTEND_URL  
+      `echo $FRONTEND_URL`  
+    - make an annoymous unauthenticated GET request to frontend URL:  
+      `curl -X get $FRONTEND_URL`  
+    - You should see info on screen from the Billing Service.  
 
