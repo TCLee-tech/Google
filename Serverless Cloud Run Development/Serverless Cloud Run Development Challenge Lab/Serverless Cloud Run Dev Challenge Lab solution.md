@@ -197,14 +197,14 @@ In preparation for the deployment to production, you will need to create a Servi
 | Role | N/A |
 
 #### Architecture
-![Task 4 architecture]()
+![Task 4 architecture](https://github.com/TCLee-tech/Google/blob/eb8df3b722b7cde693df563c19201bf718292dc9/Serverless%20Cloud%20Run%20Development/Serverless%20Cloud%20Run%20Development%20Challenge%20Lab/Serverless%20Cloud%20Run%20Dev%20Challenge%20Lab%20Task%204%20image)  
 
 #### Assessment: Service Account
 To complete this section successfully, you are required to create a Service Account.
 
 **:point_right:^TO DO^**
-To create service account for the Billing Service on Cloud Run,
-`gcloud iam service-accounts create [Billing service account] --display-name "Billing Service Cloud Run"`
+To create service account for the Billing Service on Cloud Run:  
+`gcloud iam service-accounts create [Billing service account] --display-name "Billing Service Cloud Run"`  
 [Create service account reference](https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-gcloud)
 
 <Hr>
