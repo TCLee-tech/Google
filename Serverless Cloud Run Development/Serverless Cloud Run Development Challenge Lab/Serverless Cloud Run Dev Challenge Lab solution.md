@@ -295,7 +295,8 @@ To complete this section successfully, you are required to implement the followi
 
 **:point_right:^TO DO^**
 1. Create Frontend service account.  
-`gcloud iam service-accounts create [Frontend service account] --display-name "Billing Service Cloud Run Invoker"`  
+`gcloud iam service-accounts create [Frontend service account, e.g. frontend-service-sa-975] --display-name "Billing Service Cloud Run Invoker"`  
+
 2. Apply Frontend service account to Frontend production service
 ```  
 gcloud run services add-iam-policy-binding frontend-prod-service \
@@ -304,6 +305,11 @@ gcloud run services add-iam-policy-binding frontend-prod-service \
   --region us-central1 \
   --platform managed
 ```
+Note: Frontend production Cloud Run service is only deployed in Task 7 later.
+
+[Reference for gcloud run services add-iam-policy-binding](https://cloud.google.com/sdk/gcloud/reference/run/services/add-iam-policy-binding)
+  - syntax: gcloud run services add-iam-policy-binding [ID or fully qualified identifier of the Cloud Run service]
+  - `--member=PRINCIPAL`. The principal we are adding the binding for. Should be `user|group|serviceAccount:email` or `domain:domain`.
 
 <Hr>
 
