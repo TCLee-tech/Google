@@ -29,6 +29,8 @@ To learn:
 Run [LibreOffice](https://www.libreoffice.org/) in serverless environment using [Cloud Run](https://www.youtube.com/watch?v=16vANkKxoAU&t=1317s)  
 Cloud console > **Navigation menu** > **API & Services** > **Library** > Seach for Cloud Run > **Enable** if not enabled.  
 
+<Hr>
+
 ### Task 3: Deploy a simple Cloud Run
 1. Clone Pet Theory repository  
 `git clone https://github.com/rosera/pet-theory.git`  
@@ -95,7 +97,7 @@ CMD [ "npm", "start" ]              <= command to execute: npm start. Runs the c
 7. Build the container and push it to Google Container Registry (GCR)  
 `gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`  
 8. To verify that container image is successfully stored in GCR, **Container Registry** > **Images**  
-![GCR image]()  
+![GCR image](https://github.com/TCLee-tech/Google/blob/b796999e37f12fb166654d491aada626cdec0f66/Serverless%20Cloud%20Run%20Development/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files%20Task%203.jpeg)  
 9. Deploy container to Cloud Run  
 ```
 gcloud run deploy pdf-converter \
@@ -105,88 +107,102 @@ gcloud run deploy pdf-converter \
   --no-allow-unauthenticated \    <= specifies that incoming HTTP request must be authorized
   --max-instances=1
 ```
-You will get service URL once deployment complete. Syntax: https://pdf-converter-[hash].a.run.app
-10. Extract service URL to an environment variable **SERVICE_URL**.
-`SERVICE_URL=$(gcloud beta run services describe pdf-converter --platform managed --region us-east1 --format="value(status.url)")`
-11. To check that above is successful, `echo $SERVICE_URL`
-12. Test with annoymous unauthorized POST request to Cloud Run Service URL endpoint
-`curl -X $SERVICE_URL`
-You will get an error message "Your client does not have permission to get the URL".
-13. Test as authorized user
-`curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`
-You should get an "OK" response if successful.
+  - You will get service URL once deployment complete. Syntax: https://pdf-converter-[hash].a.run.app  
 
+10. Extract service URL to an environment variable **SERVICE_URL**.  
+`SERVICE_URL=$(gcloud beta run services describe pdf-converter --platform managed --region us-east1 --format="value(status.url)")`  
+11. To check that above is successful, `echo $SERVICE_URL`  
+12. Test with annoymous unauthorized POST request to Cloud Run Service URL endpoint  
+`curl -X $SERVICE_URL`  
+You will get an error message "Your client does not have permission to get the URL".  
+13. Test as authorized user  
+`curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`  
+You should get an "OK" response if successful.  
+
+<Hr>
+    
 ### Task 4: Trigger your Cloud Run service when a new file is uploaded
 ##### Create the Cloud Storage Buckets
-1. Create a GCS bucket to upload .docx files
+1. Create a GCS bucket to upload .docx files  
 `gsutil mb gs://$GOOGLE_CLOUD_PROJECT-upload`  
-  - gsutil is a Python application for interacting with Google Storage
-  -  `mb` for make bucket
-  - syntax: `gs://BUCKET_NAME/OBJECT_NAME`
-2. Create a GCS bucket for the processed PDFs
-`gsutil mb gs://$GOOGLE_CLOUD_PROJECT-processed`
-3. To verify: Cloud console > **Navigation menu** > **Cloud storage** >look for the 2 buckets created
+    - gsutil is a Python application for interacting with Google Storage  
+    -  `mb` for make bucket  
+    - syntax: `gs://BUCKET_NAME/OBJECT_NAME`  
 
-##### Set up Cloud Storage to send notifications to PubSub on event
-`gsutil notification create -t new-doc -f json -e OBJECT_FINALIZE gs://$GOOGLE_CLOUD_PROJECT-upload`
-  - `t` specifies topic "new-doc"
-  - `-f` specifies format "json"
-  - `-e` specifies event - when object finalized
-  - `gs://bucket-name` is the source bucket
+2. Create a GCS bucket for the processed PDFs  
+`gsutil mb gs://$GOOGLE_CLOUD_PROJECT-processed`  
+
+3. To verify: Cloud console > **Navigation menu** > **Cloud storage** >look for the 2 buckets created  
+
+##### Set up Cloud Storage to send notifications to PubSub on event  
+`gsutil notification create -t new-doc -f json -e OBJECT_FINALIZE gs://$GOOGLE_CLOUD_PROJECT-upload`  
+  - `t` specifies topic "new-doc"  
+  - `-f` specifies format "json"  
+  - `-e` specifies event: when object finalized  
+  - `gs://bucket-name` is the source bucket  
 
 ##### Service Account for PubSub to forward notifications and invoke Cloud Run
-1. Create Service Account
-`gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`
-  - name of service account: pubsub-cloud-run-invoker
-2. Bind IAM permission for Cloud Run invoker role to Service Account
-```
-gcloud beta run services add-iam-policy-binding pdf-converter \
-  --member=serviceAccount:pubsub-cloud-run-invoker@GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
-  --role=roles/run.invoker \
-  --platform managed \
-  region us-east1
-```
-  - pdf-converter: name of Cloud Run Service
-  - `member=serviceAccount:[service account name]@email.com`
-3. Enable project to create PubSub authentication tokens
-  - get project number
-    `gcloud projects list`
-    copy PROJECT_NUMBER for PROJECT_ID starting with "qwiklabs-gcp-"
-  - set project number into an environment variable
-    `PROJECT_NUMBER=[project number]`
-  - bind IAM permission for project to create PubSub authentication tokens
-    ```
+1. Create Service Account  
+  `gcloud iam service-accounts create pubsub-cloud-run-invoker --display-name "PubSub Cloud Run Invoker"`  
+    - name of service account: pubsub-cloud-run-invoker  
+
+2. Bind IAM permission for Cloud Run invoker role to Service Account  
+  ```
+  gcloud beta run services add-iam-policy-binding pdf-converter \
+    --member=serviceAccount:pubsub-cloud-run-invoker@GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
+    --role=roles/run.invoker \
+    --platform managed \
+    --region us-east1
+  ```  
+  -> pdf-converter: name of Cloud Run Service  
+  -> `member=serviceAccount:[service account name]@email.com`  
+
+3. Enable project to create PubSub authentication tokens  
+    - get project number  
+      `gcloud projects list`  
+      copy PROJECT_NUMBER for PROJECT_ID starting with "qwiklabs-gcp-"  
+    - set project number into an environment variable  
+      `PROJECT_NUMBER=[project number]`  
+    - bind IAM permission for project to create PubSub authentication tokens  
+  ```
     gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
       --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
       --role=roles/iam.serviceAccountTokenCreator
-    ```
-      - target: $GOOGLE_CLOUD_PROJECT, unique project ID
-      - `member=serviceAccount:[service account name]@email.com`
-4. Create PubSub subscription
-```
-gcloud beta pubsub subscriptions create pdf-conv-sub \
-  --topic new-doc \
-  --push-endpoint=$SERVICE_URL \
-  --push-auth-service-account=pubsub-cloud-run=invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
-```
-  - name of subscription: pdf-conv-sub
-  - name of topic: new-doc
-  - URL of Cloud Run service: in $SERVICE_URL
-  - push authentication service account: [service account name, i.e. pubsubs-cloud-run-invoker]@email.com
+  ```
+      -> target: $GOOGLE_CLOUD_PROJECT, unique project ID  
+      -> `member=serviceAccount:[service account name]@email.com`  
+
+4. Create PubSub subscription    
+  ```    
+  gcloud beta pubsub subscriptions create pdf-conv-sub \
+    --topic new-doc \
+    --push-endpoint=$SERVICE_URL \
+    --push-auth-service-account=pubsub-cloud-run=invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+  ```  
+  -> name of subscription: pdf-conv-sub  
+  -> name of topic: new-doc  
+  -> URL of Cloud Run service: in $SERVICE_URL  
+  -> push authentication service account: [service account name, i.e. pubsubs-cloud-run-invoker]@email.com  
+
+<Hr>
 
 ### Task 5: See if Cloud Run service is triggered when files are uploaded to Cloud Storage
-Upload some test files to Cloud Storage and check Cloud Logging.
-1. Upload test files to Cloud Storage
-`gsutil -m cp gs://spls/gsp644/* gs://$GOOGLE_CLOUD_PROJECT-upload`
-  - `cp` means copy
-  - `-m` specifies multi-thread parallel uploading
-  - syntax: `gsutil cp [flags] [source_url] [destination_url]`
+Upload some test files to Cloud Storage and check Cloud Logging.  
+1. Upload test files to Cloud Storage  
+`gsutil -m cp gs://spls/gsp644/* gs://$GOOGLE_CLOUD_PROJECT-upload`  
+    - `cp` means copy
+    - `-m` specifies multi-thread parallel uploading
+    - syntax: `gsutil cp [flags] [source_url] [destination_url]`
+
 2. Check logs
 Cloud console > **Navigation menu** > **Logging** > filter results to **Cloud Run Revision** and click **Apply** > **Run Query**.
-  - under **Query results**, look for log entries that starts with `file:`. Each is a dump of file data that PubSub sent to Cloud Run service when a new file is uploaded.
-  - note: the containerized application running on Cloud Run does not include functions that use LibreOffice to convert .docx to pdf yet.
-3. To delete the files in the `-upload` folder,
-`gsutil rm -m gs://$GOOGLE_CLOUD_PROJECT-upload/*`
+    - under **Query results**, look for log entries that starts with `file:`. Each is a dump of file data that PubSub sent to Cloud Run service when a new file is uploaded.
+    - note: the containerized application running on Cloud Run does not include functions that use LibreOffice to convert .docx to pdf yet.
+
+3. To delete the files in the `-upload` folder,  
+`gsutil rm -m gs://$GOOGLE_CLOUD_PROJECT-upload/*`  
+
+<Hr>
 
 ### Task 6: Docker containers
 ##### Updating Dockerfile
