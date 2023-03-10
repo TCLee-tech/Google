@@ -5,17 +5,17 @@
 - You are given a fictitious business scenario of a Pet Theory chain of veterinary clinics.
 - The customer wants to do serverless migration.
 - The clinic currently sends invoices in .docx format to customers. However, many customers complain that they cannot open .docx files.
-- Pet Theory wants to build a PDF converter application on Cloud Run. It will automatically convert .docx files uploaded into a storage bucket on Google Cloud Storage into pdf files in another bucket.
+- Pet Theory wants to build a PDF converter application on Cloud Run. It will automatically convert .docx files uploaded into a storage bucket on Google Cloud Storage into pdf files and stores them in another bucket.
 
 ##### Why [Cloud Run](https://cloud.google.com/run/) ?
 1. Serverless. Abstracts away infrastructure maintenance.
 2. Scales to zero. No cost when not in use.
 3. Create/build your own custom binary packages based on containers.
-  - means you can build consistent isolated artifacts.
-  - means you can write in any programming language (Java, Javascript, Go, Python)
+    - means you can build consistent isolated artifacts.
+    - means you can write in any programming language (Java, Javascript, Go, Python)
 
 ##### Architecture
-![overall architecture]()
+![overall architecture](https://github.com/TCLee-tech/Google/blob/fe15a9966954213246bb002dd60d057ecceca227/Serverless%20Cloud%20Run%20Development/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files%20overall%20architecture.jpeg)
 
 To learn:
 1. Create container from a node.js application
@@ -23,32 +23,35 @@ To learn:
 3. Deploy containers for Cloud Run Services
 4. Use event notification/processing with Google Cloud Storage
 
-Task 2: Enable the Cloud Run API
+<Hr>
+
+### Task 2: Enable the Cloud Run API
 Run [LibreOffice](https://www.libreoffice.org/) in serverless environment using [Cloud Run](https://www.youtube.com/watch?v=16vANkKxoAU&t=1317s)  
 Cloud console > **Navigation menu** > **API & Services** > **Library** > Seach for Cloud Run > **Enable** if not enabled.  
 
-Task 3: Deploy a simple Cloud Run
-1. Clone Pet Theory repository
-`git clone https://github.com/rosera/pet-theory.git`
-2. Change to working directory for lab
-`cd pet-theory/lab03`
-3. Add `"start": "node index.js"` to `"scripts"` section in `package.json` file.
-Click on **Open editor** in Cloud Shell and navigate to `package.json` file or `nano package.json`.
-...
+### Task 3: Deploy a simple Cloud Run
+1. Clone Pet Theory repository  
+`git clone https://github.com/rosera/pet-theory.git`  
+2. Change to working directory for lab  
+`cd pet-theory/lab03`  
+3. Add `"start": "node index.js"` to `"scripts"` section in **package.json** file.  
+Click on **Open editor** in Cloud Shell and navigate to `package.json` file. Or, use `nano package.json`.  
+```
 "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-...
-`CYRL + X` then `Y` to save.
-4. Install pacakages for node.js
+```  
+`CYRL + X` then `Y` to save.  
+
+4. Install packages for node.js
 ```
 npm install express
 npm install body-parser
 npm install child_process
 npm install @google-cloud/storage
 ```
-5. Review the codes in `lab03/index.js`.
+5. Review the codes in **lab03/index.js**.  
 This is the main application file. It will be deployed as a Cloud Run service that accepts HTTP POST requests. If the incoming request is a PubSub notification, the app will write the  details to the log. If not, it simply returns 'OK'.
 ```
 const express    = require('express');
@@ -80,20 +83,20 @@ function decodeBase64Json(data) {
   return JSON.parse(Buffer.from(data, 'base64').toString());
 }
 ```
-6. Review the `Dockerfile`
+6. Review the **Dockerfile**
 ```
 FROM node:12                        <= informs the base image to use as template
 WORKDIR /usr/src/app
 COPY package.json package*.json ./
 RUN npm install --only=production
 COPY . .
-CMD [ "npm", "start" ]              <= command to execute: npm start
+CMD [ "npm", "start" ]              <= command to execute: npm start. Runs the command specified in "start" property of "script" object of package.json.
 ```
-7. Build the container and push it to Google Container Registry (GCR)
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`
-8. To verify that container image is successfully stored in GCR, **Container Registry** > **Images**
-![GCR image]()
-9. Deploy container to Cloud Run
+7. Build the container and push it to Google Container Registry (GCR)  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`  
+8. To verify that container image is successfully stored in GCR, **Container Registry** > **Images**  
+![GCR image]()  
+9. Deploy container to Cloud Run  
 ```
 gcloud run deploy pdf-converter \
   --image gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter \
