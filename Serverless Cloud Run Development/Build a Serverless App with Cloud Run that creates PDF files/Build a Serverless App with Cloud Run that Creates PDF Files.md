@@ -208,7 +208,7 @@ Cloud console > **Navigation menu** > **Logging** > filter results to **Cloud Ru
 ##### Updating Dockerfile
 Container requires node Express components and LibreOffice package
   - LibreOffice package was not included in container previously.
-![Task 6 image]()
+![Task 6 image](https://github.com/TCLee-tech/Google/blob/35d47e80441036de97ff9cef83e914325e525645/Serverless%20Cloud%20Run%20Development/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20creates%20PDF%20files%20Task%206.jpeg)
 
 In Dockerfile, add the commands used to install LibreOffice as a `RUN` command.
 ```
@@ -283,10 +283,11 @@ async function uploadFile(bucketName, fileName) {
   await storage.bucket(bucketName).upload(`/tmp/${fileName}`);
 }
 ```
-##### Build container and deploy to Cloud Run
-1. Build container containing LibreOffice package.
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`
-2. Deploy to Cloud Run
+
+##### Build container and deploy to Cloud Run  
+1. Build container containing LibreOffice package.  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter`  
+2. Deploy to Cloud Run  
 ```
 gcloud run deploy pdf-converter \                       //name of cloud run service: pdf-converter
   --image gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter \
@@ -299,14 +300,16 @@ gcloud run deploy pdf-converter \                       //name of cloud run serv
 ```
 
 ### Task 7: Testing the pdf-conversion service
-1. Test with HTTP POST using [cURL](https://curl.se/docs/manpage.html)
-`curl -X POST -H "Authhorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`
-  - `-X` specifies the request method to use
-  - `-H` refers to extra header info to send. It is added to the regular request headers.
-You should get an "OK" response if Cloud Run deployment was successful.
+1. Test with HTTP POST using [cURL](https://curl.se/docs/manpage.html)  
+`curl -X POST -H "Authhorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL`  
+    - `-X` specifies the request method to use  
+    - `-H` refers to extra header info to send. It is added to the regular request headers.  
+You should get an "OK" response if Cloud Run deployment was successful.  
 2. Test with files.
-  - LibreOffice can convert many file types into PDFs: docx, xlsx, jpg, png, gif, etc
-  - upload some sample files into "-upload" Cloud Storage bucket
-  - `gsutil -m cp gs://spls/gsp644/* gs://$GOOGLE_CLOUD_PROJECT-upload`
-  - To verify, Cloud console > **Navigation menu** > **Cloud Storage** > open `-upload` bucket > click **Refresh** button a few times to see uploaded files deleted as they are converted into PDFs. Open `-processed` bucket to check if it contains PDF versions of all files. Open a few PDF files to check if they are converted properly.
+    - LibreOffice can convert many file types into PDFs: docx, xlsx, jpg, png, gif, etc
+    - upload some sample files into "-upload" Cloud Storage bucket
+    - `gsutil -m cp gs://spls/gsp644/* gs://$GOOGLE_CLOUD_PROJECT-upload`
+    - To verify, Cloud console > **Navigation menu** > **Cloud Storage** > open `-upload` bucket > click **Refresh** button a few times to see uploaded files deleted as they are converted into PDFs. 
+      - Open `-processed` bucket to check if it contains PDF versions of all files. 
+      - Open a few PDF files to check if they are converted properly.
 
