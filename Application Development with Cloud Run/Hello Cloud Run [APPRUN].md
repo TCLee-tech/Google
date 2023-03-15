@@ -9,7 +9,7 @@
   - containers can run fully managed on Cloud Run
     - or in GKE cluster
 
-Cloud Run is built from Knative. 
+Cloud Run is built from [Knative](https://cloud.google.com/knative/). 
 Knative is for building and running serverless applications on Kubernetes.
 - containers
 - cached artifacts for faster deployment
@@ -28,41 +28,52 @@ To learn:
 4. Deploy container image to Cloud Run
 5. Delete unneeded images to avoid extra storage charges
 
+<Hr>
+
 ### Task 1: Enable the Cloud Run API and configure Cloud Shell environment
 1. Either
-    - `gcloud services enable run.agoogleapis.com` or 
-    - Cloud console > **APIs & Services**
-2. Set compute region
-`gcloud config set compute/region us-central1`
-3. Create LOCATION environment variable
-`LOCATION="us-central1`
+    - `gcloud services enable run.googleapis.com` or 
+    - Cloud console > **APIs & Services**  
+2. Set compute region  
+`gcloud config set compute/region us-central1`  
+3. Create LOCATION environment variable  
+`LOCATION="us-central1"`  
 
+<Hr>
+  
 ### Task 2: Write sample application
-Create an Express node.js application that responds to HTTPS requests
-1. Create a `helloworld` directory
+Create an Express node.js application that responds to HTTPS requests  
+1. Create a `helloworld` directory  
 `mkdir helloworld && cd helloworld`
 2. Create `package.json` file.
-To edit file, use `vi`, `emac`, `nano` or Cloud Shell editor by clicking **Open Editor** in Cloud Shell.
+To edit file, use `vi`, `emac`, `nano` or Cloud Shell editor by clicking **Open Editor** in Cloud Shell.  
 `nano package.json`
+
 ```
 {
 "name": "helloworld",
 "description": "Simple hello world sample in Node",
 "version": "1.0.0",
 "main": "index.js",
+
 "scripts": {
     "start": "node index.js",
 },
+
 "author": "Google LLC",
 "license": "Apache-2.0",
+
 "dependencies": {
     "express": "^4.17.1"    //dependency on Express web application framework
 }
+
 }
 ```
 `CTRL + X` then `Y` to save `package.json`.
-3. Create `index.js` file.
+
+3. Create `index.js` file.  
 `nano index.js`
+
 ```
 const express = require('express');
 const app = express():
@@ -77,9 +88,12 @@ app.listen(port, () => {
 ```
 `CTRL + X` then `Y` to save `index.js`.
 
+<Hr>
+  
 ### Task 3: Containerize your app and upload it to Artifact Registry
-1. Create `Dockerfile`
+1. Create `Dockerfile`  
 `nano Dockerfile`
+
 ```
 # Use the official lightweight Node.js 12 image
 # https://hub.docker.com/_/node
@@ -105,36 +119,39 @@ COPY . ./
 CMD [ "npm", "start" ]
 ```
 `CTRL + X` then `Y` to save `Dockerfile`
-2. Build container image using Cloud Build. Run from directory containing `Dockerfile`
-`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`
-  - container building happens in a series of steps
-3. To verify, can list all container images associated with current project.
+
+2. Build container image using Cloud Build. Run from directory containing `Dockerfile`  
+`gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`  
+    - container building happens in a series of steps
+3. To verify, can list all container images associated with current project.  
 `gcloud container images list`
-4. To run and test the application locally from Cloud Shell, use `docker run`
+4. To run and test the application locally from Cloud Shell, use `docker run`  
 `docker run -d -p 8080:8080 gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`
-  - `-d` option is to run docker container in background in "detached" mode. Container exits when root process used to run container exits.
-  - `-p` option is to PUBLISH hostPort: containerPort
-  - [Docker run reference](https://docs.docker.com/engine/reference/run/)
-To view output, `curl localhost:8080` or in Cloud Shell > **Web preview** > **Preview on port 8080**
+    - `-d` option is to run docker container in background in "detached" mode. Container exits when root process used to run container exits.
+    - `-p` option is to PUBLISH hostPort: containerPort
+    - [Docker run reference](https://docs.docker.com/engine/reference/run/)  
+To view output, `curl localhost:8080` or in Cloud Shell > **Web preview** > **Preview on port 8080**  
 
 Note: Run `gcloud auth configure-docker` if docker run cannot pull remote container image.
 
+<Hr>
+  
 ### Task 4: Deploy to Cloud Run
-1. Deploy container image to Cloud Run
+1. Deploy container image to Cloud Run  
 `gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld --allow-unauthenticated --region=$REGION`
-  - the `allow-unauthenticated` flag allows unauthenticated public access to service
-  - Cloud Run will automatically and horizontally scale containers to handle received requests. Can scale down to zero when no demand.
-  - you pay for CPU, memory and networking when handling requests
-2. Verify.
-  - - access deployed app at service URL `https://helloworld-hash.run.app`
-  - Check from Cloud console: **Navigation menu** > **Cloud Run** > look for `helloworld` service.
+    - the `allow-unauthenticated` flag allows unauthenticated public access to service
+    - Cloud Run will automatically and horizontally scale containers to handle received requests. Can scale down to zero when no demand.
+    - you pay for **CPU, memory and networking** when handling requests
+2. Verify.  
+    - access deployed app at service URL `https://helloworld-hash.run.app`
+    - Check from Cloud console: **Navigation menu** > **Cloud Run** > look for `helloworld` service.
 
 ### Task 5: Clean Up
 You will not be charged if Cloud Run service is not in use.
 However, you will be charged as long as you store container image in Artifact Repository.
-1. To delete container image,
+1. To delete container image,  
 `gcloud container images delete gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`
-2. To delete `helloworld` Cloud Run service,
+2. To delete `helloworld` Cloud Run service,  
 `gcloud run services delete helloworld --region=us-central1`
 
 
