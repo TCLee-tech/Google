@@ -1,48 +1,49 @@
 # Application Containers with Google Cloud Buildpacks [APPRUN]
 
 To learn:
-1. Build a container image from source code using Cloud Native Buildpacks pack CLI.
+1. Build a container image from source code using Cloud Native Buildpacks pack CLI
 2. Use Docker to deploy the container image and run the container locally
 3. Deploy container from source code using Code Run
 
-Basic Linux commands
-- Command --> Action
-1. mkdir (make directory)	create a new folder
-2. cd (change directory)	change location to another folder
-3. ls (list )	list files and folders in the directory
-4. cat (concatenate)	read contents of a file without using an editor
-5. apt-get update	update package manager library
-6. ping	signal to test reachability of a host
-7. mv (move ) moves a file.	
-8. cp (copy) makes a file copy
-9. pwd (present working directory)	returns your current location	
-10. sudo (super user do)	gives higher administration privileges
-11. to edit existing files, use vi, nano, emac, or Cloud Shell editor.
+**Basic Linux commands**
+| Command | Action |
+| ---     | ---    |
+| mkdir (make directory) |	create a new folder |
+| cd (change directory)  |	change location to another folder |
+| ls (list )	| list files and folders in the directory |
+| cat (concatenate) |	read contents of a file without using an editor |
+| apt-get update	| update package manager library |
+| ping	| signal to test reachability of a host |
+| mv (move ) | moves a file |
+| cp (copy) | makes a file copy |
+| pwd (present working directory) |	returns your current location	|
+| sudo (super user do)	| gives higher administration privileges |
+| vi, nano, emac, or Cloud Shell editor | to edit existing files |
 
 <hr>
 
 ### Task 1. Enable the Cloud Run API and configure your Shell environment
-1. Enable Cloud Run API
-`gcloud services enable run.googleapis.com`
-or, console > **APIs & Services** section
-2. Set compute region
-`gcloud config set compute/region us-central1`
+1. Enable Cloud Run API  
+`gcloud services enable run.googleapis.com`  
+or, console > **APIs & Services** section  
+2. Set compute region  
+`gcloud config set compute/region us-central1`  
 
 ### Task2: List the pack CLI commands
-[pack](https://buildpacks.io/docs/tools/pack/) is tool maintained by the Cloud Native Buildpacks project.
-pack CLI has been pre-installed.
-Enter `pack` in Cloud Shell to list commands.
+[pack](https://buildpacks.io/docs/tools/pack/) is tool maintained by the Cloud Native Buildpacks project.  
+pack CLI has been pre-installed.  
+Enter `pack` in Cloud Shell to list commands.  
 
-### Task 3. Clone the Buildpack sample repository
-Google provides a Buildpack Repository containing sample application codes.
+### Task 3. Clone the Buildpacks sample repository
+Google provides a Buildpacks Repository containing sample application codes.
   - written in Javascript, python, Java, Go, .NET (C#)
   - for you to practice building container images, and deploying applications.
-1. Clone repository of sample application codes
+1. Clone repository of sample application codes  
 `git clone https://github.com/GoogleCloudPlatform/buildpack-samples.git`
 
 # Build container image using pack CLI
 ```
-cd buildpack-samples/sample-node
+cd buildpack-samples/sample-node  
 pack build --builder=gcr.io/buildpacks/builder sample-node
 ```
   - example for Javascript node application
@@ -52,20 +53,22 @@ pack build --builder=gcr.io/buildpacks/builder sample-node
   - `-it` opens shell inside container. `-i` is to keep STDIN open even if not attached. `-t` is to allocate a pseudo-TTY.
   - `-e` exposes port 8080
   - `-p 8080:8080` is -p <host_port>:<container_port>. It publishes container port to host.
-  - `sample-node` is image name  
-To verify, in Cloud Shell > **Web preview** > **Preview on port 8080**.
-`CTRL + C` to stop node application.
-
+  - `sample-node` is image name    
+ 
+To verify, in Cloud Shell > **Web preview** > **Preview on port 8080**.  
+`CTRL + C` to stop node application.  
+  
 ### Task 4. Build and run your sample app on Cloud Run
 Cloud Run can deploy from source code using a single command.
-- it builds container image  > push to Artifact Registry > deploy to Cloud Run
-`gcloud beta run deploy --source .`
+- it builds container image  > push to Artifact Registry > deploy to Cloud Run  
+`gcloud beta run deploy --source .`  
   - when prompted, 
     - confirm service name by pressing **Enter**
     - choose `us-central1` region
-    - if asked to allow unauthenticated invocations, type `Y` and press `**Enter**
+    - if asked to allow unauthenticated invocations, type `Y` and press **Enter**
 Click on the service URL to verify.
 
+<hr>
 
 Some references:
 
