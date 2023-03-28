@@ -58,6 +58,8 @@ In consideration of the requirements, the development team decide to look in to 
 
 **MVP architecture**
 
+![MVP architecture](https://github.com/TCLee-tech/Google/blob/413aa68f0891fe0ea16f23deb6e94662451a1d60/Application%20Development%20with%20Cloud%20Run/Traffic%20management%20with%20cloud%20run%20MVP.jpeg)
+
 **Developing a minimal viable product (MVP)**
 
 Critter Junction has a backend product status service that they would like integrated with Cloud Run. To build an MVP the following activities are required:
