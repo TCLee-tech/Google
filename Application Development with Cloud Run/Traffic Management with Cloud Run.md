@@ -108,5 +108,42 @@ TEST1_PRODUCT_SERVICE_URL=$(gcloud run services describe product-service --platf
 Now Cloud Run service is successfully deployed and is responding to requests.
 Next, explore how to utilise Traffic Migration to specify which revision receives traffic.
 
+<hr>
 
-[gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)
+### Task 2. Revision tags   
+Each new Cloud Run revision can be assigned a tag. This allows access to a URL without serving traffic. This approach can be useful to handle the traffic profile across multiple revisions.
+
+The main uses cases for revision tags are shown in the following table:
+
+|Use Case | Description |
+| ---     | ---         |
+|Integration testing | Run containers revisions during the development phase |
+|Tagged revision migration | Migrate traffic to a tagged revision |
+| Tagged revision rollback | Rollback to prior version based on tagged revision |
+
+In this section deploy a new revision and learn how to control the traffic to direct to the correct destination.
+
+**Integration testing**  
+It is possible to deploy a new revision and redirect traffic with Cloud Run. A deployment of this kind is useful for integration testing of components.
+
+1. Deploy a new tagged revision (test2) with redirection of traffic:
+```
+gcloud run deploy product-service \
+  --image gcr.io/qwiklabs-resources/product-status:0.0.2 \
+  --no-traffic \
+  --tag test2 \
+  --region=$LOCATION \
+  --allow-unauthenticated
+```
+
+2. Observe the name of the Tagged Revision in the command output.  
+`test2---xxx.run.app`
+
+3. Create an environment variable for the new URL:  
+`TEST2_PRODUCT_STATUS_URL=$(gcloud run services describe product-service --platform managed --region=us-central1 --format="value(status.traffic[2].url)")`
+
+4. Test the tag revision is able to receive traffic:  
+`curl $TEST2_PRODUCT_STATUS_URL/help -w "\n"`  
+At this point, the original revision is still serving 100% of the incoming traffic.  
+
+[gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)  
