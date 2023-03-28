@@ -70,11 +70,43 @@ Critter Junction has a backend product status service that they would like integ
 - Deploy a public service
 
 ### Task 1. Configure the environment
-1.  Enable Cloud Run API  
+1.  Enable Cloud Run for API access  
 `gcloud services enable run.googleapis.com`
+
+Cloud Run is a regional service. It needs to know the region in which it will be deployed.  
 2. Set compute region  
-`gcloud config set compute/region us-central1`
+`gcloud config set compute/region us-central1`  
 3. Create LOCATION environment variable  
-`LOCATION="us-central1"`
+`LOCATION="us-central1"`  
+
+### Deploy a service
+The development team needs to configure the product status service. To understand the process, the development team decided to test the deployment patterns for Cloud Run.
+
+A trial series of container images has been created by the development team. Use these images to configure and deploy within the project:
+1. Deploy the payment service:
+```
+gcloud run deploy product-service \
+   --image gcr.io/qwiklabs-resources/product-status:0.0.1 \
+   --tag test1 \
+   --region $LOCATION \
+   --allow-unauthenticated
+```
+2. Add the product service status to an environment variable:
+```
+TEST1_PRODUCT_SERVICE_URL=$(gcloud run services describe product-service --platform managed --region us-central1 --format="value(status.address.url)")
+```
+3. Test to confirm the API is online:  
+`curl $TEST1_PRODUCT_SERVICE_URL/help  -w "\n"  
+4. Test how `product-service` respond to requests about its revision:  
+`curl $TEST1_PRODUCT_SERVICE_URL/v1/revision -w "\n"`  
+
+**Notice the Traffic management**
+
+- 100 percent of traffic is being served to the revision TEST1
+- Service is accessible and set to the default
+
+Now Cloud Run service is successfully deployed and is responding to requests.
+Next, explore how to utilise Traffic Migration to specify which revision receives traffic.
+
 
 [gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)
