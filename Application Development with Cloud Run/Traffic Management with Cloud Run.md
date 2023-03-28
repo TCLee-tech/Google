@@ -146,4 +146,43 @@ gcloud run deploy product-service \
 `curl $TEST2_PRODUCT_STATUS_URL/help -w "\n"`  
 At this point, the original revision is still serving 100% of the incoming traffic.  
 
+**Revision migration**  
+Now, there are two versions available. However only one revision is serving traffic. Alter the deployed revisions to share the traffic.
+
+1. Migrate 50% of the traffic to the revision tag test2:  
+`gcloud run services update-traffic product-service --to-tags test2=50 --region=$LOCATION`  
+2. Observe the name of the Tagged Revision in the command output.  
+3. Confirm the original test endpoint is distributing traffic:  
+`for i in {1..10}; do curl $TEST1_PRODUCT_SERVICE_URL/help -w "\n"; done`  
+You should see some "API Microservice example: v1" and some "API Microservice example: v2"   
+
+Observe the traffic pattern is distributed between the original (TEST1) and new revision (TEST2).  
+
+**Tagged revision rollback**
+In the event an issue is found, the traffic migration can be rolled back by resetting the percentage.
+
+1. Migrate the distributed traffic back to the `test1` service:  
+`gcloud run services update-traffic product-service --to-tags test2=0 --region=$LOCATION`  
+2. Observe the name of the Tagged Revision in the command output.  
+3. Test the endpoint is distributing traffic to TEST1 **only**:  
+`for i in {1..10}; do curl $TEST1_PRODUCT_SERVICE_URL/help -w "\n"; done`  
+You should see "API Microservice example: v1" only.
+
+In this section a second Cloud Run revision was deployed and used to migrate traffic. The second revision was labelled with the tag test2 and used to migrate a percentage of the traffic determined at deployment.
+
+<hr>
+
+### Task 3. Traffic migration
+Migration of traffic provides a simple mechanism on which to direct communication to a deployed service. Cloud Run provides the ability to have multiple revisions to be deployed without a cost penalty. Remember Cloud Run only charges where traffic is handled by the service.
+
+The main uses cases for traffic migration are shown in the following table:
+
+| Use Case | Description |
+| ---      | ---         |
+| Traffic migration | Enable traffic to be sent to the latest version of the deployed service |
+| Traffic splitting | Perform a ratio traffic split between defined deployed services |
+| Rollout migration | Deploy a service and gradually enable traffic at a predetermined time |
+
+**Revised architecture**
+
 [gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)  
