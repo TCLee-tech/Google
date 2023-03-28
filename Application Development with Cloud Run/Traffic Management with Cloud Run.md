@@ -183,6 +183,64 @@ The main uses cases for traffic migration are shown in the following table:
 | Traffic splitting | Perform a ratio traffic split between defined deployed services |
 | Rollout migration | Deploy a service and gradually enable traffic at a predetermined time |
 
-**Revised architecture**
+**Revised architecture**  
+
+![Task 3 architecture](https://github.com/TCLee-tech/Google/blob/efa961635901ad2c2d8b77a9de17d2e5f2005376/Application%20Development%20with%20Cloud%20Run/Traffic%20management%20with%20cloud%20run%20MVP%20Task%203.jpeg)
+
+In this section multiple revisions will be deployed. Learn how to split traffic to a specific host.
+
+**Traffic migration - deploy a new version**  
+When splitting traffic between two or more revisions, a comma separated list can be used. The list represents the revisions deployed.
+
+1. Deploy a new tagged revision (test3) with redirection of traffic:
+```
+gcloud run deploy product-service \
+  --image gcr.io/qwiklabs-resources/product-status:0.0.3 \
+  --no-traffic \
+  --tag test3 \
+  --region=$LOCATION \
+  --allow-unauthenticated
+ ```
+ 2. Deploy a new tagged revision (test4) with redirection of traffic:
+ ```
+ gcloud run deploy product-service \
+  --image gcr.io/qwiklabs-resources/product-status:0.0.4 \
+  --no-traffic \
+  --tag test4 \
+  --region=$LOCATION \
+  --allow-unauthenticated
+ ```
+ 3. Output a list of the revisions deployed:
+ ```
+ gcloud run services describe product-service \
+  --region=$LOCATION \
+  --format='value(status.traffic.revisionName)'
+ ```
+ 4. Create an environment variable for the available revisionNames:  
+ ```
+ LIST=$(gcloud run services describe product-service --platform=managed --region=$LOCATION --format='value[delimiter="=25,"](status.traffic.revisionName)')"=25"
+ ```
+5. Split traffic between the four services using the LIST environment variable:
+```
+gcloud run services update-traffic product-service \
+  --to-revisions $LIST --region=$LOCATION
+```  
+6. Observe the name of the Tagged Revision in the command output.  
+7. Test the endpoint is distributing traffic:  
+`for i in {1..10}; do curl $TEST1_PRODUCT_SERVICE_URL/help -w "\n"; done`  
+You should see traffic distributed to "API Microservice example: v1/2/3/4"  
+
+**Traffic splitting - update traffic between revisions**  
+1. Reset the service traffic profile to direct traffic to the latest deployment:  
+`gcloud run services update-traffic product-service --to-latest --platform=managed --region=$LOCATION`  
+2. Observe the name of the Tagged Revision in the command output.  
+3. Create an environment variable for the new URL:  
+```
+LATEST_PRODUCT_STATUS_URL=$(gcloud run services describe product-service --platform managed --region=$LOCATION --format="value(status.address.url)")
+```
+4. Test the tag revision is able to receive traffic:  
+`curl $LATEST_PRODUCT_STATUS_URL/help -w "\n"`  
+You should see "API Microservice example: v4" only on screen.  
+
 
 [gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)  
