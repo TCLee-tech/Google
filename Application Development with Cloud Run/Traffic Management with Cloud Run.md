@@ -119,7 +119,7 @@ The main uses cases for revision tags are shown in the following table:
 | ---     | ---         |
 |Integration testing | Run containers revisions during the development phase |
 |Tagged revision migration | Migrate traffic to a tagged revision |
-| Tagged revision rollback | Rollback to prior version based on tagged revision |
+|Tagged revision rollback | Rollback to prior version based on tagged revision |
 
 In this section deploy a new revision and learn how to control the traffic to direct to the correct destination.
 
@@ -148,6 +148,8 @@ At this point, the original revision is still serving 100% of the incoming traff
 
 **Revision migration**  
 Now, there are two versions available. However only one revision is serving traffic. Alter the deployed revisions to share the traffic.
+
+New Cloud Run command to divert traffic: [gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)  
 
 1. Migrate 50% of the traffic to the revision tag test2:  
 `gcloud run services update-traffic product-service --to-tags test2=50 --region=$LOCATION`  
@@ -241,6 +243,3 @@ LATEST_PRODUCT_STATUS_URL=$(gcloud run services describe product-service --platf
 4. Test the tag revision is able to receive traffic:  
 `curl $LATEST_PRODUCT_STATUS_URL/help -w "\n"`  
 You should see "API Microservice example: v4" only on screen.  
-
-
-[gcloud run services update-traffic](https://cloud.google.com/sdk/gcloud/reference/run/services/update-traffic)  
