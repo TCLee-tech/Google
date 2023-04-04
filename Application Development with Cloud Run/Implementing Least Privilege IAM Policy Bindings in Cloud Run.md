@@ -87,5 +87,5 @@ This can be done via the Console, or by using the command line interface. We wil
 4. Click the **Create and Continue** button to create the account and advance to the **Grant Access** step.
 5. Select the Role dropdown, scroll the left side to *Cloud Run*, and select the role *Cloud Run Invoker* to give the Billing Initiator permissions to invoke the Billing Service.
 6. Select **Continue** and then **Done** to complete the setup of the Service Account. You will see the new service account at the top of your list of service accounts in the Console window.
-![]()
+![Implementing Least Privilege IAM Policy Bindings in Cloud Run Task 3 Image 2](https://github.com/TCLee-tech/Google/blob/0c28c629579f76c68ea6132ca48496eb1ca8783a/Application%20Development%20with%20Cloud%20Run/Implementing%20Least%20Privilege%20IAM%20Policy%20Bindings%20in%20Cloud%20Run%20Task%203%20pic2.jpeg)
 The service account "Billing Initiator" has been created. It has authorization to invoke `quickway-parking-billing-v2` Cloud Run instance, using an IAM policy binding.
