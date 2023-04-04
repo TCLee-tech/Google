@@ -41,7 +41,7 @@ Take a closer look at the authentication applied and the role permissions assign
 Google Cloud promotes the grant of permissions with the least privilege needed.  
 When the billing service was originally deployed, it used the `--allow-unauthenticated` permission, which makes the service publicly available.  
 
-
+![Implementing Least Privilege IAM Policy Bindings in Cloud Run](https://github.com/TCLee-tech/Google/blob/8080e65e3bcd54296ec1b5520bc6b10f933bbc69/Application%20Development%20with%20Cloud%20Run/Implementing%20Least%20Privilege%20IAM%20Policy%20Bindings%20in%20Cloud%20Run%20Task%202%20pic1.jpeg)
 
 | Type | Permission | Description |
 | ---  |   ---      | ---         |
