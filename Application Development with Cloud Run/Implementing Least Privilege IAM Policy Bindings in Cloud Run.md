@@ -83,7 +83,7 @@ This can be done via the Console, or by using the command line interface. We wil
 1. In the Cloud Console, select **IAM & Admin** > **Service Accounts**.
 2. Create a new Service Account that will provide authenticated access by clicking on **Create Service Account** near the top of the menu.
 3. Name the new Service Account `Billing Initiator`.
-![]()
+![Implementing Least Privilege IAM Policy Bindings in Cloud Run Task 3 Image 1](https://github.com/TCLee-tech/Google/blob/0ec853f6ed225e0628923f9474cc66f023ebd9a6/Application%20Development%20with%20Cloud%20Run/Implementing%20Least%20Privilege%20IAM%20Policy%20Bindings%20in%20Cloud%20Run%20Task%203%20pic1.jpeg)
 4. Click the **Create and Continue** button to create the account and advance to the **Grant Access** step.
 5. Select the Role dropdown, scroll the left side to *Cloud Run*, and select the role *Cloud Run Invoker* to give the Billing Initiator permissions to invoke the Billing Service.
 6. Select **Continue** and then **Done** to complete the setup of the Service Account. You will see the new service account at the top of your list of service accounts in the Console window.
