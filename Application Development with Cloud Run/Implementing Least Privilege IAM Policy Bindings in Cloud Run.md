@@ -2,7 +2,7 @@
 
 Good guide: [Serverless Expeditions video series](https://www.youtube.com/playlist?list=PLIivdWyY5sqJwq_pgOxcHzusWjXDVCEiX)
 
-**Situation**
+**Situation**  
 Quickway Parking has a Cloud Run billing service that they would like to be made more secure. The component is called over the internet using an assigned URL, but will need eventually to be able to be called from a scheduling service.
 
 **To learn:**
@@ -12,11 +12,11 @@ Quickway Parking has a Cloud Run billing service that they would like to be made
 4. Invoke a non-public Cloud Run service from another service account.
 
 ### Task 1. Configure the environment
-1. Enable Cloud Run API:
+1. Enable Cloud Run API:  
 `gcloud services enable run.googleapis.com`
-2. Set Cloud Run region:
+2. Set Cloud Run region:  
 `gcloud config set run/region us-central1`
-3. Create LOCATION environment variable:
+3. Create LOCATION environment variable:  
 `LOCATION="us-central1"`
 
 <hr>
@@ -34,12 +34,15 @@ gcloud run deploy quickway-parking-billing-v1 \
 ```
 
 2. Assign the URL for the new service to an environment variable:
-`QUICKWAY-SERVICE=$(gcloud run services list --format='value(URL)' --filter="quickway")`
+`QUICKWAY_SERVICE=$(gcloud run services list --format='value(URL)' --filter="quickway")`
 
-3. Cloud Console > **Cloud Run** > select name of service just deployed.
+3. Cloud Console > **Cloud Run** > select name of service just deployed.  
 Take a closer look at the authentication applied and the role permissions assigned. At the moment, both the Cloud Scheduler and anyone on the internet can access this resource. This resource is public.  
-Google Cloud promotes the grant of permissions with the least privilege needed.
-When the billing service was originally deployed, it used the `--allow-unauthenticated` permission, which makes the service publicly available.
+Google Cloud promotes the grant of permissions with the least privilege needed.  
+When the billing service was originally deployed, it used the `--allow-unauthenticated` permission, which makes the service publicly available.  
+
+
+
 | Type | Permission | Description |
 | ---  |   ---      | ---         |
 | URL access| `--allow-unauthenticated` | Make the service **public** (i.e. unauthenticated users can access it) |
