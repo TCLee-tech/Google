@@ -55,7 +55,7 @@ By removing the `--allow-unauthenticated` permission, you can use option flag to
 | Invoke permission | none | Nobody can invoke the service. |
 
 Updated application design:
-![Implementing Least Privilege IAM Policy Bindings in Cloud Run Task 2 2]()
+![Implementing Least Privilege IAM Policy Bindings in Cloud Run Task 2 Image 2](https://github.com/TCLee-tech/Google/blob/bd02654e555275e6c7abf75726ea8f1ceb2a1e49/Application%20Development%20with%20Cloud%20Run/Implementing%20Least%20Privilege%20IAM%20Policy%20Bindings%20in%20Cloud%20Run%20Task%202%20pic2.jpeg)
 
 Main changes are:
 1. Remove unauthenticated access and invoke permission associated with Billing Service.
