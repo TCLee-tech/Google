@@ -64,9 +64,9 @@ Main changes are:
 <hr>
 
 ### Task 3. Authenticating service requests
-1. Delete the existing deployed Billing Service:
+1. Delete the existing deployed Billing Service:  
 `gcloud run services delete quickway-parking-billing-v1`  
-2. Redeploy Billing Service with `--no-allow-unauthenticated`
+2. Redeploy Billing Service with `--no-allow-unauthenticated`  
 ```
 gcloud run deploy quickway-parking-billing-v2 \
     --image gcr.io/qwiklabs-resources/gsp723-parking-service 
