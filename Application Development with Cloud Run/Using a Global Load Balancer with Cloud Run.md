@@ -85,12 +85,12 @@ This Python Dockerfile starts a Gunicorn web server which listens on the port de
 
 ### Task 4. Deploy your container to Cloud Run
 
-1. Deploy container image to Cloud Run.
-`gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`  
+1. Deploy container image to Cloud Run.  
+`gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld`    
 You can view your project ID by running the command `gcloud config get-value project`.  
-2. The API should already be enabled, but if you are prompted to enable the API, reply `y`.
-3. You will then be prompted for the service name: press **Enter** to accept the default name, `helloworld`.
-4. If prompted for region: in this case, select us-central1.  
+2. The API should already be enabled, but if you are prompted to enable the API, reply `y`.  
+3. You will then be prompted for the service name: press **Enter** to accept the default name, `helloworld`.  
+4. If prompted for region: in this case, select us-central1.    
 5. You will be prompted to allow unauthenticated invocations: respond `y`.  
 6. Wait a few moments until the deployment is complete. Upon success, the command line displays the service URL.  
 7. Visit your deployed container by opening the service URL in a web browser.  
@@ -112,6 +112,7 @@ A static external IP address provides a single address to reach your serverless 
 ### Task 6: Create the external HTTP load balancer
 Load balancers use a serverless Network Endpoint Group (NEG) backend to direct requests to a serverless Cloud Run service.
 So, let's first create our severless NEG for your serverless Python app from Task 2.
+
 1. To create a serverless NEG with a Cloud Run service:
 ```
 gcloud compute network-endpoint-groups create myneg \   <=NEG named myneg
@@ -119,8 +120,10 @@ gcloud compute network-endpoint-groups create myneg \   <=NEG named myneg
     --network-endpoint-type=serverless \
     --cloud-run-service=helloworld              <= refering to the Cloud Run service
 ```
+
 2. Create a backend service for HTTP load balancer:  
 `gcloud compute backend-services create mybackendservice --global`  
+
 3. Add the serverless NEG as a backend to the backend service:  
 ```
 gcloud compute backend-services add-backend mybackendservice \  <= name of backend is "mybackendservice"
@@ -128,6 +131,7 @@ gcloud compute backend-services add-backend mybackendservice \  <= name of backe
     --network-endpoint-group=myneg \                <= name of serverless NEG to add
     --network-endpoint-group-region=$LOCATION
 ```
+
 4. Create URL map to route incoming requests to the backend service:
 ```
 gcloud compute url-maps create myurlmap \
@@ -136,12 +140,12 @@ gcloud compute url-maps create myurlmap \
 
 If you had more than one backend service, you could use host rules to direct requests to different services based on host name, or you could set up path matchers to direct requests to different services based on the requested path. For this lab, there is only one backend service, so none of these is necessary.
 
-5. Create target HTTP(S) proxy [part of frontend] to route requests to your URL map:
+5. Create target HTTP(S) proxy [part of frontend] to route requests to your URL map:  
 ```
 gcloud compute target-http-proxies create mytargetproxy \
     ---url-map=myurlmap
 ```
-6. Within frontend, create a global forwarding rule to route incoming requests to the proxy:
+6. Within frontend, create a global forwarding rule to route incoming requests to the proxy:  
 ```
 gcloud compute forwarding-rules create myforwardingrule \
     --address=example-ip \      <= example-ip is the static IP address created in Task 5
