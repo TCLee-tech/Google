@@ -101,7 +101,9 @@ Clodu SQL has a number of configuration options. Learn how to configure a Postgr
 | Zone | Single Zone |
 
 2. Click **Create Instance** > **Choose PostgreSQL** 
-![Create PostgreSQL in Cloud SQL]()  
+
+![Create PostgreSQL in Cloud SQL](https://github.com/TCLee-tech/Google/blob/9e96bce2d4fe9f9fb89985d738a035096a375588/Application%20Development%20with%20Cloud%20Run/Cloud%20SQL%20with%20Cloud%20Run%20lab%202.jpg)  
+
 Note: Cloud SQL uses a connection name which is composed of the project ID + region + database name. A service account is also created to be used to access the database created.
 
 3. Note the instance connection settings:
@@ -113,25 +115,25 @@ Note: Cloud SQL uses a connection name which is composed of the project ID + reg
 <hr>
 
 ### Task 3: Populate the Cloud SQL instance
-Populate the Cloud SQL database with table and data.
-1. Connect to the Cloud SQL instance (allowlist will be created for Cloud Shell IP).
+Populate the Cloud SQL database with table and data. 
+1. Connect to the Cloud SQL instance (allowlist will be created for Cloud Shell IP).  
 `gcloud sql connect poll-database --user=postgres` //instance ID: poll-database
-2. Enter the Cloud SQL password when requested (i.e. "secretpassword")
-3. Connect to the database.
+2. Enter the Cloud SQL password when requested (i.e. "secretpassword")  
+3. Connect to the database.  
 `\connect postgres;`
-4. Create the `votes` table:
+4. Create the `votes` table:  
 ```
 CREATE TABLE IF NOT EXISTS votes
 ( vote_id SERIAL NOT NULL, time_cast timestamp NOT NULL, candidate VARCHAR(6) NOT NULL, PRIMARY KEY (vote_id));
 ```
-5. Create the `totals` table:
+5. Create the `totals` table:  
 ```
 CREATE TABLE IF NOT EXISTS totals
 ( total_id SERIAL NOT NULL, candidate VARCHAR(6) NOT NULL, num_votes INT DEFAULT 0, PRIMARY KEY (total_id));
 ```
-6. Initialise the data for "TABS":
+6. Initialise the data for "TABS":  
 `INSERT INTO totals (candidate, num_votes) VALUES ('TABS', 0);`
-7. Initialise the data for "SPACES":
+7. Initialise the data for "SPACES":  
 `INSERT INTO totals (candidate, num_votes) VALUES ('SPACES', 0);`
 
 <hr>
@@ -145,9 +147,10 @@ To provision the poll-service, the application expects some environment variable
 | DB_NAME | Name of the database |
 | CLOUD_SQL_CONNECTION_NAME | Name given to the Cloud SQL instance |
 
-1. Set Cloud SQL Connection Name as an environment variable.
+1. Set Cloud SQL Connection Name as an environment variable.  
 `CLOUD_SQL_CONNECTION_NAME=$(gcloud sql instances describe poll-database --format='value(connectionName)')`
-2. Deploy poll service on Cloud Run.
+
+2. Deploy poll service on Cloud Run.  
 ```
 gcloud run deploy poll-service \
 --image gcr.io/qwiklabs-resources/gsp737-tabspaces \
@@ -159,14 +162,16 @@ gcloud run deploy poll-service \
 --set-env-vars "DB_NAME=postgres" \
 --set-env-vars "CLOUD_SQL_CONNECTION_NAME=$CLOUD_SQL_CONNECTION_NAME"
 ```
-Note: Cloud Run uses key value pairs to define environment variables. [More info on Environment Variables in Cloud Run](https://cloud.google.com/run/docs/configuring/environment-variables#command-line) Any configuration change leads to the creation of a new revision.
-3. Cloud Run service endpoint can be accessed as per below:
+Note: Cloud Run uses key value pairs to define environment variables. [More info on Environment Variables in Cloud Run](https://cloud.google.com/run/docs/configuring/environment-variables#command-line)   
+Any configuration change leads to the creation of a new revision.  
+
+3. Cloud Run service endpoint can be accessed as per below:  
 `POLL_APP_URL=$(gcloud run services describe poll-service --platform managed --region us-central1 --format="value(status.address.url)")`
 
 <hr>
 
 ### Task 5: Testing the application
-To test the application, browse to the Cloud Run endpoint and click to enter some data
+To test the application, browse to the Cloud Run endpoint and click to enter some data  
 
 [Severless Expeditions video series](https://www.youtube.com/playlist?list=PLIivdWyY5sqJwq_pgOxcHzusWjXDVCEiX)
 
