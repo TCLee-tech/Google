@@ -293,7 +293,7 @@ The frontend store-service will publish a message to Cloud Pub/Sub. Message will
 
 Go to **Navigation menu** > **Cloud Run** > select **order-service** > **LOGS** > add the log filter `Order Placed` to see the ID passed from the frontend store-service.
 
-![order-service]()  
+![order-service](https://github.com/TCLee-tech/Google/blob/6ec012801704f1625f19eccb4547e5820f930634/Application%20Development%20with%20Cloud%20Run/Using%20PubSub%20with%20Cloud%20Run%20lab%203.jpeg)  
 
 <hr>
 
