@@ -12,31 +12,31 @@ In the second part of the lab, you deploy Cloud Run for Anthos on an Anthos GKE 
 <hr>
 
 #### Task 1: Review your Anthos GKE cluster and install Cloud Run for Anthos
-An Anthos GKE cluster has already been created for you in this lab. You will review it and install Cloud Run for Anthos. First, verify that the GKE cluster has been registered in an Anthos Fleet. Second, confirm that Anthos Service Mesh has been installed in the cluster. There are prerequisites to install Cloud Run for Anthos. Lastly, install Cloud Run for Anthos.
-
-1. In the Google Cloud console, on the **Navigation menu**, click **Kubernetes Engine > Clusters**. Notice that there is a GKE cluster.
-2. Click **Workloads** and verify that the GKE cluster is running the Anthos Service Mesh components **istio-ingressgateway** and **istiod-asm**.
-3. On the **Navigation menu**, click **Anthos > Clusters** and then verify that the cluster has been registered and appears in the list of **Anthos managed clusters**.
-4. Click **Activate Cloud Shell**. If prompted, click **Continue**.
-5. In Cloud Shell, set the Zone environment variable:  
-`C1_ZONE="zone added at start of lab"`
-6. In Cloud Shell, initialize the environment variables:
+An Anthos GKE cluster has already been created for you in this lab. You will review it and install Cloud Run for Anthos. First, verify that the GKE cluster has been registered in an Anthos Fleet. Second, confirm that Anthos Service Mesh has been installed in the cluster. There are prerequisites to install Cloud Run for Anthos. Lastly, install Cloud Run for Anthos.   
+   
+1. In the Google Cloud console, on the **Navigation menu**, click **Kubernetes Engine > Clusters**. Notice that there is a GKE cluster.  
+2. Click **Workloads** and verify that the GKE cluster is running the Anthos Service Mesh components **istio-ingressgateway** and **istiod-asm**.  
+3. On the **Navigation menu**, click **Anthos > Clusters** and then verify that the cluster has been registered and appears in the list of **Anthos managed clusters**.  
+4. Click **Activate Cloud Shell**. If prompted, click **Continue**.  
+5. In Cloud Shell, set the Zone environment variable:    
+`C1_ZONE="zone added at start of lab"`  
+6. In Cloud Shell, initialize the environment variables:  
 ```  
 export PROJECT_ID=$(gcloud config get-value project)
 export C1_NAME="gke"
 gcloud config set run/region us-central1
 gcloud config set run/platform managed
 gcloud config set eventarc/location us-central1
-```  
+```    
 7. Get the credentials for your **gke** GKE cluster:  
-`gcloud container clusters get-credentials $C1_NAME --zone $C1_ZONE --project $PROJECT_ID`
-8. Enable Cloud Run for Anthos:  
-`gcloud container fleet cloudrun enable --project=$PROJECT_ID`
+`gcloud container clusters get-credentials $C1_NAME --zone $C1_ZONE --project $PROJECT_ID`  
+8. Enable Cloud Run for Anthos:   
+`gcloud container fleet cloudrun enable --project=$PROJECT_ID`  
 9. Enable Eventarc API:  
-`gcloud services enable --project=$PROJECT_ID eventarc.googleapis.com`
-10. Install Cloud Run for Anthos on the cluster:  
-`gcloud container fleet cloudrun apply --gke-cluster=$C1_ZONE/$C1_NAME`  
-If this step fails, wait 30 seconds and try again.  
+`gcloud services enable --project=$PROJECT_ID eventarc.googleapis.com`  
+10. Install Cloud Run for Anthos on the cluster:    
+`gcloud container fleet cloudrun apply --gke-cluster=$C1_ZONE/$C1_NAME`    
+If this step fails, wait 30 seconds and try again.    
 
 <hr>
 
