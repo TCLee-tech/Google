@@ -9,6 +9,8 @@ In the second part of the lab, you deploy Cloud Run for Anthos on an Anthos GKE 
 * Create an event trigger with Eventarc
 * Publish a message to a Pub/Sub topic to generate an event, and view it in the Cloud Run and Cloud Run for Anthos logs
 
+<hr>
+
 #### Task 1: Review your Anthos GKE cluster and install Cloud Run for Anthos
 An Anthos GKE cluster has already been created for you in this lab. You will review it and install Cloud Run for Anthos. First, verify that the GKE cluster has been registered in an Anthos Fleet. Second, confirm that Anthos Service Mesh has been installed in the cluster. There are prerequisites to install Cloud Run for Anthos. Lastly, install Cloud Run for Anthos.
 
@@ -19,13 +21,13 @@ An Anthos GKE cluster has already been created for you in this lab. You will rev
 5. In Cloud Shell, set the Zone environment variable:  
 `C1_ZONE="zone added at start of lab"`
 6. In Cloud Shell, initialize the environment variables:
-```
+```  
 export PROJECT_ID=$(gcloud config get-value project)
 export C1_NAME="gke"
 gcloud config set run/region us-central1
 gcloud config set run/platform managed
 gcloud config set eventarc/location us-central1
-```
+```  
 7. Get the credentials for your **gke** GKE cluster:  
 `gcloud container clusters get-credentials $C1_NAME --zone $C1_ZONE --project $PROJECT_ID`
 8. Enable Cloud Run for Anthos:  
@@ -137,13 +139,13 @@ gcloud eventarc triggers create pubsub-trigger \
 ```
 This creates a new Pub/Sub topic and a trigger for it called **pubsub-trigger**. The Pub/Sub subscription persists regardless of activity and does not expire.  
 2. Confirm that the trigger was successfully created:  
- `gcloud eventarc triggers list --location=us-central1`  
+  `gcloud eventarc triggers list --location=us-central1`  
 3. Set the Pub/Sub topic as an environment variable:  
- ```
+```
 export RUN_TOPIC=$(gcloud eventarc triggers describe pubsub-trigger \
 --location=us-central1 \
 --format='value(transport.pubsub.topic)')
- ```
+```   
 4. Send a message to the Pub/Sub topic to generate an event:    
 `gcloud pubsub topics publish $RUN_TOPIC --message "Cloud Run on Anthos" `  
 The event is sent to the Cloud Run for Anthos service, which logs the event message.    
