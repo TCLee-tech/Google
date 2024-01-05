@@ -61,22 +61,6 @@ https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-eng
 
 <hr>
 
-### Terraform<br>
-Hasicorp Configuration Language. Cloud agnostic.<br>
-Solution for Challenge Lab: Automating Infrastructure on Google Cloud.<br>
-
-<hr>
-
-### Data Science<br>
-Solution for Challenge Lab: Insights from Data with Big Query<br>
-
-<hr>
-
-### Machine Learning<br>
-Solution for Challenge Lab: Integrate with Machine Learning APIs<br>
-
-<hr>
-
 ### How to install Dockers and Kubernetes locally on Windows 11 <br>
 1. Check that hardware virtualisation is enabled in BIOS.
     - Press **F2 key** during Windows boot/restart to enter BIOS.
