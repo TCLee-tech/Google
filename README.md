@@ -1,7 +1,3 @@
-# Google
-* notes in folder
-<hr>
-
 ### Kubernetes
 
 [kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)
