@@ -1,6 +1,12 @@
 ### Kubernetes
 
-[kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)
+[kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)   
+[kubectl Cheat Sheet](https://www.mirantis.com/blog/kubernetes-cheat-sheet/)   
+
+[Kubernetes the hard way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way)   
+  - assembling a Kubernetes cluster part by part
+
+[K8S video series - Google CloudOnAir](https://cloudonair.withgoogle.com/events/kubernetes-with-google-cloud)
 
 [Crossplane](crossplane.io)
   - extends Kubernetes control plane to orchestrate life cycle of public cloud-based services, e.g. database instances, VMs, ML jobs, Big Data vlusters.
@@ -54,6 +60,11 @@ https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-eng
 - deploy Gatekeeper on Kubernetes cluster to enforce policy
 - OPA can integrate with IDE for policy enforcement at point of coding
 - [Deploying OPA on GKE step-by-step](https://medium.com/linkbynet/deploying-opa-on-a-gke-cluster-da4d3d77812c)
+
+<hr>
+
+[Compute options on GCP](https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option)   
+[BigTable vs Big Query](https://cloud.google.com/blog/topics/developers-practitioners/bigtable-vs-bigquery-whats-difference)   
 
 <hr>
 
