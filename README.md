@@ -58,11 +58,11 @@ https://cryptopals.com/
 <hr>  
 
 ### DevOps<br>
-https://cloud.google.com/devops
-<p>Jenkins on Kubernetes
-https://cloud.google.com/architecture/jenkins-on-kubernetes-engine
-<p>Continuous Deployment to GKE with Jenkins
-https://cloud.google.com/architecture/continuous-delivery-jenkins-kubernetes-engine
+[DevOps](https://cloud.google.com/devops)  
+[Jenkins - open source](https://www.jenkins.io/)  
+[Continuous Deployment to GKE with Jenkins - archived pages](https://cloud.google.com/kubernetes-engine/docs/archive/jenkins-on-kubernetes-engine)  
+[Spinnaker - open-source multi-cloud continuous deployment](https://spinnaker.io/)  
+[Tekton - Continuous Delivery Foundation graduated project](https://tekton.dev/)
 
 <hr>
 
