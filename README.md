@@ -2,6 +2,7 @@
 
 [kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)   
 [kubectl Cheat Sheet](https://www.mirantis.com/blog/kubernetes-cheat-sheet/)   
+[commands in Dockerfile](https://docs.docker.com/reference/dockerfile/)
 
 [Kubernetes the hard way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way)   
   - assembling a Kubernetes cluster part by part
