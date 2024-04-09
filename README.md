@@ -2,8 +2,8 @@
 
 [kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)   
 [kubectl Cheat Sheet](https://www.mirantis.com/blog/kubernetes-cheat-sheet/)   
-[commands in Dockerfile](https://docs.docker.com/reference/dockerfile/)
-[jq - sed for JSON data](https://jqlang.github.io/jq/)
+[commands in Dockerfile](https://docs.docker.com/reference/dockerfile/)  
+[jq - sed for JSON data](https://jqlang.github.io/jq/)   
 
 [Kubernetes the hard way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way)   
   - assembling a Kubernetes cluster part by part
@@ -34,8 +34,9 @@
 [Kustomize](https://kustomize.io/)
   - tool to customize Kubernetes manifest / object
   - to add, update, remove configuration
-  - use kustomization file
-[OpenSeach and OpenSearch Dashboard](https://opensearch.org/)
+  - use kustomization file  
+
+[OpenSeach and OpenSearch Dashboard](https://opensearch.org/)  
   - data visualization
 <hr>
 
@@ -73,7 +74,7 @@ https://cryptopals.com/
 - Policies - for security, compliance
 - [Open Policy Agent](https://www.openpolicyagent.org/) - single policy framework for cloud-native environment.
 - deploy Gatekeeper on Kubernetes cluster to enforce policy
-- OPA can integrate with IDE for policy enforcement at point of coding
+- OPA can integrate with IDE for policy enforcement at point of coding   
 - [Deploying OPA on GKE step-by-step](https://medium.com/linkbynet/deploying-opa-on-a-gke-cluster-da4d3d77812c)
 
 <hr>
