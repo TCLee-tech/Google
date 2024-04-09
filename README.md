@@ -3,6 +3,7 @@
 [kubectl Commands and Options](https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl/)   
 [kubectl Cheat Sheet](https://www.mirantis.com/blog/kubernetes-cheat-sheet/)   
 [commands in Dockerfile](https://docs.docker.com/reference/dockerfile/)
+[jq - sed for JSON data](https://jqlang.github.io/jq/)
 
 [Kubernetes the hard way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way)   
   - assembling a Kubernetes cluster part by part
@@ -10,7 +11,7 @@
 [K8S video series - Google CloudOnAir](https://cloudonair.withgoogle.com/events/kubernetes-with-google-cloud)
 
 [Crossplane](crossplane.io)
-  - extends Kubernetes control plane to orchestrate life cycle of public cloud-based services, e.g. database instances, VMs, ML jobs, Big Data vlusters.
+  - extends Kubernetes control plane to orchestrate life cycle of public cloud-based services, e.g. database instances, VMs, ML jobs, Big Data clusters.
   - Kubernetes-styled, declarative, API-driven, yaml config, kubectl CLI, IaC
  
 [Jib](https://cloud.google.com/java/getting-started/jib)
@@ -34,7 +35,8 @@
   - tool to customize Kubernetes manifest / object
   - to add, update, remove configuration
   - use kustomization file
-
+[OpenSeach and OpenSearch Dashboard](https://opensearch.org/)
+  - data visualization
 <hr>
 
 ### Container Security
