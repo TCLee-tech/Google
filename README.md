@@ -38,6 +38,13 @@
 
 [OpenSeach and OpenSearch Dashboard](https://opensearch.org/)  
   - data visualization
+
+[Merbridge](https://merbridge.io/)
+  - eBPF to speed up (Istio) Service Mesh
+  - [github](https://github.com/merbridge/merbridge)
+
+[Koupleless - from application to modular severless (Ant Group tech)](https://koupleless.io/en/home/)
+
 <hr>
 
 ### Container Security
