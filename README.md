@@ -45,7 +45,7 @@
 
 [Koupleless - from application to modular severless (Ant Group tech)](https://koupleless.io/en/home/)
 
-[APK - WSO2's cloud native API management](apk.docs.wso2.com/en/latest)
+[APK - WSO2's cloud native API management](https://apk.docs.wso2.com/en/latest/)
   - Runtime Manager
       - discover Kubernetes services and convert to APIs, endpoint management
   - Management Client
