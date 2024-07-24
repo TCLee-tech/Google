@@ -47,11 +47,11 @@
 
 [APK - WSO2's cloud native API management](https://apk.docs.wso2.com/en/latest/)
   - Runtime Manager
-      - discover Kubernetes services and convert to APIs, endpoint management
+      - discover Kubernetes services and convert to APIs. Endpoint management.
   - Management Client
-     - communicate with control plane
+     - communicates with the control plane
   - API Gateway (Envoy as foundation)
-    - router: authentication, authorization, rate limiting
+    - router: authentication, authorization
     - Enforcer: security, rate limiting, analytics, validation, policies, versioning, scope
     - Redis and Envoy Rate Limiter components
   - Analytics - ELK Stack, Choreo Insights, Prometheus metric support, distributed tracing, Moseif
