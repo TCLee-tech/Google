@@ -45,6 +45,17 @@
 
 [Koupleless - from application to modular severless (Ant Group tech)](https://koupleless.io/en/home/)
 
+[APK - WSO2's cloud native API management](apk.docs.wso2.com/en/latest)
+  - Runtime Manager
+      - discover Kubernetes services and convert to APIs, endpoint management
+  - Management Client
+     - communicate with control plane
+  - API Gateway (Envoy as foundation)
+    - router: authentication, authorization, rate limiting
+    - Enforcer: security, rate limiting, analytics, validation, policies, versioning, scope
+    - Redis and Envoy Rate Limiter components
+  - Analytics - ELK Stack, Choreo Insights, Prometheus metric support, distributed tracing, Moseif
+  - can deploy on multi-clusters, each with own dataplane. All dataplanes connected to a central control plane. Cluster / namespace isolation, independence.
 <hr>
 
 ### Container Security
