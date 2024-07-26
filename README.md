@@ -56,6 +56,11 @@
     - Redis and Envoy Rate Limiter components
   - Analytics - ELK Stack, Choreo Insights, Prometheus metric support, distributed tracing, Moseif
   - can deploy on multi-clusters, each with own dataplane. All dataplanes connected to a central control plane. Cluster / namespace isolation, independence.
+
+[Config sync](https://github.com/GoogleContainerTools/kpt-config-sync)
+  - sync configurations and policies across clusters.
+  - okay for multi-cloud, hybrid cloud.
+  - feature incorporated in GKE Enterprise.
 <hr>
 
 ### Container Security
